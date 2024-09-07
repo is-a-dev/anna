@@ -40,12 +40,6 @@ class Testings(commands.Cog):
             "Unloaded extension. Please ask my master to reload the cog if needed."
         )
 
-    @commands.command()
-    @commands.is_owner()
-    async def abuse_identity(self, ctx: commands.Context, to_say: str) -> None:
-        await ctx.message.delete()
-        await ctx.send(to_say)
-
 
 def setup(bot: commands.Bot) -> None:
     bot.add_cog(Testings(bot))
