@@ -81,7 +81,7 @@ bot = AnnaBot(
     case_insensitive=True,
     owner_ids=owner_ids,
     allowed_mentions=nextcord.AllowedMentions.none(),
-    activity=streaming("Watching is-a.dev."),
+    activity=Streaming("Watching is-a.dev."),
 )
 # @bot.event
 # async def on_command_error(ctx, error):
