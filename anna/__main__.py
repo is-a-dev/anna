@@ -13,7 +13,7 @@ from nextcord import ApplicationError, Game, Intents
 from nextcord.ext import application_checks as ac
 from nextcord.ext import commands, help_commands  # type: ignore
 
-prefix = "oct/" if os.getenv("TEST") else "oc/"
+prefix = "a!" if os.getenv("TEST") else "a?"
 
 
 class ConvertibleToInt:
@@ -35,24 +35,24 @@ class AnnaBot(commands.Bot):
         self, context: commands.Context, error: commands.CommandError
     ) -> None:
         if isinstance(error, commands.NotOwner):
-            await context.send("Impersonator")
+            await context.send("Only Anna's maintainers can run this command.")
         elif isinstance(error, commands.UserInputError):
-            await context.send("Such a fool can't read help")
+            await context.send("User input error.")
         elif isinstance(error, commands.CommandNotFound):
-            await context.send("Imagine disillusioned")
+            await context.send("Command not found.")
         elif isinstance(error, commands.errors.DisabledCommand):
-            await context.send("Shhhhhhhh")
+            await context.send("This command has been disabled by Anna's maintainers.")
         else:
-            await context.send("Fool")
+            await context.send("Shikanoko Nokonoko Koshitantan")
             await super().on_command_error(context, error)
 
     async def on_application_command_error(
         self, interaction: nextcord.Interaction, exception: ApplicationError
     ) -> None:
         if isinstance(exception, ac.ApplicationMissingRole):
-            await interaction.send("Imagine not being a staff")
+            await interaction.send("You must be a staff member to use this command.")
         else:
-            await interaction.send("Fool")
+            await interaction.send("Shikanoko Nokonoko Koshitantan")
             await super().on_application_command_error(interaction, exception)
 
 
@@ -63,7 +63,7 @@ def convert_none_to_0(key: Optional[ConvertibleToInt] = None) -> int:
         return int(key)
 
 
-owner_ids = [716306888492318790, 961063229168164864]
+owner_ids = [716306888492318790 , 961063229168164864] # cutedog and orangc
 # if not convert_none_to_0(os.getenv("TEST")):  # type: ignore[reportArgumentType]
 #     owner_ids.append(853158265466257448)
 intents = Intents.all()
@@ -110,7 +110,6 @@ bot.load_extension("extensions.oneword")
 # bot.load_extension("extensions.docs")
 # bot.load_extension("extensions.stars")
 bot.load_extension("extensions.ping_cutedog")
-bot.load_extension("extensions.chatbot")
 if os.getenv("HASDB"):
     bot.load_extension("extensions.tags_reworked")
 # bot.load_extension("extensions.forum")

@@ -26,7 +26,7 @@ with db.cursor() as cur:
     )
     # insert default tag
     cur.execute(
-        f"INSERT INTO taginfo VALUES('{null_uuid_raw.hex}', 'null', 'null', 'tag not found', '716134528409665586')"
+        f"INSERT INTO taginfo VALUES('{null_uuid_raw.hex}', 'null', 'null', 'tag not found', '716306888492318790', '961063229168164864')"
     )
     db.commit()
 
