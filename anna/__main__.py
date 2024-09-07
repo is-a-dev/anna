@@ -80,7 +80,7 @@ bot = AnnaBot(
     help_command=help_commands.PaginatedHelpCommand(),
     case_insensitive=True,
     owner_ids=owner_ids,
-    allowed_mentions=nextcord.AllowedMentions.none(),
+    allowed_mentions=nextcord.AllowedMentions(everyone=False, roles=False, users=True, replied_user=True),
     activity=nextcord.Activity(
         type=nextcord.ActivityType.watching, 
         name="is-a.dev",                      
