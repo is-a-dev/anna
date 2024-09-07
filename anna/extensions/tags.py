@@ -10,10 +10,9 @@ Please check the [is-a.dev docs](https://www.is-a.dev/docs/)\n
 Have fun!"""
 
 waittime = """
-Because my ancestor, orangc, is a degenerate and the maintainers are busy dealing with him, we are unable to provide you immediate assistance.
-ETA for merging varies between a second to a eternity.
-Remember, a watched pot never boils, so why don't get your other work done and maybe your is-a.dev PR will be merged in that time? Hyper-hyper-efficient time management!
-Maintainers shouldn't be spending all their time merging PRs and neither should you spend all your time waiting for it.
+Because us maintainers have a life, we aren't obligated to merge your PRs the moment you make your PR.\n
+We also have other things to do. This project is run by volunteers, so please have patience for us.\n
+Instead of just pinging us, just send a PR in <#1130858271620726784> and wait for us to review it.
 """
 
 rtfm = """
