@@ -1,0 +1,5 @@
+venv
+default.nix
+anna/__pycache__
+anna/extensions/__pycache__
+.env

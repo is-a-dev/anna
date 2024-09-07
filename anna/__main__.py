@@ -13,7 +13,7 @@ from nextcord import ApplicationError, Game, Intents
 from nextcord.ext import application_checks as ac
 from nextcord.ext import commands, help_commands  # type: ignore
 
-prefix = "a!" if os.getenv("TEST") else "a?"
+prefix = "a!" if os.getenv("TEST") else "a?" # bot prefix, first value is for when the bot is in test mode, second is the general prefix
 
 
 class ConvertibleToInt:
@@ -81,7 +81,7 @@ bot = AnnaBot(
     case_insensitive=True,
     owner_ids=owner_ids,
     allowed_mentions=nextcord.AllowedMentions.none(),
-    activity=Streaming("Watching is-a.dev."),
+    activity=Game("Watching is-a.dev."),
 )
 # @bot.event
 # async def on_command_error(ctx, error):
