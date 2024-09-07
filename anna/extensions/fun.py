@@ -23,14 +23,6 @@ _bonk_ans: List[str] = [
     "Ow.. could you not?!",
 ]
 
-class _BattleInvitation:
-    def __init__(self, uid1: int, uid2: int):
-        self.id: str = str(uid1) + str(uid2)
-        self.uid1: int = uid1
-        self.uid2: int = uid2
-
-
-
 class BonkView(nextcord.ui.View):
     if TYPE_CHECKING:
         message: Optional[nextcord.Message]
