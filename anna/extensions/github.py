@@ -24,6 +24,7 @@ FULL_MATCH_ANY_REPO = r"(https:\/\/github.com\/)?([A-Za-z1-9-]+)\/([A-Za-z1-9-]+
 
 MATCH_IS_A_DEV_ONLY = r"register#(\d+)"
 VERY_SHORT_MESSAGE = r"##(\d+)"
+SHORT_MATCHES = r"repo:[^\/#]+\/[^#]+#[^, ]+"
 PR_CHANNEL_ID = 1130858271620726784
 STAFF_ROLE_ID = 1197475623745110109
 
@@ -45,6 +46,9 @@ class GitHub(commands.Cog):
         # print(full_matches)
         is_a_dev_matches: List[re.Match] = re.findall(  # noqa: F841
             MATCH_IS_A_DEV_ONLY, message.content
+        )
+        short_matches: List[re.Match] = re.findall(  # noqa: F841
+            SHORT_MATCHES, message.content
         )
 
         very_short_matches: List[re.Match] = re.findall(
