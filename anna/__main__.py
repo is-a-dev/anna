@@ -81,7 +81,11 @@ bot = AnnaBot(
     case_insensitive=True,
     owner_ids=owner_ids,
     allowed_mentions=nextcord.AllowedMentions.none(),
-    activity=Game("Watching is-a.dev."),
+    activity=nextcord.Activity(
+        type=nextcord.ActivityType.watching, 
+        name="is-a.dev",                      
+        assets={"large_image": "is-a-dev"}    
+    )
 )
 # @bot.event
 # async def on_command_error(ctx, error):

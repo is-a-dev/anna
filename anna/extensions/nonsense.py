@@ -334,14 +334,8 @@ class NonsenseSlash(commands.Cog):
         reason: str = SlashOption(description="The reason to ban", required=True),
     ) -> None:
         """Ban somebody of your choosing. Note that this may not work."""
-        try:
-            await user.send(
-                f"You have been banned from **{interaction.guild.name}** for reason: {reason}"
-            )
-        except HTTPException:
-            pass
         await interaction.send(
-            f"Banned **{user.display_name}** (ID {user.id}) for reason: **{reason}**"
+            f"Banned <@{user.id}> for **{reason}**"
         )
 
     @nextcord.slash_command()
