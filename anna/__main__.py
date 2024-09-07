@@ -112,7 +112,7 @@ bot.load_extension("extensions.archwiki")
 bot.load_extension("extensions.github")
 bot.load_extension("extensions.oneword")
 # bot.load_extension("extensions.docs")
-# bot.load_extension("extensions.stars")
+bot.load_extension("extensions.sender")
 bot.load_extension("extensions.ping_cutedog")
 if os.getenv("HASDB"):
     bot.load_extension("extensions.tags_reworked")

@@ -61,94 +61,6 @@ async def request(requesting_domain: bool = False, *args, **kwargs):
 
 request.__doc__ = aiohttp.ClientSession.request.__doc__
 
-
-class ReportDegenModal(nextcord.ui.Modal):
-    def __init__(self):
-        super().__init__(title="Degenerate Report")
-        self.degen = nextcord.ui.TextInput(
-            "Name of suspected degenerate", required=True
-        )
-        self.reason = nextcord.ui.TextInput(
-            "Why they're a degenerate",
-            required=True,
-            style=nextcord.TextInputStyle.paragraph,
-        )
-        self.add_item(self.degen)
-        self.add_item(self.reason)
-
-    async def callback(self, interaction: nextcord.Interaction):
-        if interaction.user.id == 716134528409665586:
-            await interaction.send(
-                f"Thank you for informing me, Master. I'm sorry for my incompetence and I will deal with **{self.degen.value}** in no time. Sorry to let you down, Master."
-            )
-        elif interaction.user.id == 961063229168164864:
-            await interaction.send("Isn't you and him one and the same?")
-        else:
-            await interaction.send(
-                f"Actually, you would be a better degenerate than **{self.degen.value}**. Invalid report."
-            )
-
-
-class ProposeView(nextcord.ui.View):
-    if TYPE_CHECKING:
-        message: nextcord.Message | nextcord.InteractionMessage
-
-    def __init__(self, spouse_id: int):
-        super().__init__(timeout=30)
-        self._spouse_id: int = spouse_id
-        self._answered: Optional[bool] = None
-
-    def update_msg(self, msg: nextcord.Message | nextcord.InteractionMessage):
-        self._message = msg
-
-    @nextcord.ui.button(label="Yes", style=nextcord.ButtonStyle.green)
-    async def yes(self, button: nextcord.ui.Button, interaction: nextcord.Interaction):
-        for child in self.children:
-            child.disabled = True
-        self._answered = True
-        await interaction.response.defer()
-        await self._message.edit("I love you!", view=self)
-
-    @nextcord.ui.button(label="No", style=nextcord.ButtonStyle.red)
-    async def no(self, button: nextcord.ui.Button, interaction: nextcord.Interaction):
-        for child in self.children:
-            child.disabled = True
-        self._answered = True
-        await interaction.response.defer()
-        await self._message.edit("I hereby refuse your refusal.", view=self)
-
-    async def on_timeout(self):
-        for child in self.children:
-            child.disabled = True  # type: ignore
-        if not self._answered:
-            await self._message.edit("You missed the boat. Failure.", view=self)  # type: ignore
-
-    async def interaction_check(self, interaction: nextcord.Interaction):
-        if interaction.user.id == self._spouse_id:
-            return True
-        else:
-            await interaction.send("Fool", ephemeral=True)
-            return False
-
-
-class ReportDegenView(nextcord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=300)
-        self.message: nextcord.Message | None = None
-
-    def update_msg(self, msg: nextcord.Message):
-        self.message: nextcord.Message | None = msg
-
-    @nextcord.ui.button(label="Report a Degenerate")
-    async def report_degen(
-        self, button: nextcord.ui.Button, interaction: nextcord.Interaction  # type: ignore[reportUnusedVariable]
-    ) -> None:
-        if interaction.user.id == self.message.author.id:
-            await interaction.response.send_modal(ReportDegenModal())
-        else:
-            await interaction.send("Fool", ephemeral=True)
-
-
 class Nonsense(commands.Cog):
     """Features that exists for no reason.
     Don't ask why."""
@@ -172,18 +84,6 @@ class Nonsense(commands.Cog):
             await ctx.message.add_reaction("✅")
         else:
             await ctx.message.add_reaction("❌")
-
-    @commands.command()
-    async def report_degenerate(self, ctx: commands.Context):
-        k = ReportDegenView()
-        await ctx.send("Found a degen? Report them here.", view=k)
-        k.update_msg(ctx.message)
-
-    @commands.command()
-    async def propose(self, ctx: commands.Context):
-        k = ProposeView(ctx.author.id)
-        i = await ctx.send("Will you marry me?", view=k)
-        k.update_msg(i)
 
     @commands.command()
     # @commands.cooldown(3, 8, commands.BucketType.user)
@@ -299,32 +199,6 @@ class NonsenseSlash(commands.Cog):
         self._bot: commands.Bot = bot
 
     @nextcord.slash_command()
-    @ac.is_owner()
-    async def make_degen(
-        self,
-        interaction: Interaction,
-        user: nextcord.Member = SlashOption(
-            description="The degen-like user.", required=True
-        ),
-        reason=SlashOption(
-            description="Why this person should be a degen? Idrk.", required=False
-        ),
-    ) -> None:
-
-        if reason is None:
-            reason = "annoying my Master"
-        await user.add_roles(Object(id=1238746465111642122), reason=reason)
-        LOG_CHANNEL = cast(
-            TextChannel, interaction.guild.get_channel(955105139461607444)
-        )
-        await LOG_CHANNEL.send(
-            f"My Master, MaskDuck, has made {str(user)} (ID {user.id}) for reason {reason}"
-        )
-        await interaction.send(
-            f"Master, I have made {str(user)} a degenerate for {reason}. I'm sorry for all your loss, Master."
-        )
-
-    @nextcord.slash_command()
     async def ban(
         self,
         interaction: nextcord.Interaction,
@@ -391,16 +265,6 @@ class NonsenseSlash(commands.Cog):
             )
         except DomainNotExistError:
             await interaction.send("Domain requested cannot be found. Aborting.")
-
-    @slash_command()
-    async def report_degenerate(self, interaction: Interaction) -> None:
-        await interaction.response.send_modal(ReportDegenModal())
-
-    @slash_command()
-    async def propose(self, interaction: Interaction) -> None:
-        k = ProposeView(interaction.user.id)
-        l = await interaction.send("Will you marry me?", view=k)
-        k.update_msg(l)
 
     @slash_command()
     async def links(self, interaction: Interaction) -> None:
