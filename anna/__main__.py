@@ -20,7 +20,7 @@ class ConvertibleToInt:
     def __int__(self) -> int: ...
 
 
-class OrangcBot(commands.Bot):
+class AnnaBot(commands.Bot):
     def __init__(self, *args, **kwargs) -> None:
         # self._db: psycopg2.connection = psycopg2.connect(
         #     host=getenv("DBHOST"),
@@ -63,7 +63,7 @@ def convert_none_to_0(key: Optional[ConvertibleToInt] = None) -> int:
         return int(key)
 
 
-owner_ids = [716134528409665586]
+owner_ids = [716306888492318790, 961063229168164864]
 # if not convert_none_to_0(os.getenv("TEST")):  # type: ignore[reportArgumentType]
 #     owner_ids.append(853158265466257448)
 intents = Intents.all()
@@ -74,14 +74,14 @@ intents.invites = False
 intents.voice_states = False
 intents.scheduled_events = False
 
-bot = OrangcBot(
+bot = AnnaBot(
     intents=intents,
     command_prefix=prefix,
     help_command=help_commands.PaginatedHelpCommand(),
     case_insensitive=True,
     owner_ids=owner_ids,
     allowed_mentions=nextcord.AllowedMentions.none(),
-    activity=Game("Busy serving my only real Master, MaskDuck."),
+    activity=streaming("Watching is-a.dev."),
 )
 # @bot.event
 # async def on_command_error(ctx, error):
