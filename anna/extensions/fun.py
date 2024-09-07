@@ -30,25 +30,6 @@ class _BattleInvitation:
         self.uid2: int = uid2
 
 
-class SlapConfirmView(nextcord.ui.View):
-    def __init__(self, ctx: commands.Context, invitation: _BattleInvitation):
-        super().__init__()
-        self._ctx: commands.Context = ctx
-        self._invitation: _BattleInvitation = invitation
-
-    @nextcord.ui.button(label="Confirm Battle", style=nextcord.ButtonStyle.blurple)
-    async def _confirm(
-        self, button: nextcord.ui.Button, interaction: nextcord.Interaction
-    ):
-        if self._invitation.uid2 == interaction.user.id:  # type: ignore[reportOptionalMemberAccess]
-            await self._ctx.send("Player 2 has accepted the Slappy Slappy battle.")
-            self._ctx.bot.dispatch("battle_acceptance", self._invitation)
-        else:
-            await interaction.send(
-                "You are not the invited competitor!", ephemeral=True
-            )
-
-
 
 class BonkView(nextcord.ui.View):
     if TYPE_CHECKING:
