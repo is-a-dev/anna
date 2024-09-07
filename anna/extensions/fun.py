@@ -5,13 +5,11 @@ import dotenv
 import nextcord
 from nextcord import Interaction, SlashOption
 from nextcord.ext import commands
-from psl_dns import PSL
 
 dotenv.load_dotenv()
 
 # import os
 
-_psl = PSL()
 import random
 from random import choice
 from typing import TYPE_CHECKING, List, Literal, Optional
@@ -22,15 +20,13 @@ _bonk_ans: List[str] = [
     "Ohh noooo",
     "Pleaseeeeeee don't hurt me...",
 ]
-_morals: List[str] = ["Excellent", "Good", "Normal", "Bad", "Very bad"]
-MAIN_SERVER_GUILD_ID: Literal[830872854677422150] = 830872854677422150
+
 # _randommer_api_key = os.getenv("RANDOMMER_API_KEY")
 # def has_randommer_api_key():
 #    async def predicate(ctx: comamnds.Context):
 #        return _randommer_api_key != None
 #    return commands.check(predicate)
 
-DEGENERATE_ROLE_ID: Literal[1238746465111642122] = 1238746465111642122
 
 
 # async def _request_randommer(*, params, path):
@@ -172,13 +168,6 @@ class Fun(commands.Cog):
         msg = await ctx.send(content="Good.", view=k)
         k.update_msg(msg)
 
-    @commands.command()
-    async def areweinpsl(self, ctx):
-        """Show whether PSL changes are deployed."""
-        if _psl.is_public_suffix("is-a.dev"):
-            await ctx.send("Yes, we are.")
-        else:
-            await ctx.send("No, we aren't.")
 
     @commands.command()
     async def ubdict(self, ctx: commands.Context, *, word: str):
@@ -231,67 +220,12 @@ class Fun(commands.Cog):
     #         view=k,
     #     )
 
-    @commands.command()
-    async def moral(
-        self, ctx: commands.Context, member: Optional[nextcord.Member] = None
-    ) -> None:
-        """Show one's moral."""
-        # state = ""
-        if not member:
-            member = ctx.author  # type: ignore[reportAssignmentType]
-        if member.id == 716134528409665586:  # type: ignore[reportOptionalMemberAccess]
-            state = "Paragon of Virtue"
-
-        elif member.id == 853158265466257448:  # type: ignore[reportOptionalMemberAccess]
-            state = "Beneath contempt"
-        elif member.id == 961063229168164864:  # type: ignore[reportOptionalMemberAccess]
-            state = "Degenerate"
-        elif member.get_role(DEGENERATE_ROLE_ID):
-            state = r"Degenerate\*"
-        else:
-            state = choice(_morals)
-
-        await ctx.send(f"**{member.display_name}**'s moral status is **{state}**")  # type: ignore[reportOptionalMemberAccess]
-
-    @nextcord.user_command(name="See moral")
-    async def see_moral(
-        self, interaction: nextcord.Interaction, member: nextcord.Member
-    ) -> None:
-        # state = ""
-        if member.id == 716134528409665586:
-            state = "Paragon of Virtue"
-        elif member.id == 853158265466257448:
-            state = "Beneath contempt"
-        elif member.id == 961063229168164864:
-            state = "Degenerate"
-        elif member.get_role(DEGENERATE_ROLE_ID):
-            state = r"Degenerate\*"
-        else:
-            state = choice(_morals)
-        await interaction.response.send_message(
-            f"**{member.display_name}**'s moral status is **{state}**"
-        )
 
     @nextcord.slash_command()
     async def ping(self, interaction: nextcord.Interaction) -> None:
         """Am I alive?"""
         await interaction.response.send_message("No")
 
-    @commands.command()
-    async def fool(
-        self, ctx: commands.Context, member: Optional[nextcord.Member] = None
-    ) -> None:
-        """Show the fool level of somebody."""
-        if not member:
-            member = ctx.author  # type: ignore[reportAssignmentType]
-        if member.id == 716134528409665586:  # type: ignore[reportOptionalMemberAccess]
-            level = 0
-        # elif member.id == 853158265466257448:
-        #     level = 99+3/4
-        else:
-            level = random.randint(0, 100)
-
-        await ctx.send(f"**{member.display_name}** is {level}% a fool.")  # type: ignore[reportOptionalMemberAccess]
 
     @commands.command()
     async def httpcat(self, ctx: commands.Context, code: int = 406):
@@ -366,47 +300,6 @@ class FunSlash(commands.Cog):
             text=f"👍 {data['list'][0]['thumbs_up']} | 👎 {data['list'][0]['thumbs_down']} | Powered by: Urban Dictionary"
         )
         await interaction.send(embed=embed)
-
-    @nextcord.slash_command()
-    async def moral(
-        self,
-        interaction: Interaction,
-        member: nextcord.Member = SlashOption(
-            description="The user you want to see the moral.", required=False
-        ),
-    ) -> None:
-        if not member:
-            member = interaction.user
-        if member.id == 716134528409665586:
-            state = "Paragon of Virtue"
-        elif member.id == 853158265466257448:
-            state = "Beneath contempt"
-        elif member.id == 961063229168164864:
-            state = "Degenerate"
-        elif member.get_role(DEGENERATE_ROLE_ID):
-            state = r"Degenerate\*"
-
-        else:
-            state = choice(_morals)
-        await interaction.response.send_message(
-            f"**{member.display_name}**'s moral status is **{state}**"
-        )
-
-    @nextcord.slash_command()
-    async def fool(
-        self,
-        interaction: nextcord.Interaction,
-        member: nextcord.User = SlashOption(
-            description="The member you want to see the fool level of.", required=False
-        ),
-    ) -> None:
-        if not member:
-            member = interaction.user
-        if member.id == 716134528409665586:
-            level = 0
-        else:
-            level = random.randint(0, 100)
-        await interaction.send(f"{member.display_name} is {level}% a fool.")
 
 
 def setup(bot):
