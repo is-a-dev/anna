@@ -38,7 +38,7 @@ class Tags(commands.Cog):
             embed = nextcord.Embed(
                 title="This is not a help channel.",
                 description=nohelp,
-                color=nextcord.Colour.red(),
+                color=nextcord.Colour.blue(),
             )
             await ctx.send(embed=embed)
         else:
@@ -51,7 +51,7 @@ class Tags(commands.Cog):
             embed = nextcord.Embed(
                 title="How long is it until my PR is merged?",
                 description=waittime,
-                color=nextcord.Colour.red(),
+                color=nextcord.Colour.blue(),
             )
             await ctx.send(embed=embed)
 
@@ -61,7 +61,7 @@ class Tags(commands.Cog):
             embed = nextcord.Embed(
                 title="Read The Fucking Manual",
                 description=rtfm,
-                color=nextcord.Colour.red(),
+                color=nextcord.Colour.blue(),
             )
             await ctx.send(embed=embed)
 
@@ -71,7 +71,7 @@ class Tags(commands.Cog):
             embed = nextcord.Embed(
                 title="We're a domain service, and we only provide support for domains",
                 description=domservice,
-                color=nextcord.Colour.red(),
+                color=nextcord.Colour.blue(),
             )
             await ctx.send(embed=embed)
 
