@@ -110,7 +110,7 @@ class FAQDropdown(nextcord.ui.Select):
         embed: nextcord.Embed = nextcord.Embed(
             title=qa_pair.question,
             description=qa_pair.answer,
-            color=nextcord.Color.red(),
+            color=nextcord.Color.blue(),
         )
         await self._message.edit(embed=embed, view=self.view)
 

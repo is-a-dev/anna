@@ -40,7 +40,7 @@ class RulesPageSource(menus.ListPageSource):
         embed = nextcord.Embed(
             title=f"Rule {rulenum+1}",
             description=f"{ruleinfo}\n\n**Please also note:**\n{FOOTER}",
-            color=nextcord.Color.red(),
+            color=nextcord.Color.blue(),
         )
         return embed
 
@@ -68,7 +68,7 @@ class Rules(commands.Cog):
             embed = nextcord.Embed(
                 title=f"Rule {rulenum}",
                 description=f"{RULES[rulenum-1]}\n\n**Please also note:**\n{FOOTER}",
-                color=nextcord.Color.red(),
+                color=nextcord.Color.blue(),
             )
             await ctx.send(embed=embed)
             return
