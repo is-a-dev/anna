@@ -90,7 +90,7 @@ bot = Bot(
 if nextcord.version_info < (3, 0, 0):
     bot.load_extension("onami")
 
-bot.load_extension("extensions.help_forum")
+bot.load_extension("extensions.help_forum.help_system")
 bot.load_extension("extensions.antihoist")
 bot.load_extension("extensions.fun")
 bot.load_extension("extensions.faq")
