@@ -11,7 +11,7 @@ def replace_placeholders(string: str, placeholders: dict) -> str:
 
 
 TOKEN = "" or os.getenv("TOKEN")
-DATABASE_PATH = "test_database" or os.getenv("DATABASE_PATH")
+DATABASE_PATH = "database" or os.getenv("DATABASE_PATH")
 VIEW_GUILD_ID = 1281898369236602903
 VIEW_CHANNEL_ID = 1282237085612511244
 USER_THREAD_LIMIT = 3

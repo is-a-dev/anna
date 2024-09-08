@@ -18,19 +18,12 @@ prefix = "a!" if os.getenv("TEST") else "a?" # bot prefix, first value is for wh
 
 class Bot(commands.Bot):
     def __init__(self, db_path: str, *args, **kwargs) -> None:
-        # self._db: psycopg2.connection = psycopg2.connect(
-        #     host=getenv("DBHOST"),
-        #     user=getenv("DBUSER"),
-        #     port=getenv("DBPORT"),
-        #     password=getenv("DBPASSWORD"),
-        #     dbname=getenv("DBNAME"),
-        # )
         super().__init__(*args, **kwargs)
+        self.db = Database(db_path)
 
     async def on_command_error(
         self, context: commands.Context, error: commands.CommandError
     ) -> None:
-        self.db = Database(db_path)
         if isinstance(error, commands.NotOwner):
             await context.send("Only Anna's maintainers can run this command.")
         elif isinstance(error, commands.UserInputError):
@@ -51,14 +44,19 @@ class Bot(commands.Bot):
         else:
             await interaction.send("An error was caught while attempting to run the command.")
             await super().on_application_command_error(interaction, exception)
-    @tasks.loop(seconds=60)
+
+    @commands.Cog.listener()
     async def on_ready(self):
-        await self.db.create_tables()
-        self.update.start()
+        """ Event triggered when the bot is ready """
+        print(f'{self.user} is now online!')
+        await self.db.create_tables()  # Ensure the database tables are created
 
+    @tasks.loop(seconds=60)
+    async def update(self):
+        """ Task that runs every 60 seconds for periodic updates (if needed) """
+        print("Performing periodic update...")  # Placeholder for actual task logic
 
-
-owner_ids = [716306888492318790 , 961063229168164864] # cutedog and orangc
+owner_ids = [716306888492318790, 961063229168164864]  # Cutedog and orangc
 intents = Intents.all()
 intents.message_content = True
 intents.members = True
@@ -111,6 +109,8 @@ bot.run(environ["TOKEN"])
 if __name__ == "__main__":
     load_dotenv()
     bot = Bot(
-        DATABASE_PATH,
+        db_path=DATABASE_PATH,
+        intents=intents,
+        command_prefix=prefix
     )
     asyncio.run(bot.db.disconnect())
