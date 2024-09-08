@@ -413,23 +413,6 @@ class Help(commands.Cog):
         await self.bot.db.clear_helpban(interaction.guild.id)
         await interaction.send("All users have been unbanned from the help system.")
 
-    @commands.Cog.listener(name="on_ready")
-    async def persistent_views(self):
-        """Adds the persistent views for the help system."""
-        open_thread_view = OpenHelpView(self.bot, self.create_help_thread)
-        close_thread_view = CloseHelpView(self.close_help_thread, self.is_thread_author)
-        # if not self.bot.persistent_views_added:
-        self.bot.add_view(open_thread_view)
-        self.bot.add_view(close_thread_view)
-        guild = self.bot.get_guild(extensions.help_forum.config.VIEW_GUILD_ID)
-        if not guild:
-            raise Exception("View Guild couldn't be found.")
-        channel = nextcord.utils.get(guild.channels, id=extensions.help_forum.config.VIEW_CHANNEL_ID)
-        if not channel:
-            raise Exception("View Channel couldn't be found.")
-        await channel.send("Open Thread View", view=open_thread_view)
-        await channel.send("Close Thread View", view=close_thread_view)
-
     @commands.Cog.listener(name="on_message")
     async def first_message_mention(self, message: nextcord.Message):
         """Mentions the ping role when a user sends their first message in a help thread."""
