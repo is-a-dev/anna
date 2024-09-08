@@ -418,9 +418,9 @@ class Help(commands.Cog):
         """Adds the persistent views for the help system."""
         open_thread_view = OpenHelpView(self.bot, self.create_help_thread)
         close_thread_view = CloseHelpView(self.close_help_thread, self.is_thread_author)
-        if not self.bot.persistent_views_added:
-            self.bot.add_view(open_thread_view)
-            self.bot.add_view(close_thread_view)
+        # if not self.bot.persistent_views_added:
+        self.bot.add_view(open_thread_view)
+        self.bot.add_view(close_thread_view)
         guild = self.bot.get_guild(extensions.help_forum.config.VIEW_GUILD_ID)
         if not guild:
             raise Exception("View Guild couldn't be found.")
