@@ -42,19 +42,6 @@ class AutoMod(commands.Cog):
                 nick="Moderated Nickname", reason="Hoisting is not allowed in our server. —Automoderation set by Anna."
             )
 
-    # @commands.Cog.listener("on_auto_moderation_action_execution")
-    # async def check_nword_pass(self, execution: AutoModerationActionExecution):
-    #     if execution.rule_id == 1196650528889905305:  # racial slur N word automod rule
-    #         try:
-    #             await execution.member.send(
-    #                 f"seriously? you think you are better just because you were born in somewhere rather than Africa? you're banned from is-a.dev now. oh yes, if you're looking for an appeal form, sorry, no, cuz we are so disgusted at you. it's {datetime.now().year}, get some braincells rather than spamming your keyboard online like that!"
-    #             )
-    #         except HTTPException:
-    #             pass
-    #         await execution.member.ban(
-    #             reason="thought that they are better just because they weren't born in somewhere rather than Africa"
-    #         )
-
     @user_command(
         dm_permission=False, name="Cleanse Nickname", default_member_permissions=8
     )

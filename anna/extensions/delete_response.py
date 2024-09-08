@@ -11,7 +11,6 @@ class DeleteResponse(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, event: nextcord.RawReactionActionEvent) -> None:
         if event.event_type == "REACTION_ADD":
-            # print(event.emoji == "<:delete:1236642973576331328>")
             if str(event.emoji) == "<:delete:1236642973576331328>":
                 # Do not delete suggestions
                 if event.channel_id == 1236200920317169695:
