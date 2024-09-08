@@ -20,4 +20,5 @@ What we've done so far:
 
 ## installation
 On NixOS, run `nix run github:cutedog5695/anna`.
+
 On Ubuntu/Debian: Soon
