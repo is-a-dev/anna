@@ -61,6 +61,7 @@ async def request(*args, **kwargs):
 class Fun(commands.Cog):
     def __init__(self, bot):
         self._bot = bot
+        latency = bot.latency
 
     @commands.command()
     async def bonk(self, ctx):
@@ -92,10 +93,10 @@ class Fun(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    @nextcord.slash_command()
-    async def ping(self, interaction: nextcord.Interaction) -> None:
-        """Am I alive?"""
-        await interaction.response.send_message("No")
+    @commands.command()
+    async def ping(self, ctx: commands.Context):
+        latency = round(self._bot.latency * 1000)
+        await ctx.send(f"Success! Anna is awake. Ping: {latency}ms")
 
 
     @commands.command()

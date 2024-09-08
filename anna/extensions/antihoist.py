@@ -30,7 +30,7 @@ class AutoMod(commands.Cog):
     async def check_nickname_on_join(self, member: nextcord.Member) -> None:
         if member.display_name[0] not in normal_characters:
             await member.edit(
-                nick="kid", reason="having a strong craving to be a discord ecelebrity"
+                nick="Moderated Nickname", reason="Hoisting is not allowed in our server. —Automoderation set by Anna."
             )
 
     @commands.Cog.listener("on_member_update")
@@ -39,7 +39,7 @@ class AutoMod(commands.Cog):
     ) -> None:
         if after.display_name[0] not in normal_characters:
             await after.edit(
-                nick="kid", reason="having a strong craving to be a discord ecelebrity"
+                nick="Moderated Nickname", reason="Hoisting is not allowed in our server. —Automoderation set by Anna."
             )
 
     # @commands.Cog.listener("on_auto_moderation_action_execution")
@@ -62,11 +62,11 @@ class AutoMod(commands.Cog):
     async def cleanse_nickname(self, interaction: Interaction, member: Member) -> None:
         previous_display_name = member.display_name
         await member.edit(
-            nick="kid",
+            nick="Moderated Nickname",
             reason=f"nickname cleansing requested by {interaction.user.display_name}",
         )
         await interaction.send(
-            f"Nickname of {previous_display_name} has been cleansed to `kid`."
+            f"Nickname of {previous_display_name} has been cleansed to `Moderated Nickname`."
         )
 
 

@@ -43,7 +43,7 @@ class AnnaBot(commands.Bot):
         elif isinstance(error, commands.errors.DisabledCommand):
             await context.send("This command has been disabled by Anna's maintainers.")
         else:
-            await context.send("Shikanoko Nokonoko Koshitantan")
+            await context.send("An error was caught while attempting to run the command.")
             await super().on_command_error(context, error)
 
     async def on_application_command_error(
@@ -52,7 +52,7 @@ class AnnaBot(commands.Bot):
         if isinstance(exception, ac.ApplicationMissingRole):
             await interaction.send("You must be a staff member to use this command.")
         else:
-            await interaction.send("Shikanoko Nokonoko Koshitantan")
+            await interaction.send("An error was caught while attempting to run the command.")
             await super().on_application_command_error(interaction, exception)
 
 
@@ -97,14 +97,14 @@ bot = AnnaBot(
 # WARNING: Do not remove this if!
 if nextcord.version_info < (3, 0, 0):
     bot.load_extension("onami")
-# bot.load_extension("extensions.antihoist")
 
+bot.load_extension("extensions.antihoist")
 bot.load_extension("extensions.fun")
 bot.load_extension("extensions.faq")
 bot.load_extension("extensions.antiphishing")
 bot.load_extension("extensions.testing_functions")
 bot.load_extension("extensions.nonsense")
-bot.load_extension("extensions.dns")
+# bot.load_extension("extensions.dns")
 bot.load_extension("extensions.suggestions")
 bot.load_extension("extensions.delete_response")
 bot.load_extension("extensions.github")
@@ -113,5 +113,4 @@ bot.load_extension("extensions.sender")
 bot.load_extension("extensions.ping_cutedog")
 if os.getenv("HASDB"):
     bot.load_extension("extensions.tags_reworked")
-# bot.load_extension("extensions.forum")
 bot.run(environ["TOKEN"])
