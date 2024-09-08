@@ -19,4 +19,4 @@ What we've done so far:
 - [ ] maybe remove the helpban system, why the hells does it exist if nobody uses it + we don't even need a bot for it when we can just use roles
 
 ## installation
-On NixOS, run `nix run cutedog5695/anna`.
+On NixOS, run `nix run github:cutedog5695/anna`.
