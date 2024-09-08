@@ -1,4 +1,5 @@
 # ruff: noqa
+import nextcord
 from nextcord.ext import commands
 
 nohelp = """
@@ -18,7 +19,7 @@ Instead of pinging us, send a PR in <#1130858271620726784> *once* and wait for u
 rtfm = """
 Please read the documentation. It exists for a reason.\n
 Our maintainers and helpers are volunteers. It's not our job to answer questions already answered in the documentation or FAQ.\n
-- [is-a.dev documentation](https://is-a.dev/docs)\n
+- [is-a.dev documentation](https://is-a.dev/docs)
 - <#991779321758896258>\n
 """
 domservice = """
@@ -41,12 +42,12 @@ class Tags(commands.Cog):
             )
             await ctx.send(embed=embed)
         else:
-            msg = await ctx.send("You fool.")
+            msg = await ctx.send("This command cannot be used in this channel, because this is a help channel.")
             await msg.delete()
 
     @commands.command()
     async def waittime(self, ctx):
-        if True:  # blame orangc
+        if True:
             embed = nextcord.Embed(
                 title="How long is it until my PR is merged?",
                 description=waittime,
@@ -68,7 +69,7 @@ class Tags(commands.Cog):
     async def domservice(self, ctx):
         if True:
             embed = nextcord.Embed(
-                title="We're a domain service, and we provide support for domains",
+                title="We're a domain service, and we only provide support for domains",
                 description=domservice,
                 color=nextcord.Colour.red(),
             )

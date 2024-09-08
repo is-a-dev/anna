@@ -110,6 +110,7 @@ bot.load_extension("extensions.delete_response")
 bot.load_extension("extensions.github")
 bot.load_extension("extensions.oneword")
 bot.load_extension("extensions.sender")
+bot.load_extension("extensions.tags")
 bot.load_extension("extensions.ping_cutedog")
 if os.getenv("HASDB"):
     bot.load_extension("extensions.tags_reworked")
