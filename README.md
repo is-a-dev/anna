@@ -21,4 +21,6 @@ What we've done so far:
 - [ ] rewrite faq, suggestions, and something else i forgot shikanoko nokonoko koshitantan
 
 ## installation
-On NixOS, run `nix run github:cutedog5695/anna`. On Ubuntu/Debian: Soon
+On NixOS, run `nix run github:cutedog5695/anna`.
+
+On Ubuntu/Debian: Soon
