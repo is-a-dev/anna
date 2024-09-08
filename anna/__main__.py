@@ -13,6 +13,14 @@ from nextcord import ApplicationError, Game, Intents
 from nextcord.ext import application_checks as ac
 from nextcord.ext import commands, help_commands  # type: ignore
 
+from nextcord.ext import tasks
+import asyncio
+from nextcord.ext import commands
+import logging
+from extensions.help_forum.database import Database
+import subprocess
+from extensions.help_forum.config import DATABASE_PATH
+
 prefix = "a!" if os.getenv("TEST") else "a?" # bot prefix, first value is for when the bot is in test mode, second is the general prefix
 
 
@@ -20,8 +28,8 @@ class ConvertibleToInt:
     def __int__(self) -> int: ...
 
 
-class AnnaBot(commands.Bot):
-    def __init__(self, *args, **kwargs) -> None:
+class Bot(commands.Bot):
+    def __init__(self, db_path: str, *args, **kwargs) -> None:
         # self._db: psycopg2.connection = psycopg2.connect(
         #     host=getenv("DBHOST"),
         #     user=getenv("DBUSER"),
@@ -34,6 +42,8 @@ class AnnaBot(commands.Bot):
     async def on_command_error(
         self, context: commands.Context, error: commands.CommandError
     ) -> None:
+        self.persistent_views_added = False
+        self.db = Database(db_path)
         if isinstance(error, commands.NotOwner):
             await context.send("Only Anna's maintainers can run this command.")
         elif isinstance(error, commands.UserInputError):
@@ -54,6 +64,10 @@ class AnnaBot(commands.Bot):
         else:
             await interaction.send("An error was caught while attempting to run the command.")
             await super().on_application_command_error(interaction, exception)
+    @tasks.loop(seconds=60)
+    async def on_ready(self):
+        await self.db.create_tables()
+        self.update.start()
 
 
 def convert_none_to_0(key: Optional[ConvertibleToInt] = None) -> int:
@@ -67,6 +81,8 @@ owner_ids = [716306888492318790 , 961063229168164864] # cutedog and orangc
 # if not convert_none_to_0(os.getenv("TEST")):  # type: ignore[reportArgumentType]
 #     owner_ids.append(853158265466257448)
 intents = Intents.all()
+intents.message_content = True
+intents.members = True
 intents.typing = False
 intents.presences = False
 intents.integrations = False
@@ -74,13 +90,14 @@ intents.invites = False
 intents.voice_states = False
 intents.scheduled_events = False
 
-bot = AnnaBot(
+bot = Bot(
+    db_path=DATABASE_PATH,
     intents=intents,
     command_prefix=prefix,
     help_command=help_commands.PaginatedHelpCommand(),
     case_insensitive=True,
     owner_ids=owner_ids,
-    allowed_mentions=nextcord.AllowedMentions(everyone=True, roles=True, users=True, replied_user=True),
+    allowed_mentions=nextcord.AllowedMentions(everyone=False, roles=False, users=True, replied_user=True),
     activity=nextcord.Activity(
         type=nextcord.ActivityType.watching, 
         name="is-a.dev",                      
@@ -98,6 +115,7 @@ bot = AnnaBot(
 if nextcord.version_info < (3, 0, 0):
     bot.load_extension("onami")
 
+# bot.load_extension("extensions.help_forum")
 bot.load_extension("extensions.antihoist")
 bot.load_extension("extensions.fun")
 bot.load_extension("extensions.faq")
@@ -115,3 +133,10 @@ bot.load_extension("extensions.ping_cutedog")
 if os.getenv("HASDB"):
     bot.load_extension("extensions.tags_reworked")
 bot.run(environ["TOKEN"])
+
+if __name__ == "__main__":
+    load_dotenv()
+    bot = Bot(
+        DATABASE_PATH,
+    )
+    asyncio.run(bot.db.disconnect())
