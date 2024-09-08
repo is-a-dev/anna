@@ -1,4 +1,5 @@
 venv
 anna/__pycache__
 anna/extensions/__pycache__
+anna/extensions/help_forum/__pycache__
 .env
