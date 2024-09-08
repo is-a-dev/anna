@@ -1,7 +1,7 @@
 ![banner](https://embed.pixiv.net/spotlight.php?id=10119&lang=en)
 # Anna
 Anna is named after Anna Yanami from Makeine: Too Many Losing Heroines.
-She is meant to be a replacement for Fire and orangcc in the is-a.dev Discord server.
+She is a fork of orangcc meant to be a replacement for Fire and orangcc in the is-a.dev Discord server.
 What we've done so far:
 
 - Merged Fire and orangcc together into a bot that functions as both
