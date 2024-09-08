@@ -30,7 +30,6 @@ class Bot(commands.Bot):
     async def on_command_error(
         self, context: commands.Context, error: commands.CommandError
     ) -> None:
-        self.persistent_views_added = False
         self.db = Database(db_path)
         if isinstance(error, commands.NotOwner):
             await context.send("Only Anna's maintainers can run this command.")
