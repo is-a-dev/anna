@@ -17,6 +17,8 @@ What we've done so far:
 - [ ] make the tags reworked module work
 - [ ] fix bugs with and rewrite bits of the help system; and make the tag prefix ^
 - [ ] maybe remove the helpban system, why the hells does it exist if nobody uses it + we don't even need a bot for it when we can just use roles
+- [ ] overall polish up the bot, add various utility modules and commands and things
+- [ ] rewrite faq, suggestions, and something else i forgot shikanoko nokonoko koshitantan
 
 ## installation
 On NixOS, run `nix run github:cutedog5695/anna`.

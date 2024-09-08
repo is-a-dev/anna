@@ -32,7 +32,6 @@ class Oneword(commands.Cog):
             nextcord.TextChannel, self._bot.get_channel(ONEWORD_CHANNEL_ID)
         )
 
-        # r = await self.check_if_sending_consecutive_messages(ONEWORD_CHANNEL)
         if " " in message.content or "\n" in message.content or "⠀" in message.content:
             await message.delete()
             s = await message.channel.send(
@@ -41,13 +40,6 @@ class Oneword(commands.Cog):
             await asyncio.sleep(5)
             await s.delete()
             return
-
-        # if r:
-        #     await message.delete()
-        #     s = await message.channel.send("Nice try, kid.")
-        #     await asyncio.sleep(5)
-        #     await s.delete()
-        #     return
 
         return
 
@@ -69,18 +61,6 @@ class Oneword(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message: nextcord.Message) -> None:
-        # audit_log = await message.guild.audit_logs(limit=1).flatten()
-        # audit_log_entry: nextcord.AuditLogEntry = audit_log[0]
-        # try:
-        #     assert audit_log_entry.action == nextcord.AuditLogAction.message_delete
-        # except AssertionError:
-        #     return
-        # if (
-        #     (audit_log_entry.action == nextcord.AuditLogAction.message_delete)
-        #     and (audit_log_entry.user == message.guild.me)
-        #     and (audit_log_entry.extra.channel.id == ONEWORD_CHANNEL_ID)  # type: ignore
-        # ):
-        #     return
         if message.author.bot:
             return
         if " " in message.content:
