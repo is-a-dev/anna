@@ -7,7 +7,7 @@ What we've done so far:
 - Merged Fire and orangcc together into a bot that functions as both
 - Rewrote the Github module
 - Rewrote the dns module
-- Remove a lot of bloat from mostly orangcc's code and some from Fire's code as well
+- Remove a lot of bloat from mostly orangcc's code
 - Rewrote various commands
 - Add some new modules, including the `purge` and `send` commands
 
@@ -19,6 +19,9 @@ What we've done so far:
 - [ ] maybe remove the helpban system, why the hells does it exist if nobody uses it + we don't even need a bot for it when we can just use roles
 - [ ] overall polish up the bot, add various utility modules and commands and things
 - [ ] rewrite faq, suggestions, and something else i forgot shikanoko nokonoko koshitantan
+- [ ] fix the various bugs and try to follow best practices where possible
+- [ ] long term goal — rewrite both fire and orangcc code
+- [ ] add a module that replaces the countr bot
 
 ## installation
 On NixOS, run `nix run github:cutedog5695/anna`.
