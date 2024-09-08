@@ -143,7 +143,7 @@ class Help(commands.Cog):
             extensions.help_forum.config.THREAD_EMBED_DESCRIPTION, placeholders
         )
 
-        embed = nextcord.Embed(title=embed_title, color=nextcord.Color.green())
+        embed = nextcord.Embed(title=embed_title, color=nextcord.Color.blue())
         embed.description = embed_description
         embed.add_field(name="Resources", value=extensions.help_forum.config.THREAD_EMBED_RESOURCES)
         close_view = CloseHelpView(self.close_help_thread, self.is_thread_author)
@@ -228,7 +228,7 @@ class Help(commands.Cog):
             interaction.guild.roles, id=guild_config["ping_role_id"]
         )
         embed = nextcord.Embed(
-            title="Help System Configuration", color=nextcord.Color.green()
+            title="Help System Configuration", color=nextcord.Color.blue()
         )
         embed.add_field(name="Help Channel", value=help_channel.mention)
         embed.add_field(name="Ping Role", value=help_ping_role.mention)
@@ -289,7 +289,7 @@ class Help(commands.Cog):
         if not guild_config:
             raise NoGuildConfig(interaction.guild.id)
         embed = nextcord.Embed(
-            title=title, description=description, color=nextcord.Color.green()
+            title=title, description=description, color=nextcord.Color.blue()
         )
         view = OpenHelpView(self.bot, self.create_help_thread)
         await interaction.send("As you say, master.", delete_after=3)
