@@ -211,7 +211,7 @@ class TagsNewSlash(commands.Cog):
                 # print(info)
                 await interaction.send(
                     embed=nextcord.Embed(
-                        title=info[2], description=info[3], color=nextcord.Color.red()
+                        title=info[2], description=info[3], color=nextcord.Color.blue()
                     ).set_footer(text=f"ID {info[0]}. Author ID: {info[4]}")
                 )
             else:
@@ -263,7 +263,7 @@ class TagsNew(commands.Cog):
                         embed=nextcord.Embed(
                             title=info[2],
                             description=info[3],
-                            color=nextcord.Color.red(),
+                            color=nextcord.Color.blue(),
                         ).set_footer(text=f"ID {info[0]}. Author ID: {info[4]}")
                     )
                 else:
@@ -278,7 +278,7 @@ class TagsNew(commands.Cog):
                 # print(info)
                 await ctx.send(
                     embed=nextcord.Embed(
-                        title=info[2], description=info[3], color=nextcord.Color.red()
+                        title=info[2], description=info[3], color=nextcord.Color.blue()
                     ).set_footer(text=f"ID {info[0]}. Author ID: {info[4]}")
                 )
             else:
@@ -302,7 +302,7 @@ class TagsNew(commands.Cog):
                 # print(info)
                 await ctx.send(
                     embed=nextcord.Embed(
-                        title=info[2], description=info[3], color=nextcord.Color.red()
+                        title=info[2], description=info[3], color=nextcord.Color.blue()
                     ).set_footer(text=f"ID {info[0]}. Author ID: {info[4]}")
                 )
             else:

@@ -93,7 +93,7 @@ class Nonsense(commands.Cog):
             embed=nextcord.Embed(
                 title="Screenshot",
                 description=f"[Open in browser for fast rendering](http://image.thum.io/get/{url})",
-                color=nextcord.Color.red(),
+                color=nextcord.Color.blue(),
             )
         )
 
@@ -171,7 +171,7 @@ class Nonsense(commands.Cog):
             await ctx.send("The domain queried cannot be found. Aborting.")
             return
         embed = nextcord.Embed(
-            color=nextcord.Color.red(),
+            color=nextcord.Color.blue(),
             title=f"Info about {domain}.is-a.dev",
             description=self.fetch_description_about_a_domain(data),
         )
@@ -259,7 +259,7 @@ class NonsenseSlash(commands.Cog):
                 embed=nextcord.Embed(
                     title=f"Domain info for {domain}.is-a.dev",
                     description=Nonsense.fetch_description_about_a_domain(data),
-                    color=nextcord.Color.red(),
+                    color=nextcord.Color.blue(),
                 ),
                 view=view,
             )
@@ -292,7 +292,7 @@ class NonsenseSlash(commands.Cog):
             embed=nextcord.Embed(
                 title="Screenshot",
                 description=f"[Open in browser for fast rendering](https://image.thum.io/get/{url})",
-                color=nextcord.Color.red(),
+                color=nextcord.Color.blue(),
             )
         )
 

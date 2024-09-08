@@ -29,7 +29,7 @@ class AntiPhish(commands.Cog):
                             embed=nextcord.Embed(
                                 title="Phishing found",
                                 description=f"Message sender: {message.author.id}, original content: ```{message.content}```",
-                                color=nextcord.Color.red(),
+                                color=nextcord.Color.blue(),
                             )
                         )
                         await message.delete()
