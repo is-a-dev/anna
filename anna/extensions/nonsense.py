@@ -65,14 +65,19 @@ class LinkView(nextcord.ui.View):
         )
         self.add_item(
             nextcord.ui.Button(
-                label="Documentation", url="https://is-a.dev/docs", row=2
+                label="Documentation", url="https://is-a.dev/docs", row=1
             )
         )
         self.add_item(
             nextcord.ui.Button(
                 label="Register a domain!",
                 url="https://github.com/is-a-dev/register",
-                row=3,
+                row=1,
+            )
+        )
+        self.add_item(
+            nextcord.ui.Button(
+                label="GitHub", url="https://github.com/is-a-dev", row=1
             )
         )
         # self.add_item(nextcord.ui.Button(label="Help Channel", url="", row=4))
@@ -97,12 +102,12 @@ class Nonsense(commands.Cog):
 
     @commands.command()
     async def links(self, ctx: commands.Context):
-        """Links that are important to this service."""
-        k = """Please also check those channels:
-        <#991779321758896258> (for an interactive experience go to <#960446827579199488> and type `oc/faq`)
-        <#1228996111390343229>
-        """
-        await ctx.send(k, view=LinkView())
+        embed = nextcord.Embed(
+            title="Links that are important to this service.",
+            description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
+            color=nextcord.Color.blue(),
+        )
+        await ctx.send(embed=embed, view=LinkView())
 
     @commands.command()
     async def regex(self, ctx: commands.Context, pattern: str, string: str):
@@ -295,12 +300,12 @@ class NonsenseSlash(commands.Cog):
 
     @slash_command()
     async def links(self, interaction: Interaction) -> None:
-        """Links that are important to this service."""
-        k = """Please also check those channels:
-        <#991779321758896258> (for an interactive experience go to <#960446827579199488> and type `oc/faq`)
-        <#1228996111390343229>
-        """
-        await interaction.send(k, view=LinkView())
+        embed = nextcord.Embed(
+            title="Links that are important to this service.",
+            description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
+            color=nextcord.Color.blue(),
+        )
+        await interaction.send(embed=embed, view=LinkView())
 
     @slash_command()
     async def screenshot(self, interaction: Interaction) -> None:
