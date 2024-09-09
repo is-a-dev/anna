@@ -107,7 +107,7 @@ class Nonsense(commands.Cog):
             description=k,
             color=nextcord.Color.blue(),
         )
-        await ctx.send(k, view=LinkView())
+        await ctx.send(embed=embed, view=LinkView())
 
     @commands.command()
     async def regex(self, ctx: commands.Context, pattern: str, string: str):
