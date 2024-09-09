@@ -27,3 +27,5 @@ What we've done so far:
 On NixOS, run `nix run github:cutedog5695/anna`.
 
 On Ubuntu/Debian: Soon
+
+Maintainers: [@orxngc, @cutedog5695]
