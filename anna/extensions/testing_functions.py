@@ -70,7 +70,7 @@ class Testings(commands.Cog):
                 except Exception as e:
                     failed_extensions.append(f"{ext}: {e}")
 
-            success_message = f"Successfully reloaded the all extensions."
+            success_message = f"Successfully reloaded all extensions."
             if failed_extensions:
                 error_message = f"\nFailed to reload the following extensions:\n" + "\n".join(failed_extensions)
                 await ctx.send(f"{success_message}{error_message}")
