@@ -76,12 +76,12 @@ class GitHub(commands.Cog):
                     merged = i.get('merged', False)
 
                     # Color based on state
-                    if merged:
-                        color = nextcord.Color.purple()  # Merged
-                    elif state == 'closed':
-                        color = nextcord.Color.red()  # Closed
-                    else:
-                        color = nextcord.Color.green()  # Open
+                    # if merged:
+                    #     color = nextcord.Color.purple()  # Merged
+                    # elif state == 'closed':
+                    #     color = nextcord.Color.red()  # Closed
+                    # else:
+                    color = nextcord.Color.blue()  # Open
 
                     # Embed description for the PR/issue
                     embed_description += f"[(#{pr.pr_id}) {i['title']}]({i['html_url']})\n"
@@ -92,7 +92,7 @@ class GitHub(commands.Cog):
                         description=embed_description,
                         color=color,
                     )
-                    embed.add_field(name="Status", value=state.title(), inline=True)
+                    # embed.add_field(name="Status", value=state.title(), inline=True)
                     await message.channel.send(embed=embed)
 
                 except aiohttp.ClientError as e:
