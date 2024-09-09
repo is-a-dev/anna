@@ -16,7 +16,8 @@ FULL_MATCH_ANY_REPO = r"(https:\/\/github.com\/)?([A-Za-z1-9-]+)\/([A-Za-z1-9-]+
 VERY_SHORT_MESSAGE = r"##(\d+)"
 PR_CHANNEL_ID = 1130858271620726784
 STAFF_ROLE_ID = 1197475623745110109
-REACTION_EMOJI_ID = 1249727995174719620
+MERGED_EMOJI_ID = 1249727995174719620
+RC_EMOJI_ID = 1282741347303821423
 
 class _PRRawObject(object):
     def __init__(self, *, repo_owner: str, repo_name: str, pr_id: str) -> None:
@@ -154,7 +155,7 @@ class GitHub(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: nextcord.Reaction, user: nextcord.Member):
-        if reaction.message.channel.id == PR_CHANNEL_ID and reaction.emoji.id == REACTION_EMOJI_ID:
+        if reaction.message.channel.id == PR_CHANNEL_ID and reaction.emoji.id == MERGED_EMOJI_ID:
             # Check if the user has the staff role
             if STAFF_ROLE_ID in [role.id for role in user.roles]:
                 embed = reaction.message.embeds[0]  # Get the original embed
@@ -162,6 +163,17 @@ class GitHub(commands.Cog):
                 # Update the embed
                 embed.add_field(name="Status", value="Merged", inline=True)
                 embed.color = nextcord.Color.purple()  # Change color to purple
+
+                # Edit the message with the updated embed
+                await reaction.message.edit(embed=embed)
+        if reaction.message.channel.id == PR_CHANNEL_ID and reaction.emoji.id == RC_EMOJI_ID:
+            # Check if the user has the staff role
+            if STAFF_ROLE_ID in [role.id for role in user.roles]:
+                embed = reaction.message.embeds[0]  # Get the original embed
+
+                # Update the embed
+                embed.add_field(name="Status", value="Requested changes / closed", inline=True)
+                embed.color = nextcord.Color.red()  # Change color to purple
 
                 # Edit the message with the updated embed
                 await reaction.message.edit(embed=embed)
