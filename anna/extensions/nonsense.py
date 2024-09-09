@@ -97,11 +97,6 @@ class Nonsense(commands.Cog):
 
     @commands.command()
     async def links(self, ctx: commands.Context):
-        """Links that are important to this service."""
-        k = """Please also check those channels:
-        <#991779321758896258> (for an interactive experience go to <#960446827579199488> and type `a?faq`)
-        <#1228996111390343229>
-        """
         embed = nextcord.Embed(
             title="Links that are important to this service.",
             description="Please also check those channels:\n<#991779321758896258> (for an interactive experience go to <#960446827579199488> and type `a?faq`)\n<#1228996111390343229>",
@@ -300,12 +295,12 @@ class NonsenseSlash(commands.Cog):
 
     @slash_command()
     async def links(self, interaction: Interaction) -> None:
-        """Links that are important to this service."""
-        k = """Please also check those channels:
-        <#991779321758896258> (for an interactive experience go to <#960446827579199488> and type `oc/faq`)
-        <#1228996111390343229>
-        """
-        await interaction.send(k, view=LinkView())
+        embed = nextcord.Embed(
+            title="Links that are important to this service.",
+            description="Please also check those channels:\n<#991779321758896258> (for an interactive experience go to <#960446827579199488> and type `a?faq`)\n<#1228996111390343229>",
+            color=nextcord.Color.blue(),
+        )
+        await ctx.send(embed=embed, view=LinkView())
 
     @slash_command()
     async def screenshot(self, interaction: Interaction) -> None:
