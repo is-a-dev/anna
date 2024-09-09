@@ -24,8 +24,10 @@
 #CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 #OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+import nextcord
 from nextcord.ext import commands
-
+import os
+from __main__ import extensions
 
 class Testings(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -48,6 +50,40 @@ class Testings(commands.Cog):
     @commands.is_owner()
     async def test_owner_perm(self, ctx: commands.Context):
         await ctx.send("You have owner level permissions when interacting with Anna.")
+    
+    @commands.command()
+    @commands.is_owner()
+    async def reload_exts(self, ctx: commands.Context, *args):
+        if not args:
+            reloaded_extensions = []
+            failed_extensions = []
+
+            if nextcord.version_info < (3, 0, 0):
+                extensions.append("onami")
+            if os.getenv("HASDB"):
+                extensions.append("extensions.tags_reworked")
+
+            for ext in extensions:
+                try:
+                    self._bot.reload_extension(ext)
+                    reloaded_extensions.append(ext)
+                except Exception as e:
+                    failed_extensions.append(f"{ext}: {e}")
+
+            success_message = f"Successfully reloaded the all extensions."
+            if failed_extensions:
+                error_message = f"\nFailed to reload the following extensions:\n" + "\n".join(failed_extensions)
+                await ctx.send(f"{success_message}{error_message}")
+            else:
+                await ctx.send(success_message)
+
+        else:
+            try:
+                extension = args[0]
+                self._bot.reload_extension(extension)
+                await ctx.send(f"Successfully reloaded `{extension}`.")
+            except Exception as e:
+                await ctx.send(f"Failed to reload `{extension}`: {e}")
 
     @commands.command()
     @commands.is_owner()
