@@ -4,7 +4,7 @@ import nextcord
 from nextcord.ext import commands
 import extensions.help_forum.config
 import asyncio
-
+config = extensions.help_forum.config
 
 class LinkView(nextcord.ui.View):
     def __init__(self, label: str, link: str):
@@ -23,7 +23,6 @@ class ConfirmView(nextcord.ui.View):
     async def confirm(
         self, button: nextcord.ui.Button, interaction: nextcord.Interaction
     ):
-        await interaction.send("Confirming...", ephemeral=True)
         self.value = True
         self.stop()
 
@@ -43,7 +42,7 @@ class OpenHelpView(nextcord.ui.View):
         self.open_help_func = open_help_func
 
     @nextcord.ui.button(
-        label=extensions.help_forum.config.VIEW_OPEN_LABEL,
+        label=config.VIEW_OPEN_LABEL,
         style=nextcord.ButtonStyle.green,
         custom_id="open_help",
     )
@@ -57,9 +56,9 @@ class OpenHelpView(nextcord.ui.View):
         user_threads = await self.bot.db.get_user_threads(interaction.user.id)
         open_user_threads = [thread for thread in user_threads if not thread["closed"]]
         print(len(open_user_threads), open_user_threads)
-        if len(open_user_threads) >= extensions.help_forum.config.USER_THREAD_LIMIT:
+        if len(open_user_threads) >= config.USER_THREAD_LIMIT:
             await interaction.send(
-                f"You have reached the maximum open threads limit of {extensions.help_forum.config.USER_THREAD_LIMIT}. You currently have {len(open_user_threads)} threads open.",
+                f"You have reached the maximum open threads limit of {config.USER_THREAD_LIMIT}. You currently have {len(open_user_threads)} threads open.",
                 ephemeral=True,
             )
             return
@@ -92,7 +91,7 @@ class CloseHelpView(nextcord.ui.View):
         self.is_thread_author = is_thread_author
 
     @nextcord.ui.button(
-        label=extensions.help_forum.config.VIEW_CLOSE_LABEL,
+        label=config.VIEW_CLOSE_LABEL,
         style=nextcord.ButtonStyle.red,
         custom_id="close_help",
     )
@@ -109,8 +108,8 @@ class CloseHelpView(nextcord.ui.View):
                 "You are not the author of this thread.", ephemeral=True
             )
             return
+        await interaction.send("Closing help thread.", ephemeral=True)
         await self.close_help_func(interaction.channel.id)
-        await interaction.send("Closed help thread.", ephemeral=True)
 
 
 class Help(commands.Cog):
@@ -135,17 +134,17 @@ class Help(commands.Cog):
         forum: nextcord.ForumChannel = nextcord.utils.get(
             member.guild.channels, id=guild_config["help_forum_id"]
         )
-        thread_name = extensions.help_forum.config.replace_placeholders(extensions.help_forum.config.THREAD_NAME, placeholders)
-        embed_title = extensions.help_forum.config.replace_placeholders(
-            extensions.help_forum.config.THREAD_EMBED_TITLE, placeholders
+        thread_name = config.replace_placeholders(config.THREAD_NAME, placeholders)
+        embed_title = config.replace_placeholders(
+            config.THREAD_EMBED_TITLE, placeholders
         )
-        embed_description = extensions.help_forum.config.replace_placeholders(
-            extensions.help_forum.config.THREAD_EMBED_DESCRIPTION, placeholders
+        embed_description = config.replace_placeholders(
+            config.THREAD_EMBED_DESCRIPTION, placeholders
         )
 
-        embed = nextcord.Embed(title=embed_title, color=nextcord.Color.blue())
+        embed = nextcord.Embed(title=embed_title, color=nextcord.Color.green())
         embed.description = embed_description
-        embed.add_field(name="Resources", value=extensions.help_forum.config.THREAD_EMBED_RESOURCES)
+        embed.add_field(name="Resources", value=config.THREAD_EMBED_RESOURCES)
         close_view = CloseHelpView(self.close_help_thread, self.is_thread_author)
         thread = await forum.create_thread(
             name=thread_name, embed=embed, view=close_view
@@ -172,11 +171,11 @@ class Help(commands.Cog):
             "thread.name": thread.name,
             "thread.mention": thread.mention,
         }
-        thread_close_msg = extensions.help_forum.config.replace_placeholders(
-            extensions.help_forum.config.THREAD_CLOSE_MSG, placeholders
+        thread_close_msg = config.replace_placeholders(
+            config.THREAD_CLOSE_MSG, placeholders
         )
-        thread_close_dm = extensions.help_forum.config.replace_placeholders(
-            extensions.help_forum.config.THREAD_CLOSE_DM, placeholders
+        thread_close_dm = config.replace_placeholders(
+            config.THREAD_CLOSE_DM, placeholders
         )
         await thread.send(thread_close_msg)
         try:
@@ -187,7 +186,7 @@ class Help(commands.Cog):
         await asyncio.sleep(
             3
         )  # To prevent message being sent after thread being closed on rare occasions
-        if extensions.help_forum.config.THREAD_CLOSE_LOCK:
+        if config.THREAD_CLOSE_LOCK:
             await thread.edit(locked=True)
         await thread.edit(archived=True)
         await self.bot.db.close_thread(thread_id)
@@ -209,10 +208,10 @@ class Help(commands.Cog):
         await interaction.response.defer()
         guild_config = await self.bot.db.get_config(interaction.guild.id)
         if guild_config:
-            await interaction.send(extensions.help_forum.config.SETUP_HELP_ALREADY)
+            await interaction.send(config.SETUP_HELP_ALREADY)
             return
         await self.bot.db.set_config(interaction.guild.id, help_channel.id, role.id)
-        await interaction.send(extensions.help_forum.config.SETUP_HELP_SUCCESS)
+        await interaction.send(config.SETUP_HELP_SUCCESS)
 
     @nextcord.slash_command()
     async def show(self, interaction: nextcord.Interaction):
@@ -228,7 +227,7 @@ class Help(commands.Cog):
             interaction.guild.roles, id=guild_config["ping_role_id"]
         )
         embed = nextcord.Embed(
-            title="Help System Configuration", color=nextcord.Color.blue()
+            title="Help System Configuration", color=nextcord.Color.green()
         )
         embed.add_field(name="Help Channel", value=help_channel.mention)
         embed.add_field(name="Ping Role", value=help_ping_role.mention)
@@ -289,7 +288,7 @@ class Help(commands.Cog):
         if not guild_config:
             raise NoGuildConfig(interaction.guild.id)
         embed = nextcord.Embed(
-            title=title, description=description, color=nextcord.Color.blue()
+            title=title, description=description, color=nextcord.Color.green()
         )
         view = OpenHelpView(self.bot, self.create_help_thread)
         await interaction.send("As you say, master.", delete_after=3)
@@ -335,8 +334,8 @@ class Help(commands.Cog):
     async def close(self, interaction: nextcord.Interaction):
         """Closes the help thread. (MOD ONLY)"""
         await interaction.response.defer(ephemeral=True)
+        await interaction.send("Closing help thread.", ephemeral=True)
         await self.close_help_thread(interaction.channel.id)
-        await interaction.send("Closed help thread.", ephemeral=True)
 
     @nextcord.slash_command(
         default_member_permissions=nextcord.Permissions(manage_guild=True)
@@ -412,7 +411,7 @@ class Help(commands.Cog):
             return
         await self.bot.db.clear_helpban(interaction.guild.id)
         await interaction.send("All users have been unbanned from the help system.")
-    
+
     @commands.Cog.listener(name="on_ready")
     async def persistent_views(self):
         """Adds the persistent views for the help system."""
@@ -421,10 +420,10 @@ class Help(commands.Cog):
         if not self.bot.persistent_views_added:
             self.bot.add_view(open_thread_view)
             self.bot.add_view(close_thread_view)
-        guild = self.bot.get_guild(extensions.help_forum.config.VIEW_GUILD_ID)
+        guild = self.bot.get_guild(config.VIEW_GUILD_ID)
         if not guild:
             raise Exception("View Guild couldn't be found.")
-        channel = nextcord.utils.get(guild.channels, id=extensions.help_forum.config.VIEW_CHANNEL_ID)
+        channel = nextcord.utils.get(guild.channels, id=config.VIEW_CHANNEL_ID)
         if not channel:
             raise Exception("View Channel couldn't be found.")
         await channel.send("Open Thread View", view=open_thread_view)
@@ -453,9 +452,9 @@ class Help(commands.Cog):
             return
         if thread["has_first_message"]:
             return
-        if not message.content.startswith(extensions.help_forum.config.THREAD_MIN_SUPPRESS_PREFIX):
-            if len(message.content) < extensions.help_forum.config.THREAD_MIN_CHAR:
-                await message.reply(extensions.help_forum.config.THREAD_MIN_FAIL)
+        if not message.content(config.THREAD_MIN_SUPPRESS_PREFIX):
+            if len(message.content) < config.THREAD_MIN_CHAR:
+                await message.reply(config.THREAD_MIN_FAIL)
                 return
         role = nextcord.utils.get(message.guild.roles, id=guild_config["ping_role_id"])
         await message.reply(
