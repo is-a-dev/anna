@@ -24,8 +24,8 @@ What we've done so far:
 - [ ] add a module that replaces the countr bot
 
 ## installation
-On NixOS, run `nix run github:cutedog5695/anna`.
+On NixOS, clone this repository and run `nix-shell` inside it. You will need to run it twice the first time.
 
 On Ubuntu/Debian: Soon
 
-Maintainers: [@orxngc, @cutedog5695]
+Maintainers: @orxngc, @cutedog5695

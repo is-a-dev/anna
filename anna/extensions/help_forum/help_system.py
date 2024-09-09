@@ -428,6 +428,10 @@ class Help(commands.Cog):
             raise Exception("View Channel couldn't be found.")
         await channel.send("Open Thread View", view=open_thread_view)
         await channel.send("Close Thread View", view=close_thread_view)
+        
+    @commands.command()
+    async def suppress(self, ctx: commands.Context):
+        await ctx.send("Successfully suppressed the ping role notification for this help thread.")
 
     @commands.Cog.listener(name="on_message")
     async def first_message_mention(self, message: nextcord.Message):
