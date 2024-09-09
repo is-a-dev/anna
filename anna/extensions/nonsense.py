@@ -102,6 +102,11 @@ class Nonsense(commands.Cog):
         <#991779321758896258> (for an interactive experience go to <#960446827579199488> and type `oc/faq`)
         <#1228996111390343229>
         """
+        embed = nextcord.Embed(
+            title="Links that are important to this service.",
+            description=k,
+            color=nextcord.Color.blue(),
+        )
         await ctx.send(k, view=LinkView())
 
     @commands.command()
