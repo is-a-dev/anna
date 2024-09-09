@@ -14,10 +14,15 @@ async def request(*args, **kwargs):
 # Regex patterns
 FULL_MATCH_ANY_REPO = r"(https:\/\/github.com\/)?([A-Za-z1-9-]+)\/([A-Za-z1-9-]+)(\/pull)?(#|\/)(?P<pr_id>\d+)"
 VERY_SHORT_MESSAGE = r"##(\d+)"
-PR_CHANNEL_ID = 1130858271620726784
-STAFF_ROLE_ID = 1197475623745110109
-MERGED_EMOJI_ID = 1249727995174719620
-RC_EMOJI_ID = 1282741347303821423
+# PR_CHANNEL_ID = 1130858271620726784
+# STAFF_ROLE_ID = 1197475623745110109
+# MERGED_EMOJI_ID = 1249727995174719620
+# RC_EMOJI_ID = 1282741347303821423
+
+PR_CHANNEL_ID = 1281898370134183950
+STAFF_ROLE_ID = 1281898369245253741
+MERGED_EMOJI_ID = 1281976493185962086
+RC_EMOJI_ID = 1282269301826654289
 
 class _PRRawObject(object):
     def __init__(self, *, repo_owner: str, repo_name: str, pr_id: str) -> None:
@@ -161,6 +166,7 @@ class GitHub(commands.Cog):
                 embed = reaction.message.embeds[0]  # Get the original embed
 
                 # Update the embed
+                embed.clear_fields()
                 embed.add_field(name="Status", value="Merged", inline=True)
                 embed.color = nextcord.Color.purple()  # Change color to purple
 
@@ -172,6 +178,7 @@ class GitHub(commands.Cog):
                 embed = reaction.message.embeds[0]  # Get the original embed
 
                 # Update the embed
+                embed.clear_fields()
                 embed.add_field(name="Status", value="Requested changes / closed", inline=True)
                 embed.color = nextcord.Color.red()  # Change color to purple
 
