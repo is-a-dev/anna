@@ -104,7 +104,7 @@ class Nonsense(commands.Cog):
         """
         embed = nextcord.Embed(
             title="Links that are important to this service.",
-            description=k,
+            description="Please also check those channels:\n<#991779321758896258> (for an interactive experience go to <#960446827579199488> and type `oc/faq`)\n<#1228996111390343229>",
             color=nextcord.Color.blue(),
         )
         await ctx.send(embed=embed, view=LinkView())
