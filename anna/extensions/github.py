@@ -16,6 +16,7 @@ FULL_MATCH_ANY_REPO = r"(https:\/\/github.com\/)?([A-Za-z1-9-]+)\/([A-Za-z1-9-]+
 VERY_SHORT_MESSAGE = r"##(\d+)"
 PR_CHANNEL_ID = 1130858271620726784
 STAFF_ROLE_ID = 1197475623745110109
+REACTION_EMOJI_ID = 1249727995174719620
 
 class _PRRawObject(object):
     def __init__(self, *, repo_owner: str, repo_name: str, pr_id: str) -> None:
@@ -24,6 +25,9 @@ class _PRRawObject(object):
         self.pr_id = pr_id
 
 class GitHub(commands.Cog):
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
         if message.author.bot:
@@ -76,12 +80,7 @@ class GitHub(commands.Cog):
                     merged = i.get('merged', False)
 
                     # Color based on state
-                    # if merged:
-                    #     color = nextcord.Color.purple()  # Merged
-                    # elif state == 'closed':
-                    #     color = nextcord.Color.red()  # Closed
-                    # else:
-                    color = nextcord.Color.blue()  # Open
+                    color = nextcord.Color.purple() if merged else nextcord.Color.blue()
 
                     # Embed description for the PR/issue
                     embed_description += f"[(#{pr.pr_id}) {i['title']}]({i['html_url']})\n"
@@ -92,7 +91,6 @@ class GitHub(commands.Cog):
                         description=embed_description,
                         color=color,
                     )
-                    # embed.add_field(name="Status", value=state.title(), inline=True)
                     await message.channel.send(embed=embed)
 
                 except aiohttp.ClientError as e:
@@ -154,6 +152,20 @@ class GitHub(commands.Cog):
                     await message.channel.send(f"Error fetching repository {repo_owner}/{repo_name}: {str(e)}")
                     continue
 
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction: nextcord.Reaction, user: nextcord.Member):
+        if reaction.message.channel.id == PR_CHANNEL_ID and reaction.emoji.id == REACTION_EMOJI_ID:
+            # Check if the user has the staff role
+            if STAFF_ROLE_ID in [role.id for role in user.roles]:
+                embed = reaction.message.embeds[0]  # Get the original embed
+
+                # Update the embed
+                embed.add_field(name="Status", value="Merged", inline=True)
+                embed.color = nextcord.Color.purple()  # Change color to purple
+
+                # Edit the message with the updated embed
+                await reaction.message.edit(embed=embed)
+
 
 def setup(bot: commands.Bot) -> None:
-    bot.add_cog(GitHub())
+    bot.add_cog(GitHub(bot))
