@@ -65,14 +65,14 @@ class LinkView(nextcord.ui.View):
         )
         self.add_item(
             nextcord.ui.Button(
-                label="Documentation", url="https://is-a.dev/docs", row=2
+                label="Documentation", url="https://is-a.dev/docs", row=1
             )
         )
         self.add_item(
             nextcord.ui.Button(
                 label="Register a domain!",
                 url="https://github.com/is-a-dev/register",
-                row=3,
+                row=1,
             )
         )
         # self.add_item(nextcord.ui.Button(label="Help Channel", url="", row=4))
