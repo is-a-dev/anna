@@ -13,17 +13,13 @@ from extensions.help_forum.database import Database
 import subprocess
 from extensions.help_forum.config import DATABASE_PATH
 
-prefix = "a!" if os.getenv("TEST") else "a?" # bot prefix, first value is for when the bot is in test mode, second is the general prefix
-
 class Bot(commands.Bot):
     def __init__(self, db_path: str, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.db = Database(db_path)
         self.persistent_views_added = False
 
-    async def on_command_error(
-        self, context: commands.Context, error: commands.CommandError
-    ) -> None:
+    async def on_command_error(self, context: commands.Context, error: commands.CommandError) -> None:
         if isinstance(error, commands.NotOwner):
             await context.send("Only Anna's maintainers can run this command.")
         elif isinstance(error, commands.UserInputError):
@@ -36,9 +32,7 @@ class Bot(commands.Bot):
             await context.send("An error was caught while attempting to run the command.")
             await super().on_command_error(context, error)
 
-    async def on_application_command_error(
-        self, interaction: nextcord.Interaction, exception: ApplicationError
-    ) -> None:
+    async def on_application_command_error(self, interaction: nextcord.Interaction, exception: ApplicationError) -> None:
         if isinstance(exception, ac.ApplicationMissingRole):
             await interaction.send("You must be a staff member to use this command.")
         else:
@@ -51,23 +45,18 @@ class Bot(commands.Bot):
         print(f'{self.user} is now online!')
         await self.db.create_tables()
 
-owner_ids = [716306888492318790, 961063229168164864]  # Cutedog and orangc
-intents = Intents.all()
-intents.message_content = True
-intents.members = True
-
 bot = Bot(
     db_path=DATABASE_PATH,
-    intents=intents,
-    command_prefix=prefix,
+    intents=Intents.all(),
+    command_prefix="a!" if os.getenv("TEST") else "a?",
     help_command=help_commands.PaginatedHelpCommand(),
     case_insensitive=True,
-    owner_ids=owner_ids,
+    owner_ids=[716306888492318790, 961063229168164864],  # Cutedog and orangc
     allowed_mentions=nextcord.AllowedMentions(everyone=False, roles=False, users=True, replied_user=True),
     activity=nextcord.Activity(
-        type=nextcord.ActivityType.watching, 
-        name="is-a.dev",                      
-        assets={"large_image": "is-a-dev"}    
+        type=nextcord.ActivityType.watching,
+        name="is-a.dev",
+        assets={"large_image": "is-a-dev"}
     )
 )
     
