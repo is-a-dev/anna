@@ -24,6 +24,10 @@ class _PRRawObject(object):
         self.pr_id = pr_id
 
 class GitHub(commands.Cog):
+    def __init__(self, bot: commands.Bot) -> None:
+        self.bot = bot
+        self.message_pr_map = {}  # To keep track of PR message IDs and their details
+
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
         if message.author.bot:
@@ -76,12 +80,7 @@ class GitHub(commands.Cog):
                     merged = i.get('merged', False)
 
                     # Color based on state
-                    # if merged:
-                    #     color = nextcord.Color.purple()  # Merged
-                    # elif state == 'closed':
-                    #     color = nextcord.Color.red()  # Closed
-                    # else:
-                    color = nextcord.Color.blue()  # Open
+                    color = nextcord.Color.blue()  # Default to open
 
                     # Embed description for the PR/issue
                     embed_description += f"[(#{pr.pr_id}) {i['title']}]({i['html_url']})\n"
@@ -93,7 +92,11 @@ class GitHub(commands.Cog):
                         color=color,
                     )
                     # embed.add_field(name="Status", value=state.title(), inline=True)
-                    await message.channel.send(embed=embed)
+                    sent_message = await message.channel.send(embed=embed)
+
+                    # Track the message ID and associated PR information
+                    if pr.repo_owner == "is-a-dev" and pr.repo_name == "register":
+                        self.message_pr_map[sent_message.id] = pr
 
                 except aiohttp.ClientError as e:
                     embed_description += f"Error fetching PR #{pr.pr_id}: {str(e)}\n"
@@ -154,6 +157,36 @@ class GitHub(commands.Cog):
                     await message.channel.send(f"Error fetching repository {repo_owner}/{repo_name}: {str(e)}")
                     continue
 
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction: nextcord.Reaction, user: nextcord.User):
+        if reaction.message.channel.id != PR_CHANNEL_ID:
+            return
+
+        if reaction.emoji != '✅':  # Assuming you use '✅' to mark a PR as merged
+            return
+
+        if reaction.message.id not in self.message_pr_map:
+            return
+
+        pr = self.message_pr_map[reaction.message.id]
+
+        # Check if the user has the STAFF_ROLE_ID
+        member = reaction.message.guild.get_member(user.id)
+        if member is None or STAFF_ROLE_ID not in [role.id for role in member.roles]:
+            return
+
+        # Fetch the current embed
+        embed = reaction.message.embeds[0] if reaction.message.embeds else None
+        if embed is None:
+            return
+
+        # Create a new embed with updated color and field
+        new_embed = nextcord.Embed.from_dict(embed.to_dict())
+        new_embed.color = nextcord.Color.purple()  # Change to purple for merged
+        new_embed.add_field(name="Status", value="Merged", inline=True)
+
+        # Edit the message with the new embed
+        await reaction.message.edit(embed=new_embed)
 
 def setup(bot: commands.Bot) -> None:
     bot.add_cog(GitHub())
