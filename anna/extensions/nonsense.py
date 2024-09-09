@@ -75,6 +75,11 @@ class LinkView(nextcord.ui.View):
                 row=1,
             )
         )
+        self.add_item(
+            nextcord.ui.Button(
+                label="GitHub", url="https://github.com/is-a-dev", row=1
+            )
+        )
         # self.add_item(nextcord.ui.Button(label="Help Channel", url="", row=4))
 
 
