@@ -300,7 +300,7 @@ class NonsenseSlash(commands.Cog):
             description="Please also check those channels:\n<#991779321758896258> (for an interactive experience go to <#960446827579199488> and type `a?faq`)\n<#1228996111390343229>",
             color=nextcord.Color.blue(),
         )
-        await ctx.send(embed=embed, view=LinkView())
+        await interaction.send(embed=embed, view=LinkView())
 
     @slash_command()
     async def screenshot(self, interaction: Interaction) -> None:
