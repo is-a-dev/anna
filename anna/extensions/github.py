@@ -114,20 +114,14 @@ class GitHub(commands.Cog):
         if len(repo_matches) > 0:
             for repo_owner, repo_name in repo_matches:
                 try:
-                    repo_info = await request(
-                        "GET", f"https://api.github.com/repos/{repo_owner}/{repo_name}"
-                    )
-                    owner_info = await request(
-                        "GET", f"https://api.github.com/users/{repo_owner}"
-                    )
-
+                    repo_info = await request("GET", f"https://api.github.com/repos/{repo_owner}/{repo_name}")
+                    owner_info = await request("GET", f"https://api.github.com/users/{repo_owner}")
                     owner_name = owner_info.get("login", "Unknown")
                     owner_avatar = owner_info.get("avatar_url", "")
                     repo_url = repo_info.get("html_url", f"https://github.com/{repo_owner}/{repo_name}")
                     repo_description = repo_info.get("description", "No description available")
                     stars = repo_info.get("stargazers_count", 0)
                     forks = repo_info.get("forks_count", 0)
-
                     repo_banner = repo_info.get("social_preview_url", "")
 
                     embed = nextcord.Embed(
