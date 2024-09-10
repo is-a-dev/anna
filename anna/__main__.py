@@ -3,9 +3,12 @@ import os
 from os import environ
 import nextcord
 from nextcord.ext import commands
+from nextcord.ext import commands, help_commands, tasks
+from nextcord.ext import application_checks as ac
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient  # Use motor for async MongoDB operations
 import asyncio
+from extensions.help_forum.database import HelpDatabase
 
 # Load environment variables
 load_dotenv()
@@ -13,7 +16,7 @@ load_dotenv()
 class Bot(commands.Bot):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.db = None
+        self.hdb = HelpDatabase(os.getenv("MONGO"), "anna")
         self.persistent_views_added = False
 
     async def on_command_error(self, context: commands.Context, error: commands.CommandError) -> None:
@@ -61,13 +64,13 @@ class Bot(commands.Bot):
 
         # Ensure the database is set up
         await self.setup_database()
-        print("Database connected")
 
 # Define the bot
 bot = Bot(
     intents=nextcord.Intents.all(),
     command_prefix="a!" if os.getenv("TEST") else "a?",
     case_insensitive=True,
+    help_command=help_commands.PaginatedHelpCommand(),
     owner_ids=[716306888492318790, 961063229168164864, 598245488977903688],  # Example owner IDs
     allowed_mentions=nextcord.AllowedMentions(everyone=False, roles=False, users=True, replied_user=True),
     activity=nextcord.Activity(
@@ -76,7 +79,7 @@ bot = Bot(
     )
 )
     
-extensions = ["extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq", "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns", "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword", "extensions.utils", "extensions.tags", "extensions.ping_cutedog", "errors"]
+extensions = ["extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq", "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns", "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword", "extensions.utils", "extensions.tags", "extensions.ping_cutedog"]
 if nextcord.version_info < (3, 0, 0):
     extensions.append("onami")
 if os.getenv("HASDB"):

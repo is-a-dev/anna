@@ -50,10 +50,10 @@ class OpenHelpView(nextcord.ui.View):
         self, button: nextcord.ui.Button, interaction: nextcord.Interaction
     ):
         await interaction.response.defer(ephemeral=True)
-        is_help_banned = await self.bot.db.get_helpban_user(
+        is_help_banned = await self.bot.hdb.get_helpban_user(
             interaction.user.id, interaction.guild.id
         )
-        user_threads = await self.bot.db.get_user_threads(interaction.user.id)
+        user_threads = await self.bot.hdb.get_user_threads(interaction.user.id)
         open_user_threads = [thread for thread in user_threads if not thread["closed"]]
         print(len(open_user_threads), open_user_threads)
         if len(open_user_threads) >= config.USER_THREAD_LIMIT:
@@ -117,13 +117,13 @@ class Help(commands.Cog):
         self.bot = bot
 
     async def is_thread_author(self, thread_id: int, user_id: int) -> bool:
-        thread_data = await self.bot.db.get_thread(thread_id)
+        thread_data = await self.bot.hdb.get_thread(thread_id)
         if not thread_data:
             raise NoThreadFound(thread_id)
         return thread_data["author_id"] == user_id
 
     async def create_help_thread(self, member: nextcord.Member) -> nextcord.Thread:
-        guild_config = await self.bot.db.get_config(member.guild.id)
+        guild_config = await self.bot.hdb.get_config(member.guild.id)
         if not guild_config:
             raise NoGuildConfig(member.guild.id)
         placeholders = {
@@ -151,11 +151,11 @@ class Help(commands.Cog):
         )
         thread_open_message: nextcord.Message = await thread.fetch_message(thread.id)
         await thread_open_message.pin()
-        await self.bot.db.create_thread(thread.id, member.guild.id, forum.id, member.id)
+        await self.bot.hdb.create_thread(thread.id, member.guild.id, forum.id, member.id)
         return thread
 
     async def close_help_thread(self, thread_id: int) -> None:
-        thread_data = await self.bot.db.get_thread(thread_id)
+        thread_data = await self.bot.hdb.get_thread(thread_id)
         if not thread_data:
             raise NoThreadFound(thread_id)
         guild = self.bot.get_guild(thread_data["guild_id"])
@@ -189,7 +189,7 @@ class Help(commands.Cog):
         if config.THREAD_CLOSE_LOCK:
             await thread.edit(locked=True)
         await thread.edit(archived=True)
-        await self.bot.db.close_thread(thread_id)
+        await self.bot.hdb.close_thread(thread_id)
 
     @nextcord.slash_command(
         default_member_permissions=nextcord.Permissions(manage_guild=True)
@@ -206,18 +206,18 @@ class Help(commands.Cog):
     ):
         """Sets up the help system for the guild."""
         await interaction.response.defer()
-        guild_config = await self.bot.db.get_config(interaction.guild.id)
+        guild_config = await self.bot.hdb.get_config(interaction.guild.id)
         if guild_config:
             await interaction.send(config.SETUP_HELP_ALREADY)
             return
-        await self.bot.db.set_config(interaction.guild.id, help_channel.id, role.id)
+        await self.bot.hdb.set_config(interaction.guild.id, help_channel.id, role.id)
         await interaction.send(config.SETUP_HELP_SUCCESS)
 
     @nextcord.slash_command()
     async def show(self, interaction: nextcord.Interaction):
         """Shows the current help system configuration."""
         await interaction.response.defer()
-        guild_config = await self.bot.db.get_config(interaction.guild.id)
+        guild_config = await self.bot.hdb.get_config(interaction.guild.id)
         if not guild_config:
             raise NoGuildConfig(interaction.guild.id)
         help_channel = nextcord.utils.get(
@@ -245,10 +245,10 @@ class Help(commands.Cog):
     ):
         """Sets the help channel for the guild."""
         await interaction.response.defer()
-        guild_config = await self.bot.db.get_config(interaction.guild.id)
+        guild_config = await self.bot.hdb.get_config(interaction.guild.id)
         if not guild_config:
             raise NoGuildConfig(interaction.guild.id)
-        await self.bot.db.update_config(
+        await self.bot.hdb.update_config(
             interaction.guild.id, help_channel.id, guild_config["ping_role_id"]
         )
         await interaction.send(f"Set help channel to {help_channel.mention}.")
@@ -265,10 +265,10 @@ class Help(commands.Cog):
     ):
         """Sets the ping role for the help system."""
         await interaction.response.defer()
-        guild_config = await self.bot.db.get_config(interaction.guild.id)
+        guild_config = await self.bot.hdb.get_config(interaction.guild.id)
         if not guild_config:
             raise NoGuildConfig(interaction.guild.id)
-        await self.bot.db.update_config(
+        await self.bot.hdb.update_config(
             interaction.guild.id, guild_config["help_forum_id"], role.id
         )
         await interaction.send(
@@ -284,7 +284,7 @@ class Help(commands.Cog):
     ):
         """Sends an embed with the specified title and description."""
         await interaction.response.defer()
-        guild_config = await self.bot.db.get_config(interaction.guild.id)
+        guild_config = await self.bot.hdb.get_config(interaction.guild.id)
         if not guild_config:
             raise NoGuildConfig(interaction.guild.id)
         embed = nextcord.Embed(
@@ -306,10 +306,10 @@ class Help(commands.Cog):
     ):
         """Changes the title of the help thread. (MOD ONLY)"""
         await interaction.response.defer()
-        guild_config = await self.bot.db.get_config(interaction.guild.id)
+        guild_config = await self.bot.hdb.get_config(interaction.guild.id)
         if not guild_config:
             raise NoGuildConfig(interaction.guild.id)
-        thread_info = await self.bot.db.get_thread(interaction.channel.id)
+        thread_info = await self.bot.hdb.get_thread(interaction.channel.id)
         if not thread_info:
             raise NoThreadFound(interaction.channel.id)
         thread_author = interaction.guild.get_member(thread_info["author_id"])
@@ -346,7 +346,7 @@ class Help(commands.Cog):
     @helpban.subcommand(name="list")
     async def helpban_list(self, interaction: nextcord.Interaction):
         await interaction.response.defer()
-        helpban_list = await self.bot.db.get_helpban_guild(interaction.guild.id)
+        helpban_list = await self.bot.hdb.get_helpban_guild(interaction.guild.id)
         if not helpban_list:
             await interaction.send(
                 "No one is help banned. But do not fear to lift the mighty ban hammer!"
@@ -371,13 +371,13 @@ class Help(commands.Cog):
         reason: str = None,
     ):
         await interaction.response.defer()
-        is_already_banned = await self.bot.db.get_helpban_user(
+        is_already_banned = await self.bot.hdb.get_helpban_user(
             member.id, interaction.guild.id
         )
         if is_already_banned:
             await interaction.send("This user is already help banned.")
             return
-        await self.bot.db.set_helpban(
+        await self.bot.hdb.set_helpban(
             member.id, interaction.user.id, interaction.guild.id, reason
         )
         await interaction.send(
@@ -389,13 +389,13 @@ class Help(commands.Cog):
         self, interaction: nextcord.Interaction, member: nextcord.Member
     ):
         await interaction.response.defer()
-        is_already_banned = await self.bot.db.get_helpban_user(
+        is_already_banned = await self.bot.hdb.get_helpban_user(
             member.id, interaction.guild.id
         )
         if not is_already_banned:
             await interaction.send("This user is not help banned.")
             return
-        await self.bot.db.remove_helpban(member.id, interaction.guild.id)
+        await self.bot.hdb.remove_helpban(member.id, interaction.guild.id)
         await interaction.send(
             f"{member.mention} has been unbanned from the help system."
         )
@@ -403,13 +403,13 @@ class Help(commands.Cog):
     @helpban.subcommand(name="clear")
     async def helpban_clear(self, interaction: nextcord.Interaction):
         await interaction.response.defer()
-        helpban_list = await self.bot.db.get_helpban_guild(interaction.guild.id)
+        helpban_list = await self.bot.hdb.get_helpban_guild(interaction.guild.id)
         if not helpban_list:
             await interaction.send(
                 "No one is help banned. But do not fear to lift the mighty ban hammer!"
             )
             return
-        await self.bot.db.clear_helpban(interaction.guild.id)
+        await self.bot.hdb.clear_helpban(interaction.guild.id)
         await interaction.send("All users have been unbanned from the help system.")
 
     @commands.Cog.listener(name="on_ready")
@@ -440,10 +440,10 @@ class Help(commands.Cog):
             return
         if message.author.bot:
             return
-        guild_config = await self.bot.db.get_config(message.guild.id)
+        guild_config = await self.bot.hdb.get_config(message.guild.id)
         if not guild_config:
             return
-        forum_threads = await self.bot.db.get_forum_threads(
+        forum_threads = await self.bot.hdb.get_forum_threads(
             guild_config["help_forum_id"]
         )
         thread = next(
@@ -467,7 +467,7 @@ class Help(commands.Cog):
                 allowed_mentions=nextcord.AllowedMentions(roles=True),
                 flags=nextcord.MessageFlags(suppress_notifications=True),
             )
-        await self.bot.db.set_has_first_message(message.channel.id)
+        await self.bot.hdb.set_has_first_message(message.channel.id)
 
 
 def setup(bot: commands.Bot):

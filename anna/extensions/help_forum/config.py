@@ -3,19 +3,22 @@ import os
 
 load_dotenv()
 
-
 def replace_placeholders(string: str, placeholders: dict) -> str:
     for key, value in placeholders.items():
         string = string.replace(key, value)
     return string
 
+# Environment variables
+TOKEN = os.getenv("TOKEN")
+DATABASE_URL = os.getenv("MONGO")  # MongoDB connection string
+DATABASE_NAME = os.getenv("DATABASE_NAME", "anna")  # Default database name
 
-TOKEN = "" or os.getenv("TOKEN")
-DATABASE_PATH = "database" or os.getenv("DATABASE_PATH")
+# Other constants
 VIEW_GUILD_ID = 1281898369236602903
 VIEW_CHANNEL_ID = 1283115858247291075
 USER_THREAD_LIMIT = 3
 
+# Thread settings
 VIEW_OPEN_LABEL = "Open Thread"
 VIEW_CLOSE_LABEL = "Close Thread"
 
