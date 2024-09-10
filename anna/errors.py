@@ -55,7 +55,6 @@ class Errors(commands.Cog):
                 description=f"You must be a staff member to run this command.",
                 color=nextcord.Color.red(),
             )
-            await context.send(embed=embed)
             await interaction.send(embed=embed, ephemeral=True)
             return
         error = getattr(error, "original", error)
