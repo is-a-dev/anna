@@ -8,19 +8,28 @@ class Utils(commands.Cog):
 
     @commands.command()
     async def send(self, ctx: commands.Context, *, message: str):
-        channel_mention = re.match(r"<#(\d+)>", message.split()[0])
-        
-        if channel_mention:
-            channel_id = int(channel_mention.group(1))
-            channel = self._bot.get_channel(channel_id)
-            if channel:
-                message_content = message.split(' ', 1)[1] if len(message.split(' ', 1)) > 1 else ""
-                await channel.send(message_content)
-            else:
-                await ctx.send("Invalid channel.")
-        else:
-            await ctx.send(message)
+        """Send a message as Anna."""
+        words = message.split()
 
+        if len(words) > 0:
+            first_word = words[0]
+            if first_word.startswith("<#") and first_word.endswith(">"):
+                channel_id = int(first_word[2:-1])
+                channel = self._bot.get_channel(channel_id)
+
+                if isinstance(channel, nextcord.TextChannel):
+                    message_content = ' '.join(words[1:])
+                    if message_content:
+                        await channel.send(message_content)
+                    else:
+                        await ctx.send("No message content to send.")
+                else:
+                    await ctx.send("Invalid channel.")
+            else:
+                await ctx.send(message)
+        else:
+            await ctx.send("Please provide a message to send.")
+            
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx: commands.Context, amount: int):
