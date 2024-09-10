@@ -96,14 +96,14 @@ async def request(requesting_domain: bool = False, *args, **kwargs):
 request.__doc__ = aiohttp.ClientSession.request.__doc__
 
 class Nonsense(commands.Cog):
-    """Features that exists for no reason.
-    Don't ask why."""
+    """Various utility commands."""
 
     def __init__(self, bot: commands.Bot) -> None:
         self._bot: commands.Bot = bot
 
     @commands.command()
     async def links(self, ctx: commands.Context):
+        """Links to the is-a.dev documentation, FAQ, etc."""
         embed = nextcord.Embed(
             title="Links that are important to this service.",
             description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
@@ -120,9 +120,8 @@ class Nonsense(commands.Cog):
             await ctx.message.add_reaction("❌")
 
     @commands.command()
-    # @commands.cooldown(3, 8, commands.BucketType.user)
-    # @commands.has_role(830875873027817484)
     async def screenshot(self, ctx: commands.Context, url: EnsureHTTPConverter):
+        """Screenshots a webpage. Usage: `a?screenshot https://example.com`."""
         await ctx.send(
             embed=nextcord.Embed(
                 title="Screenshot",
@@ -184,9 +183,8 @@ class Nonsense(commands.Cog):
         return my_description
 
     @commands.command()
-    async def whois(
-        self, ctx: commands.Context, domain: SubdomainNameConverter
-    ) -> None:
+    async def whois(self, ctx: commands.Context, domain: SubdomainNameConverter) -> None:
+        """Lookup information about an is-a.dev domain."""
         k = nextcord.ui.View()
         k.add_item(
             nextcord.ui.Button(
@@ -212,9 +210,8 @@ class Nonsense(commands.Cog):
         await ctx.send(embed=embed, view=k)
 
     @commands.command()
-    async def check(
-        self, ctx: commands.Context, domain: SubdomainNameConverter
-    ) -> None:
+    async def check(self, ctx: commands.Context, domain: SubdomainNameConverter) -> None:
+        """Checks if an is-a.dev domain is available."""
         try:
             await request(
                 True,
@@ -244,10 +241,10 @@ class NonsenseSlash(commands.Cog):
         interaction: nextcord.Interaction,
         user: nextcord.Member = SlashOption(
             description="The member to ban", required=True
-        ),
+),
         reason: str = SlashOption(description="The reason to ban", required=True),
     ) -> None:
-        """Ban somebody of your choosing. Note that this may not work."""
+        """A fake ban command."""
         await interaction.send(
             f"Banned <@{user.id}> for **{reason}**"
         )
@@ -283,7 +280,7 @@ class NonsenseSlash(commands.Cog):
         self,
         interaction: Interaction,
         domain: SlashSubdomainNameConverter = SlashOption(
-            description="The is-a.dev domain name to find whois for.", required=True
+            description="The is-a.dev domain name to lookup information for.", required=True
         ),
     ) -> None:
         try:

@@ -22,7 +22,7 @@ class Utils(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx: commands.Context, amount: int):
-        """Purges a specified number of messages in the channel."""
+        """Purges a specified number of messages."""
         
         # Ensure the number is a positive integer
         if amount <= 0:

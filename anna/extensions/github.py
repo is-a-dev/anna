@@ -28,6 +28,7 @@ class _PRRawObject(object):
         self.pr_id = pr_id
 
 class GitHub(commands.Cog):
+    """This module sends embeds when a user links a Github repository/PR/issue. For repositories, use repo:example/example. For PRs/issues, example/example#number. \nFor is-a-dev/register PRs/issues, use ##PR_NUMBER."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
