@@ -25,6 +25,8 @@
 #OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+## code has been modified and is not the original code from MaskDuck
+ 
 from __future__ import annotations
 
 import re
@@ -219,11 +221,17 @@ class Nonsense(commands.Cog):
                 "GET",
                 f"https://raw.githubusercontent.com/is-a-dev/register/main/domains/{domain}.json",
             )
-            await ctx.send(f"Domain {domain} is already taken.")
+            embed = nextcord.Embed(
+            color=nextcord.Color.blue(),
+            description=f"Sorry, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is taken.",
+        )
+            await ctx.send(embed=embed)
         except DomainNotExistError:
-            await ctx.send(
-                "This domain is still available. Claim it before someone take it."
-            )
+            embed = nextcord.Embed(
+            color=nextcord.Color.blue(),
+            description=f"Congratulations, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is available!",
+        )
+            await ctx.send(embed=embed)
 
 
 class NonsenseSlash(commands.Cog):
@@ -258,11 +266,17 @@ class NonsenseSlash(commands.Cog):
                 "GET",
                 f"https://raw.githubusercontent.com/is-a-dev/register/main/domains/{domain}.json",
             )
-            await interaction.send(f"Domain {domain} is already taken.")
+            embed = nextcord.Embed(
+            color=nextcord.Color.blue(),
+            description=f"Sorry, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is taken.",
+        )
+            await interaction.send(embed=embed)
         except DomainNotExistError:
-            await interaction.send(
-                "This domain is still available. Claim it before someone take it."
-            )
+            embed = nextcord.Embed(
+            color=nextcord.Color.blue(),
+            description=f"Congratulations, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is available!",
+        )
+            await interaction.send(embed=embed)
 
     @slash_command()
     async def whois(
