@@ -84,22 +84,12 @@ class GitHub(commands.Cog):
                 repo_owner = x[1]
                 repo_name = x[2]
                 pr_id = x[5]
-                pr_list.append(
-                    _PRRawObject(
-                        repo_owner=repo_owner, repo_name=repo_name, pr_id=pr_id
-                    )
-                )
+                pr_list.append(_PRRawObject(repo_owner=repo_owner, repo_name=repo_name, pr_id=pr_id))
 
         # Handle very short messages (##PRNUMBER)
         if len(very_short_matches) > 0:
             for pr_id in very_short_matches:
-                pr_list.append(
-                    _PRRawObject(
-                        repo_owner="is-a-dev",
-                        repo_name="register",
-                        pr_id=pr_id
-                    )
-                )
+                pr_list.append(_PRRawObject(repo_owner="is-a-dev", repo_name="register", pr_id=pr_id))
 
         # Only process PR/issue embed once for all PRs/issues
         if len(pr_list) > 0:
@@ -114,7 +104,7 @@ class GitHub(commands.Cog):
                     await interaction.response.edit_message(embed=new_embed)
 
                 refresh_button.callback = refresh_callback
-                view = View()
+                view = View(timeout=172800)
                 view.add_item(refresh_button)
                 await message.channel.send(embed=embed, view=view)
             
@@ -139,7 +129,6 @@ class GitHub(commands.Cog):
                     forks = repo_info.get("forks_count", 0)
 
                     repo_banner = repo_info.get("social_preview_url", "")
-                    topics = repo_info.get("topics", [])
 
                     embed = nextcord.Embed(
                         title=f"Repository: {repo_owner}/{repo_name}",
@@ -149,9 +138,6 @@ class GitHub(commands.Cog):
                     embed.set_thumbnail(url=owner_avatar)
                     embed.add_field(name="Stars", value=str(stars), inline=True)
                     embed.add_field(name="Forks", value=str(forks), inline=True)
-
-                    if topics:
-                        embed.add_field(name="Topics", value=", ".join(topics), inline=False)
 
                     if repo_banner:
                         embed.set_image(url=repo_banner)
