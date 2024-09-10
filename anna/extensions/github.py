@@ -15,11 +15,11 @@ async def request(*args, **kwargs):
 # Regex patterns
 FULL_MATCH_ANY_REPO = r"(https:\/\/github.com\/)?([A-Za-z1-9-]+)\/([A-Za-z1-9-]+)(\/pull)?(#|\/)(?P<pr_id>\d+)"
 VERY_SHORT_MESSAGE = r"##(\d+)"
-# PR_CHANNEL_ID = 1130858271620726784
-# STAFF_ROLE_ID = 1197475623745110109
+PR_CHANNEL_ID = 1130858271620726784
+STAFF_ROLE_ID = 1197475623745110109
 
-PR_CHANNEL_ID = 1281898370134183950
-STAFF_ROLE_ID = 1281898369245253741
+# PR_CHANNEL_ID = 1281898370134183950
+# STAFF_ROLE_ID = 1281898369245253741
 
 class _PRRawObject(object):
     def __init__(self, *, repo_owner: str, repo_name: str, pr_id: str) -> None:
@@ -140,7 +140,12 @@ class GitHub(commands.Cog):
                 except aiohttp.ClientError as e:
                     await message.channel.send(f"Error fetching repository {repo_owner}/{repo_name}: {str(e)}")
                     continue
+        if len(pr_list) == 0:
+            if message.channel.id == PR_CHANNEL_ID:
+                if message.author.get_role(STAFF_ROLE_ID) is None:  # type: ignore
+                    await message.delete()
 
+            return
 
 def setup(bot: commands.Bot) -> None:
     bot.add_cog(GitHub(bot))
