@@ -2,7 +2,7 @@ import re
 from nextcord.ext import commands
 import nextcord
 
-class Sender(commands.Cog):
+class Utils(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self._bot: commands.Bot = bot
 
@@ -20,10 +20,6 @@ class Sender(commands.Cog):
                 await ctx.send("Invalid channel.")
         else:
             await ctx.send(message)
-            
-class Purger(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
-        self._bot: commands.Bot = bot
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -37,8 +33,7 @@ class Purger(commands.Cog):
 
         # Perform the purge
         deleted = await ctx.channel.purge(limit=amount)
-        await ctx.send(f"Successfully purged {len(deleted)} messages.", delete_after=5)
+        await ctx.send(f"Successfully purged {len(deleted)} messages.", delete_after=3)
 
 def setup(bot: commands.Bot):
-    bot.add_cog(Sender(bot))
-    bot.add_cog(Purger(bot))
+    bot.add_cog(Utils(bot))
