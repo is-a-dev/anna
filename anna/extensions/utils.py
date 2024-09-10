@@ -2,33 +2,22 @@ import re
 from nextcord.ext import commands
 import nextcord
 
+MAINTAINER_ROLE_ID = 830875873027817484
+
 class Utils(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self._bot: commands.Bot = bot
 
     @commands.command()
-    async def send(self, ctx: commands.Context, *, message: str):
+    @commands.has_role(MAINTAINER_ROLE_ID)
+    async def send(self, ctx: commands.Context, channel: nextcord.TextChannel = None, *, message: str):
         """Send a message as Anna."""
-        words = message.split()
-
-        if len(words) > 0:
-            first_word = words[0]
-            if first_word.startswith("<#") and first_word.endswith(">"):
-                channel_id = int(first_word[2:-1])
-                channel = self._bot.get_channel(channel_id)
-
-                if isinstance(channel, nextcord.TextChannel):
-                    message_content = ' '.join(words[1:])
-                    if message_content:
-                        await channel.send(message_content)
-                    else:
-                        await ctx.send("No message content to send.")
-                else:
-                    await ctx.send("Invalid channel.")
-            else:
-                await ctx.send(message)
+        if channel and message:
+            await channel.send(message)
+        elif message:
+            await ctx.send(message)
         else:
-            await ctx.send("Please provide a message to send.")
+            await ctx.send("Please provide a message and channel to use this command.")
             
     @commands.command()
     @commands.has_permissions(manage_messages=True)
