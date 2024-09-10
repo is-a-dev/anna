@@ -38,10 +38,12 @@ class GitHub(commands.Cog):
             
             if i.get('pull_request', {}).get('merged_at'):
                 color = nextcord.Color.purple() 
-                status = "Merged"
+                merger = i.get('closed_by', {}).get('login')
+                status = "Merged by " + merger
             elif i.get('state') == "closed":
                 color = nextcord.Color.red()
-                status = "Closed"
+                closer = i.get('closed_by', {}).get('login')
+                status = "Closed by " + closer
             else:
                 color = nextcord.Color.green()
                 status = "Open"
