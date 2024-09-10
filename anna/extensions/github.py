@@ -49,7 +49,7 @@ class GitHub(commands.Cog):
                 status = "Open"
 
             embed = nextcord.Embed(
-                title=f"PR/Issue: {pr.repo_name}",
+                title=f"PR/Issue: {pr.repo_owner}/{pr.repo_name}",
                 description=f"[(#{pr.pr_id}) {i['title']}]({i['html_url']})",
                 color=color,
             )
