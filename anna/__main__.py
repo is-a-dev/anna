@@ -48,7 +48,7 @@ class Bot(commands.Bot):
 bot = Bot(
     db_path=DATABASE_PATH,
     intents=Intents.all(),
-    command_prefix="a!" if os.getenv("TEST") else "a?",
+    command_prefix="." if os.getenv("TEST") else "a?",
     help_command=help_commands.PaginatedHelpCommand(),
     case_insensitive=True,
     owner_ids=[716306888492318790, 961063229168164864],  # Cutedog and orangc
