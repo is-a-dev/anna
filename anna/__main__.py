@@ -52,7 +52,7 @@ bot = Bot(
     command_prefix="a!" if os.getenv("TEST") else "a?",
     case_insensitive=True,
     help_command=help_commands.PaginatedHelpCommand(),
-    owner_ids=[716306888492318790, 961063229168164864, 598245488977903688],  # Example owner IDs
+    owner_ids=[716306888492318790, 961063229168164864, 598245488977903688],  # cutedog, orangc, andrew
     allowed_mentions=nextcord.AllowedMentions(everyone=False, roles=False, users=True, replied_user=True),
     activity=nextcord.Activity(
         type=nextcord.ActivityType.watching,
@@ -60,7 +60,7 @@ bot = Bot(
     )
 )
     
-extensions = ["errors", "extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq", "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns", "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword", "extensions.utils", "extensions.tags", "extensions.ping_cutedog", "errors"]
+extensions = ["extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq", "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns", "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword", "extensions.utils", "extensions.tags", "extensions.ping_cutedog", "errors"]
 if nextcord.version_info < (3, 0, 0):
     extensions.append("onami")
 if os.getenv("HASDB"):
