@@ -68,4 +68,4 @@ if os.getenv("HASDB"):
     extensions.append("extensions.tags_reworked")
 for extension in extensions:
     bot.load_extension(extension)
-bot.run(environ["TOKEN"])
+bot.run(os.environ["TOKEN"])
