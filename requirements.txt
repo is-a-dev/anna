@@ -27,3 +27,4 @@ pyyaml
 typing-extensions
 virtualenv
 pymongo
+motor

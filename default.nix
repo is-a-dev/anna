@@ -13,8 +13,7 @@ pkgs.mkShell {
       # Upgrade pip to the latest version
       pip install --upgrade pip
       # Install Python dependencies via pip
-      pip install nextcord psl-dns python-dotenv onami aiohttp psycopg2-binary nextcord-ext-help-commands nextcord-ext-menus python-whois forex-python setuptools
-      pip install aiohttp aiosignal aiosqlite attrs cfgv distlib filelock frozenlist identify idna multidict nodeenv platformdirs pre-commit pyyaml typing-extensions virtualenv
+      pip install nextcord psl-dns python-dotenv onami aiohttp psycopg2-binary nextcord-ext-help-commands nextcord-ext-menus python-whois forex-python setuptools aiohttp aiosignal aiosqlite attrs cfgv distlib filelock frozenlist identify idna multidict nodeenv platformdirs pre-commit pyyaml typing-extensions virtualenv pymongo motor
     else
       # Activate the virtual environment if it already exists
       source venv/bin/activate
