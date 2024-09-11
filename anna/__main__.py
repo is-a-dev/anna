@@ -60,11 +60,11 @@ bot = Bot(
     )
 )
     
-extensions = ["extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq", "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns", "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword", "extensions.utils", "extensions.tags", "extensions.ping_cutedog", "errors"]
+extensions = ["extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq", "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns", "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword", "extensions.utils", "extensions.ping_cutedog", "errors"]
 if nextcord.version_info < (3, 0, 0):
     extensions.append("onami")
 if os.getenv("HASDB"):
     extensions.append("extensions.tags_reworked")
-for i in extensions:
-    bot.load_extension(i)
+for extension in extensions:
+    bot.load_extension(extension)
 bot.run(environ["TOKEN"])
