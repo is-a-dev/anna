@@ -1,10 +1,26 @@
 from __main__ import Bot
-from extensions.help_forum.errors import NoGuildConfig, NoThreadFound, AlreadyClosed
 import nextcord
 from nextcord.ext import commands
 import extensions.help_forum.config
 import asyncio
 config = extensions.help_forum.config
+
+class NoGuildConfig(Exception):
+    def __init__(self, guild_id: int):
+        self.guild_id = guild_id
+        super().__init__(f"No configuration found for guild id {guild_id}")
+
+
+class NoThreadFound(Exception):
+    def __init__(self, thread_id: int):
+        self.thread_id = thread_id
+        super().__init__(f"No thread found with id {thread_id}")
+
+
+class AlreadyClosed(Exception):
+    def __init__(self, thread_id: int):
+        self.thread_id = thread_id
+        super().__init__(f"Thread with id {thread_id} is already closed")
 
 class LinkView(nextcord.ui.View):
     def __init__(self, label: str, link: str):

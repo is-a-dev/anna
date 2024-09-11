@@ -11,8 +11,6 @@ What we've done so far:
 - Rewrote various commands
 - Add some new modules, including the `purge` and `send` commands
 
-**Branches**: `anna` is the stable branch while `komari` is the unstable development branch.
-
 ## todo
 - [ ] make the tags reworked module work
 - [ ] fix bugs with and rewrite bits of the help system; and make the tag prefix ^

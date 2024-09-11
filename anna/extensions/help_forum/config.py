@@ -22,7 +22,7 @@ USER_THREAD_LIMIT = 3
 VIEW_OPEN_LABEL = "Open Thread"
 VIEW_CLOSE_LABEL = "Close Thread"
 
-THREAD_MIN_CHAR = 50
+THREAD_MIN_CHAR = 35
 THREAD_MIN_SUPPRESS_PREFIX = "a?suppress"
 THREAD_MIN_FAIL = f"Your message must be at least {THREAD_MIN_CHAR} characters long. Please provide more detail about the issue which you are facing."
 THREAD_NAME = "Help Thread (member.name)"

@@ -92,7 +92,7 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def bonk(self, ctx):
-        """Bonk!"""
+        """Bonk Anna. Please don't, she doesn't like it."""
         k = BonkView(ctx)
         msg = await ctx.send(content="No, don't press that..", view=k)
         k.update_msg(msg)
@@ -100,7 +100,7 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def ubdict(self, ctx: commands.Context, *, word: str):
-        """Show urban dictionary query. Contributed by vaibhav."""
+        """Query Urban Dictionary. Contributed by vaibhav."""
         params = {"term": word}
         async with aiohttp.ClientSession() as session:
             async with session.get(
@@ -122,6 +122,7 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx: commands.Context):
+        """Ping the bot."""
         latency = round(self._bot.latency * 1000)
         await ctx.send(f"Success! Anna is awake. Ping: {latency}ms")
 
@@ -139,7 +140,7 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def shouldi(self, ctx: commands.Context, question: Optional[str] = None):
-        """Answer your question using yesno.wtf API."""
+        """Answer a question using the yesno.wtf API."""
         r = await request("GET", "https://yesno.wtf/api")
         await ctx.send(f"answer: [{r['answer']}]({r['image']})")
 
