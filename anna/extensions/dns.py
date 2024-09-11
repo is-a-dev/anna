@@ -45,6 +45,7 @@ class DNS(commands.Cog):
 
     @commands.command(aliases=["dns"])
     async def dig(self, ctx: commands.Context, url: str):
+        """Prints DNS records for a domain."""
         record_types = ["A", "CNAME", "AAAA", "MX", "TXT", "SRV", "PTR"]
         full_answer = ""
 
