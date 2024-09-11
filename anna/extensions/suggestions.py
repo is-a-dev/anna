@@ -107,13 +107,13 @@ class Suggestion(commands.Cog):
         pass
 
     @_suggestion.subcommand(
-        name="suggest", description="We'd love to hear your suggestion!"
+        name="suggest", description="We'd love to hear your suggestions!"
     )
     async def _suggest(
         self,
         interaction: Interaction,
         for_: str = SlashOption(
-            name="for", description="What do you want to suggest for?", required=True
+            name="for", description="Is your suggestion regarding the server or service for?", required=True
         ),
         suggestion: str = SlashOption(
             name="suggestion", description="Write your suggestion here.", required=True
@@ -140,7 +140,7 @@ class Suggestion(commands.Cog):
 
         else:
             await interaction.send(
-                "Well, what do you want to suggest for? Use your brain and let autocomplete guide you."
+                "Please select what your suggestion is for.", ephemeral=True
             )
 
         channel = interaction.guild.get_channel(self.suggestion_channel)
@@ -170,7 +170,7 @@ class Suggestion(commands.Cog):
             await interaction.response.send_autocomplete(nearest_mode)
 
     @_suggestion.subcommand(
-        name="deny", description="[MAINTAINER ONLY] disapprove the suggestion :("
+        name="deny", description="[MAINTAINER ONLY] Deny suggestion"
     )
     @application_checks.has_permissions(administrator=True)
     async def _deny(
@@ -180,7 +180,7 @@ class Suggestion(commands.Cog):
             name="message_id", description="Message to deny", required=True
         ),
         why: str = SlashOption(
-            name="why", description="Why did you deny this request?", required=True
+            name="why", description="Why did you deny this suggestion?", required=True
         ),
     ):
         channel = interaction.guild.get_channel(self.suggestion_channel)
@@ -194,7 +194,7 @@ class Suggestion(commands.Cog):
         await interaction.send("Done.")
 
     @_suggestion.subcommand(
-        name="approve", description="[MAINTAINER ONLY] approve the suggestion :)"
+        name="approve", description="[MAINTAINER ONLY] approve suggestion"
     )
     @application_checks.has_permissions(administrator=True)
     async def _approve(
