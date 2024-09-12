@@ -134,12 +134,12 @@ class TagsNewSlash(commands.Cog):
         pass
 
     @tag.subcommand()
-    @application_checks.has_role(1281898369245253741)
+    @application_checks.has_role(1197475623745110109)
     async def create(self, interaction: nextcord.Interaction) -> None:
         await interaction.response.send_modal(TagCreationModal(self._db))
 
     @tag.subcommand()
-    @application_checks.has_role(1281898369245253741)
+    @application_checks.has_role(1197475623745110109)
     async def edit(self, interaction: nextcord.Interaction, tag_name: str) -> None:
         tag = await self._db.tags.find_one({"name": tag_name})
         if tag:
