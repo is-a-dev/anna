@@ -28,3 +28,4 @@ typing-extensions
 virtualenv
 pymongo
 motor
+flask
