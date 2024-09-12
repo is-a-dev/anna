@@ -1,9 +1,5 @@
-#Copyright (c) 2024 - present, MaskDuck
+# Copyright (c) 2024 - present, MaskDuck
 
-#Redistribution and use in source and binary forms, with or without
-#modification, are permitted provided that the following conditions are met:
-
-#1. Redistributions of source code must retain the above copyright notice, this
 from __future__ import annotations
 import uuid
 import nextcord

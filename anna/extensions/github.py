@@ -105,7 +105,7 @@ class GitHub(commands.Cog):
                     await interaction.response.edit_message(embed=new_embed)
 
                 refresh_button.callback = refresh_callback
-                view = View(timeout=172800)
+                view = View(timeout=None)
                 view.add_item(refresh_button)
                 await message.channel.send(embed=embed, view=view)
             

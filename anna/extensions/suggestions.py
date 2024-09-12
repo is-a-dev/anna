@@ -1,30 +1,5 @@
 #Copyright (c) 2024 - present, MaskDuck
 
-#Redistribution and use in source and binary forms, with or without
-#modification, are permitted provided that the following conditions are met:
-
-#1. Redistributions of source code must retain the above copyright notice, this
-#   list of conditions and the following disclaimer.
-
-#2. Redistributions in binary form must reproduce the above copyright notice,
-#   this list of conditions and the following disclaimer in the documentation
-#   and/or other materials provided with the distribution.
-
-#3. Neither the name of the copyright holder nor the names of its
-#   contributors may be used to endorse or promote products derived from
-#   this software without specific prior written permission.
-
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-#AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-#IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-#DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-#FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-#DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-#SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-#CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-#OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-#OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 from __future__ import annotations
 
 from contextlib import suppress
@@ -107,13 +82,13 @@ class Suggestion(commands.Cog):
         pass
 
     @_suggestion.subcommand(
-        name="suggest", description="We'd love to hear your suggestion!"
+        name="suggest", description="We'd love to hear your suggestions!"
     )
     async def _suggest(
         self,
         interaction: Interaction,
         for_: str = SlashOption(
-            name="for", description="What do you want to suggest for?", required=True
+            name="for", description="Is your suggestion regarding the server or service for?", required=True
         ),
         suggestion: str = SlashOption(
             name="suggestion", description="Write your suggestion here.", required=True
@@ -140,7 +115,7 @@ class Suggestion(commands.Cog):
 
         else:
             await interaction.send(
-                "Well, what do you want to suggest for? Use your brain and let autocomplete guide you."
+                "Please select what your suggestion is for.", ephemeral=True
             )
 
         channel = interaction.guild.get_channel(self.suggestion_channel)
@@ -170,7 +145,7 @@ class Suggestion(commands.Cog):
             await interaction.response.send_autocomplete(nearest_mode)
 
     @_suggestion.subcommand(
-        name="deny", description="[MAINTAINER ONLY] disapprove the suggestion :("
+        name="deny", description="[MAINTAINER ONLY] Deny suggestion"
     )
     @application_checks.has_permissions(administrator=True)
     async def _deny(
@@ -180,7 +155,7 @@ class Suggestion(commands.Cog):
             name="message_id", description="Message to deny", required=True
         ),
         why: str = SlashOption(
-            name="why", description="Why did you deny this request?", required=True
+            name="why", description="Why did you deny this suggestion?", required=True
         ),
     ):
         channel = interaction.guild.get_channel(self.suggestion_channel)
@@ -194,7 +169,7 @@ class Suggestion(commands.Cog):
         await interaction.send("Done.")
 
     @_suggestion.subcommand(
-        name="approve", description="[MAINTAINER ONLY] approve the suggestion :)"
+        name="approve", description="[MAINTAINER ONLY] approve suggestion"
     )
     @application_checks.has_permissions(administrator=True)
     async def _approve(

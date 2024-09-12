@@ -3,7 +3,6 @@ import os
 import threading
 from os import environ
 import nextcord
-from nextcord.ext import commands
 from nextcord.ext import commands, help_commands, tasks
 from nextcord.ext import application_checks as ac
 from dotenv import load_dotenv
@@ -65,7 +64,12 @@ bot = Bot(
         name="is-a.dev"
     )
 )
-extensions = ["extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq", "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns", "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword", "extensions.utils", "extensions.ping_cutedog", "errors"]
+
+extensions = ["extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq",
+              "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns",
+              "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword",
+              "extensions.utils", "extensions.ping_cutedog", "errors"]
+
 if nextcord.version_info < (3, 0, 0):
     extensions.append("onami")
 if os.getenv("HASDB"):
@@ -78,3 +82,4 @@ if __name__ == "__main__":
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
     bot.run(environ["TOKEN"])
+
