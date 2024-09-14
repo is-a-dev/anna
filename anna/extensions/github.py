@@ -35,7 +35,7 @@ class GitHub(commands.Cog):
     async def fetch_pr_status(self, pr: _PRRawObject) -> nextcord.Embed:
         try:
             # Fetch PR/issue information from GitHub
-            i = await request("GET", f"https://api.github.com/repos/{pr.repo_owner}/{pr.repo_name}/issues/{pr.pr_id}",)
+            i = await request("GET", f"https://api.github.com/repos/{pr.repo_owner}/{pr.repo_name}/issues/{pr.pr_id}")
             
             if i.get('pull_request', {}).get('merged_at'):
                 color = nextcord.Color.purple() 
