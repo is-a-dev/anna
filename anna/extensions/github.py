@@ -15,11 +15,11 @@ async def request(*args, **kwargs):
 # Regex patterns
 FULL_MATCH_ANY_REPO = r"(https:\/\/github.com\/)?([A-Za-z1-9-]+)\/([A-Za-z1-9-]+)(\/pull)?(#|\/)(?P<pr_id>\d+)"
 VERY_SHORT_MESSAGE = r"##(\d+)"
-PR_CHANNEL_ID = 1130858271620726784
-STAFF_ROLE_ID = 1197475623745110109
+# PR_CHANNEL_ID = 1130858271620726784
+# STAFF_ROLE_ID = 1197475623745110109
 
-# PR_CHANNEL_ID = 1281898370134183950
-# STAFF_ROLE_ID = 1281898369245253741
+PR_CHANNEL_ID = 1281898370134183950
+STAFF_ROLE_ID = 1281898369245253741
 
 class _PRRawObject(object):
     def __init__(self, *, repo_owner: str, repo_name: str, pr_id: str) -> None:
@@ -39,12 +39,12 @@ class GitHub(commands.Cog):
             
             if i.get('pull_request', {}).get('merged_at'):
                 color = nextcord.Color.purple() 
-                merger = i.get('closed_by', {}).get('login')
-                status = "Merged by " + merger
+                # merger = i.get('closed_by', {}).get('login')
+                status = "Merged"
             elif i.get('state') == "closed":
                 color = nextcord.Color.red()
-                closer = i.get('closed_by', {}).get('login')
-                status = "Closed by " + closer
+                # closer = i.get('closed_by', {}).get('login')
+                status = "Closed"
             else:
                 color = nextcord.Color.green()
                 status = "Open"
