@@ -1,15 +1,9 @@
 ![banner](https://embed.pixiv.net/spotlight.php?id=10119&lang=en)
+I was unable the name of the original artist of this. If you know, please ping orangc on Discord with a link to the artist.
+
 # Anna
 Anna is named after Anna Yanami from Makeine: Too Many Losing Heroines.
 She is a fork of [orangcc](https://github.com/is-a-dev/orangcapp) meant to be a replacement for [Fire](https://github.com/is-a-dev/fire) and [orangcc](https://github.com/is-a-dev/orangcapp) in the is-a.dev Discord server.
-What we've done so far:
-
-- Merged Fire and orangcc together into a bot that functions as both
-- Rewrote the Github module
-- Rewrote the dns module
-- Remove a lot of bloat from mostly orangcc's code
-- Rewrote various commands
-- Add some new modules, including the `purge` and `send` commands
 
 ## todo
 - [ ] make the tags reworked module work
