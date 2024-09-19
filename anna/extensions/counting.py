@@ -61,7 +61,7 @@ class Counting(commands.Cog):
     @commands.command(name="current_count", description="Fetches the current count in the counting channel.")
     async def current_count(self, interaction: Interaction):
         """Fetches and displays the current count from the database."""
-        counting_channel_id = 1006903455916507187  # Replace with your counting channel ID
+        counting_channel_id = 1006903455916507187
 
         # Fetch the current count from the database
         current_count = await self.db.counting.find_one({"channel_id": counting_channel_id})
