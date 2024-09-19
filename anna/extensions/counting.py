@@ -14,7 +14,7 @@ class Counting(commands.Cog):
             return
 
         # Fetch the counting channel and the current count
-        counting_channel_id = 1281898370134183950
+        counting_channel_id = 1006903455916507187
         counting_channel = self.bot.get_channel(counting_channel_id)
 
         if message.channel.id != counting_channel_id:
@@ -54,7 +54,7 @@ class Counting(commands.Cog):
     @commands.is_owner()
     async def set_count(self, ctx: commands.Context, count: int):
         """Allows bot owner to set the current count in the counting channel."""
-        counting_channel_id = 1281898370134183950
+        counting_channel_id = 1006903455916507187
 
         await self.db.counting.update_one(
             {"channel_id": counting_channel_id},
