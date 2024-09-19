@@ -50,7 +50,7 @@ class Starboard(commands.Cog):
         embed = nextcord.Embed(
             title="Starred Message",
             description=message.content or "[No Content]",
-            color=nextcord.Color.gold()
+            color=nextcord.Color.blue()
         )
         embed.add_field(name="Author", value=message.author.mention, inline=True)
         embed.add_field(
