@@ -10,22 +10,9 @@ class Counting(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
         counting_channel_id = 1006903455916507187 
-        allowed_role_id = 1197475623745110109
         counting_channel = self.bot.get_channel(counting_channel_id)
 
         if message.channel.id != counting_channel_id:
-            return
-
-        # Allow messages from users with the allowed role
-        role = nextcord.utils.get(message.author.roles, id=allowed_role_id)
-        if role:
-            return  # Allow the message if the user has the allowed role
-
-        # Delete the message if the bot itself doesn't have the allowed role
-        bot_member = message.guild.get_member(self.bot.user.id)
-        bot_role = nextcord.utils.get(bot_member.roles, id=allowed_role_id)
-        if not bot_role:
-            await message.delete()
             return
 
         # Get the last message count from the database
