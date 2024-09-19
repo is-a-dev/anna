@@ -58,8 +58,8 @@ class Counting(commands.Cog):
         except ValueError:
             await message.delete()
 
-    @commands.command(name="current_count", description="Fetches the current count in the counting channel.")
-    async def current_count(self, interaction: Interaction):
+    @commands.command()
+    async def count(self, ctx: commands.Context):
         """Fetches and displays the current count from the database."""
         counting_channel_id = 1006903455916507187
 
