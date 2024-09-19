@@ -58,6 +58,23 @@ class Counting(commands.Cog):
         except ValueError:
             await message.delete()
 
+    @commands.command(name="current_count", description="Fetches the current count in the counting channel.")
+    async def current_count(self, interaction: Interaction):
+        """Fetches and displays the current count from the database."""
+        counting_channel_id = 1006903455916507187  # Replace with your counting channel ID
+
+        # Fetch the current count from the database
+        current_count = await self.db.counting.find_one({"channel_id": counting_channel_id})
+
+        if not current_count:
+            await ctx.send("The count has not started yet!", ephemeral=True)
+            return
+
+        count = current_count['count']
+
+        # Send the current count as a response
+        await ctx.send(f"The current count is: {count}")
+        
     @commands.command()
     @commands.is_owner()
     async def set_count(self, ctx: commands.Context, count: int):
