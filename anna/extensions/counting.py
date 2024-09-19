@@ -10,8 +10,6 @@ class Counting(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
-        if message.author.bot:
-            return
 
         # Fetch the counting channel and the current count
         counting_channel_id = 1006903455916507187
