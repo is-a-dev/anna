@@ -68,7 +68,8 @@ bot = Bot(
 extensions = ["extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq",
               "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns",
               "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword",
-              "extensions.utils", "extensions.ping_cutedog", "errors", "extensions.topic", "extensions.counting"]
+              "extensions.utils", "extensions.ping_cutedog", "errors", "extensions.topic", "extensions.counting",
+              "extensions.starboard"]
 
 if nextcord.version_info < (3, 0, 0):
     extensions.append("onami")
