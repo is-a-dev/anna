@@ -1,7 +1,6 @@
 import nextcord
 from nextcord import Interaction
 from nextcord.ext import commands
-from motor.motor_asyncio import AsyncIOMotorClient
 
 class Counting(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -10,12 +9,23 @@ class Counting(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
-
-        # Fetch the counting channel and the current count
-        counting_channel_id = 1006903455916507187
+        counting_channel_id = 1006903455916507187 
+        allowed_role_id = 1197475623745110109
         counting_channel = self.bot.get_channel(counting_channel_id)
 
         if message.channel.id != counting_channel_id:
+            return
+
+        # Allow messages from users with the allowed role
+        role = nextcord.utils.get(message.author.roles, id=allowed_role_id)
+        if role:
+            return  # Allow the message if the user has the allowed role
+
+        # Delete the message if the bot itself doesn't have the allowed role
+        bot_member = message.guild.get_member(self.bot.user.id)
+        bot_role = nextcord.utils.get(bot_member.roles, id=allowed_role_id)
+        if not bot_role:
+            await message.delete()
             return
 
         # Get the last message count from the database
@@ -92,6 +102,5 @@ class Counting(commands.Cog):
 
         await interaction.response.send_message(embed=embed)
 
-# Setup the cog
 def setup(bot: commands.Bot):
     bot.add_cog(Counting(bot))

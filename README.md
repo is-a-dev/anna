@@ -2,7 +2,7 @@
 
 # Anna
 Anna is named after Anna Yanami from Makeine: Too Many Losing Heroines.
-She is a fork of [orangcc](https://github.com/is-a-dev/orangcapp) meant to be a replacement for [Fire](https://github.com/is-a-dev/fire) and [orangcc](https://github.com/is-a-dev/orangcapp) in the is-a.dev Discord server.
+She is a fork of [orangcc](https://github.com/is-a-dev/orangcapp) meant to be a replacement for [Fire](https://github.com/is-a-dev/fire), [orangcc](https://github.com/is-a-dev/orangcapp), and Countr in the is-a.dev Discord server.
 
 ## installation
 On NixOS, clone this repository and run `nix-shell` inside it. You will need to run it twice the first time.
