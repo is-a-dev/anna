@@ -1,11 +1,12 @@
 import nextcord
-from nextcord import Interaction
+from motor.motor_asyncio import AsyncIOMotorClient
+import os
 from nextcord.ext import commands
 
 class Counting(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.db = bot.db
+        self.db = AsyncIOMotorClient(os.getenv("MONGO")).get_database("anna")
 
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
@@ -85,7 +86,7 @@ class Counting(commands.Cog):
         await ctx.send(f"{member.display_name}'s score has been set to {score}.")
 
     @nextcord.slash_command(name="leaderboard", description="Displays the leaderboard of top counters.")
-    async def leaderboard(self, interaction: Interaction):
+    async def leaderboard(self, interaction: nextcord.Interaction):
         """Slash command to show the leaderboard in an embed."""
         leaderboard_data = self.db.leaderboard.find().sort("count", -1).limit(10)
         leaderboard_list = await leaderboard_data.to_list(length=10)

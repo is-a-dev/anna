@@ -1,20 +1,28 @@
 import nextcord
+from motor.motor_asyncio import AsyncIOMotorClient
+import os
 from nextcord.ext import commands
 
 class Starboard(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.db = bot.db
+        self.db = AsyncIOMotorClient(os.getenv("MONGO")).get_database("anna")
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: nextcord.RawReactionActionEvent):
-        starboard_channel_id = 1274682244619042856
+        starboard_channel_id = 1274682244619042856 # 1281898370134183950
         starboard_channel = self.bot.get_channel(starboard_channel_id)
 
         # Fetch the message details
         channel = self.bot.get_channel(payload.channel_id)
         if not channel:
             return
+        
+        # Check if the channel is whitelisted
+        is_whitelisted = await self.db.starboard_whitelist.find_one({"channel_id": channel.id})
+        if not is_whitelisted:
+            return  # Ignore reactions in non-whitelisted channels
+
         message = await channel.fetch_message(payload.message_id)
 
         # Find the specific reaction the user added
@@ -23,9 +31,9 @@ class Starboard(commands.Cog):
             if str(reaction.emoji) == str(payload.emoji):
                 emoji_reaction = reaction
                 break
-        
+
         # Ensure the emoji reaction has at least 4 reactions
-        if emoji_reaction and emoji_reaction.count >= 4:
+        if emoji_reaction and emoji_reaction.count >= 1:
             # Check if this message is already on the starboard
             existing_star_message = await self.db.starboard.find_one({"message_id": message.id})
 
@@ -45,6 +53,34 @@ class Starboard(commands.Cog):
                     "starboard_message_id": starboard_message.id
                 })
 
+    @commands.command()
+    @commands.has_permissions(manage_channels=True)
+    async def starboard_whitelist(self, ctx: commands.Context, action: str):
+        """Add or remove the current channel from the starboard whitelist."""
+        channel_id = ctx.channel.id
+
+        if action == "add":
+            # Check if the channel is already whitelisted
+            whitelisted = await self.db.starboard_whitelist.find_one({"channel_id": channel_id})
+            if whitelisted:
+                await ctx.send("This channel is already whitelisted for starboard.")
+                return
+            
+            # Add the channel to the whitelist
+            await self.db.starboard_whitelist.insert_one({"channel_id": channel_id})
+            await ctx.send(f"{ctx.channel.mention} has been added to the starboard whitelist.")
+        
+        elif action == "remove":
+            # Remove the channel from the whitelist
+            result = await self.db.starboard_whitelist.delete_one({"channel_id": channel_id})
+            if result.deleted_count == 0:
+                await ctx.send("This channel is not whitelisted for starboard.")
+            else:
+                await ctx.send(f"{ctx.channel.mention} has been removed from the starboard whitelist.")
+        
+        else:
+            await ctx.send("Invalid action! Use `add` to whitelist or `remove` to un-whitelist the channel.")
+        
     def _create_embed(self, message: nextcord.Message, reaction: nextcord.Reaction):
         """Helper function to create the starboard embed."""
         embed = nextcord.Embed(
