@@ -13,8 +13,7 @@ RUN git clone https://github.com/is-a-dev/owl.git /app
 WORKDIR /app
 
 # Install the dependencies from requirements.txt
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Set the default command to run the app
 CMD ["python3", "anna"]
