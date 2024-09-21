@@ -9,7 +9,7 @@ async def request(url, *args, **kwargs):
         async with session.request('GET', url, *args, **kwargs) as response:
             return await response.json()
 
-class MAL(commands.Cog):
+class MAL_Anime(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -53,45 +53,6 @@ class MAL(commands.Cog):
         else:
             await ctx.send(embed=embed)
 
-    @commands.command()
-    async def manga(self, ctx: commands.Context, *, manga_name: str):
-        """Command for searching manga on MyAnimeList. Usage example: `a?manga Shikanoko Nokonoko Koshitantan"""
-        url = f"https://api.jikan.moe/v4/manga?q={manga_name}&limit=1"
-        try:
-            data = await request(url)
-            if data and data.get("data"):
-                manga = data["data"][0]
-                title = manga.get("title", "N/A")
-                chapters = manga.get("chapters", "N/A")
-                score = manga.get("score", "N/A")
-                status = manga.get("status", "N/A")
-                rating = anime.get("rating", "N/A")
-                cover_image = manga["images"]["jpg"]["image_url"]
-                url = manga.get("url", "N/A")
-                genres = ", ".join([genre['name'] for genre in manga.get("genres", [])])
-
-                embed = nextcord.Embed(title=title, url=url, color=nextcord.Color.blue())
-                embed.add_field(name="Chapters", value=chapters, inline=True)
-                embed.add_field(name="Score", value=score, inline=True)
-                embed.add_field(name="Status", value=status, inline=True)
-                embed.set_thumbnail(url=cover_image)
-                embed.set_footer(text=f"Genres: {genres}")
-
-            else:
-                embed = nextcord.Embed(title="Manga not found.", color=nextcord.Color.blue())
-
-        except Exception as e:
-            embed = nextcord.Embed(title="Error", description=str(e), color=nextcord.Color.blue())
-        if rating == "Rx - Hentai":
-            await ctx.send("Searching for anime rated Rx has been disabled.")
-        else:
-            await ctx.send(embed=embed)
-
-
-class MAL_Slash(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        
     @nextcord.slash_command(name="anime", description="Get information about an anime")
     async def slash_anime(
         self,
@@ -136,13 +97,13 @@ class MAL_Slash(commands.Cog):
         else:
             await interaction.response.send_message(embed=embed)
 
-    @nextcord.slash_command(name="manga", description="Get information about a manga")
-    async def slash_manga(
-        self,
-        interaction: Interaction,
-        manga_name: str = SlashOption(description="Name of the manga")
-    ):
-        """Slash command for searching manga on MyAnimeList. Usage example: `/manga manga_name:Shikanoko Nokonoko Koshitantan"""
+class MAL_Manga(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    
+    @commands.command()
+    async def manga(self, ctx: commands.Context, *, manga_name: str):
+        """Command for searching manga on MyAnimeList. Usage example: `a?manga Shikanoko Nokonoko Koshitantan"""
         url = f"https://api.jikan.moe/v4/manga?q={manga_name}&limit=1"
         try:
             data = await request(url)
@@ -152,7 +113,6 @@ class MAL_Slash(commands.Cog):
                 chapters = manga.get("chapters", "N/A")
                 score = manga.get("score", "N/A")
                 status = manga.get("status", "N/A")
-                rating = anime.get("rating", "N/A")
                 cover_image = manga["images"]["jpg"]["image_url"]
                 url = manga.get("url", "N/A")
                 genres = ", ".join([genre['name'] for genre in manga.get("genres", [])])
@@ -169,11 +129,42 @@ class MAL_Slash(commands.Cog):
 
         except Exception as e:
             embed = nextcord.Embed(title="Error", description=str(e), color=nextcord.Color.blue())
-        if rating == "Rx - Hentai":
-            await interaction.response.send_message("Searching for anime rated Rx has been disabled.")
-        else:
-            await interaction.response.send_message(embed=embed)
+        await ctx.send(embed=embed)
+
+    @nextcord.slash_command(name="manga", description="Get information about a manga")
+    async def slash_manga(
+        self,
+        interaction: Interaction,
+        manga_name: str = SlashOption(description="Name of the manga")
+    ):
+        """Slash command for searching manga on MyAnimeList. Usage example: `/manga manga_name:Shikanoko Nokonoko Koshitantan"""
+        url = f"https://api.jikan.moe/v4/manga?q={manga_name}&limit=1"
+        try:
+            data = await request(url)
+            if data and data.get("data"):
+                manga = data["data"][0]
+                title = manga.get("title", "N/A")
+                chapters = manga.get("chapters", "N/A")
+                score = manga.get("score", "N/A")
+                status = manga.get("status", "N/A")
+                cover_image = manga["images"]["jpg"]["image_url"]
+                url = manga.get("url", "N/A")
+                genres = ", ".join([genre['name'] for genre in manga.get("genres", [])])
+
+                embed = nextcord.Embed(title=title, url=url, color=nextcord.Color.blue())
+                embed.add_field(name="Chapters", value=chapters, inline=True)
+                embed.add_field(name="Score", value=score, inline=True)
+                embed.add_field(name="Status", value=status, inline=True)
+                embed.set_thumbnail(url=cover_image)
+                embed.set_footer(text=f"Genres: {genres}")
+
+            else:
+                embed = nextcord.Embed(title="Manga not found.", color=nextcord.Color.blue())
+
+        except Exception as e:
+            embed = nextcord.Embed(title="Error", description=str(e), color=nextcord.Color.blue())
+        await interaction.response.send_message(embed=embed)
 
 def setup(bot):
-    bot.add_cog(MAL(bot))
-    bot.add_cog(MAL_Slash(bot))
+    bot.add_cog(MAL_Anime(bot))
+    bot.add_cog(MAL_Manga(bot))
