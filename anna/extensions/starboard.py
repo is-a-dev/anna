@@ -1,5 +1,6 @@
 import nextcord
 from nextcord.ext import commands
+from motor.motor_asyncio import AsyncIOMotorClient
 from nextcord import SlashOption
 
 class Starboard(commands.Cog):
