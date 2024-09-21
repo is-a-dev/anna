@@ -63,7 +63,7 @@ bot = Bot(
 extensions = ["extensions.fun", "extensions.faq", "extensions.antiphishing", "extensions.owner-utils",
               "extensions.nonsense", "extensions.dns", "extensions.suggestions", "extensions.github",
               "extensions.oneword", "extensions.utils", "extensions.ping_cutedog",
-              "errors", "extensions.topic", "extensions.starboard", "onami"]
+              "errors", "extensions.topic", "extensions.starboard", "onami", "extensions.mal"]
 
 if os.getenv("HASDB"):
     database_extensions = ["extensions.tags_reworked", "extensions.counting", "extensions.help_forum.help_system"]
