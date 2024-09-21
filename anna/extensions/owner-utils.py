@@ -3,6 +3,7 @@ from nextcord.ext import commands
 import os
 from __main__ import extensions
 
+
 class OwnerUtils(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self._bot: commands.Bot = bot
@@ -32,7 +33,9 @@ class OwnerUtils(commands.Cog):
                 owner_names.append(f"Unknown User (ID: {owner_id})")
 
         owner_names_str = ", ".join(owner_names)
-        await ctx.send(f"You have owner-level permissions when interacting with Anna. Anna's current owners are: {owner_names_str}")
+        await ctx.send(
+            f"You have owner-level permissions when interacting with Anna. Anna's current owners are: {owner_names_str}"
+        )
 
     @commands.command(aliases=["rx"])
     @commands.is_owner()
@@ -55,7 +58,10 @@ class OwnerUtils(commands.Cog):
 
             success_message = f"Successfully reloaded all extensions."
             if failed_extensions:
-                error_message = f"\nFailed to reload the following extensions:\n" + "\n".join(failed_extensions)
+                error_message = (
+                    f"\nFailed to reload the following extensions:\n"
+                    + "\n".join(failed_extensions)
+                )
                 await ctx.send(f"{success_message}{error_message}")
             else:
                 await ctx.send(success_message)

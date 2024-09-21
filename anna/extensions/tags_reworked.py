@@ -10,6 +10,7 @@ from nextcord.ext import application_checks, commands
 load_dotenv()
 import os
 
+
 # Define the MongoDB setup
 class TagEditModal(nextcord.ui.Modal):
     def __init__(self, db, tag_info: dict):
@@ -51,12 +52,16 @@ class TagEditView(nextcord.ui.View):
         self._tag = tag
 
     @nextcord.ui.button(label="Edit tag!", style=nextcord.ButtonStyle.green)
-    async def create_tag(self, button: nextcord.ui.Button, interaction: nextcord.Interaction):
+    async def create_tag(
+        self, button: nextcord.ui.Button, interaction: nextcord.Interaction
+    ):
         if interaction.user.id == self._ctx.author.id:
             modal = TagEditModal(self._db, self._tag)
             await interaction.response.send_modal(modal)
         else:
-            await interaction.response.send_message("You cannot edit this tag", ephemeral=True)
+            await interaction.response.send_message(
+                "You cannot edit this tag", ephemeral=True
+            )
 
 
 class TagCreationModal(nextcord.ui.Modal):
@@ -92,16 +97,22 @@ class TagCreationModal(nextcord.ui.Modal):
         existing_tag = await self._db.tags.find_one({"name": self.my_name.value})
         if not existing_tag:
             tag_id = uuid.uuid4().hex
-            await self._db.tags.insert_one({
-                "_id": tag_id,
-                "name": self.my_name.value,
-                "title": self.my_title.value,
-                "content": self.my_content.value,
-                "author_id": str(interaction.user.id),
-            })
-            await interaction.response.send_message("Tag created successfully", ephemeral=True)
+            await self._db.tags.insert_one(
+                {
+                    "_id": tag_id,
+                    "name": self.my_name.value,
+                    "title": self.my_title.value,
+                    "content": self.my_content.value,
+                    "author_id": str(interaction.user.id),
+                }
+            )
+            await interaction.response.send_message(
+                "Tag created successfully", ephemeral=True
+            )
         else:
-            await interaction.response.send_message("Tag already exists", ephemeral=True)
+            await interaction.response.send_message(
+                "Tag already exists", ephemeral=True
+            )
 
 
 class TagCreationView(nextcord.ui.View):
@@ -111,12 +122,16 @@ class TagCreationView(nextcord.ui.View):
         self._db = db
 
     @nextcord.ui.button(label="Create tag!", style=nextcord.ButtonStyle.green)
-    async def create_tag(self, button: nextcord.ui.Button, interaction: nextcord.Interaction):
+    async def create_tag(
+        self, button: nextcord.ui.Button, interaction: nextcord.Interaction
+    ):
         if interaction.user.id == self._ctx.author.id:
             modal = TagCreationModal(self._db)
             await interaction.response.send_modal(modal)
         else:
-            await interaction.response.send_message("You cannot create this tag", ephemeral=True)
+            await interaction.response.send_message(
+                "You cannot create this tag", ephemeral=True
+            )
 
 
 class TagsNewSlash(commands.Cog):
@@ -130,7 +145,7 @@ class TagsNewSlash(commands.Cog):
         pass
 
     @tag.subcommand()
-    @application_checks.has_role(830875873027817484) 
+    @application_checks.has_role(830875873027817484)
     async def create(self, interaction: nextcord.Interaction) -> None:
         await interaction.response.send_modal(TagCreationModal(self._db))
 
@@ -147,7 +162,11 @@ class TagsNewSlash(commands.Cog):
     async def find(self, interaction: nextcord.Interaction, tag_name: str) -> None:
         tag = await self._db.tags.find_one({"name": tag_name})
         if tag:
-            embed = nextcord.Embed(title=tag["title"], description=tag["content"], color=nextcord.Color.blue())
+            embed = nextcord.Embed(
+                title=tag["title"],
+                description=tag["content"],
+                color=nextcord.Color.blue(),
+            )
             embed.set_footer(text=f"ID: {tag['_id']}, Author: {tag['author_id']}")
             await interaction.send(embed=embed)
         else:
@@ -174,7 +193,11 @@ class TagsNew(commands.Cog):
             tag_name = message.content[1:]
             tag = await self._db.tags.find_one({"name": tag_name})
             if tag:
-                embed = nextcord.Embed(title=tag["title"], description=tag["content"], color=nextcord.Color.blue())
+                embed = nextcord.Embed(
+                    title=tag["title"],
+                    description=tag["content"],
+                    color=nextcord.Color.blue(),
+                )
                 embed.set_footer(text=f"ID: {tag['_id']}, Author: {tag['author_id']}")
                 await message.channel.send(embed=embed)
 
@@ -182,7 +205,11 @@ class TagsNew(commands.Cog):
     async def tag(self, ctx: commands.Context, tag_name: str = "null"):
         tag = await self._db.tags.find_one({"name": tag_name})
         if tag:
-            embed = nextcord.Embed(title=tag["title"], description=tag["content"], color=nextcord.Color.blue())
+            embed = nextcord.Embed(
+                title=tag["title"],
+                description=tag["content"],
+                color=nextcord.Color.blue(),
+            )
             embed.set_footer(text=f"ID: {tag['_id']}, Author: {tag['author_id']}")
             await ctx.send(embed=embed)
         else:
@@ -214,7 +241,9 @@ class TagsNew(commands.Cog):
     async def edit(self, ctx: commands.Context, tag_name: str):
         tag = await self._db.tags.find_one({"name": tag_name})
         if tag:
-            await ctx.send(f"Editing tag {tag_name}", view=TagEditView(ctx, self._db, tag))
+            await ctx.send(
+                f"Editing tag {tag_name}", view=TagEditView(ctx, self._db, tag)
+            )
         else:
             await ctx.send("Tag not found")
 

@@ -1,4 +1,4 @@
-#Copyright (c) 2024 - present, MaskDuck
+# Copyright (c) 2024 - present, MaskDuck
 
 from __future__ import annotations
 
@@ -47,7 +47,7 @@ class DNS(commands.Cog):
         self,
         interaction: nextcord.Interaction,
         url: str = nextcord.SlashOption(
-            description="The URL to dig for DNS records. Be sure to remove http or https://", 
+            description="The URL to dig for DNS records. Be sure to remove http or https://",
             required=True,
         ),
     ) -> None:

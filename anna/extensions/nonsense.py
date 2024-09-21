@@ -1,7 +1,7 @@
-#Copyright (c) 2024 - present, MaskDuck
+# Copyright (c) 2024 - present, MaskDuck
 
 ## code has been modified and is not the original code from MaskDuck
- 
+
 from __future__ import annotations
 
 import re
@@ -53,9 +53,7 @@ class LinkView(nextcord.ui.View):
             )
         )
         self.add_item(
-            nextcord.ui.Button(
-                label="GitHub", url="https://github.com/is-a-dev", row=1
-            )
+            nextcord.ui.Button(label="GitHub", url="https://github.com/is-a-dev", row=1)
         )
         # self.add_item(nextcord.ui.Button(label="Help Channel", url="", row=4))
 
@@ -69,6 +67,7 @@ async def request(requesting_domain: bool = False, *args, **kwargs):
 
 
 request.__doc__ = aiohttp.ClientSession.request.__doc__
+
 
 class Nonsense(commands.Cog):
     """Various utility commands."""
@@ -158,7 +157,9 @@ class Nonsense(commands.Cog):
         return my_description
 
     @commands.command()
-    async def whois(self, ctx: commands.Context, domain: SubdomainNameConverter) -> None:
+    async def whois(
+        self, ctx: commands.Context, domain: SubdomainNameConverter
+    ) -> None:
         """Lookup information about an is-a.dev domain."""
         k = nextcord.ui.View()
         k.add_item(
@@ -185,7 +186,9 @@ class Nonsense(commands.Cog):
         await ctx.send(embed=embed, view=k)
 
     @commands.command()
-    async def check(self, ctx: commands.Context, domain: SubdomainNameConverter) -> None:
+    async def check(
+        self, ctx: commands.Context, domain: SubdomainNameConverter
+    ) -> None:
         """Checks if an is-a.dev domain is available."""
         try:
             await request(
@@ -194,15 +197,15 @@ class Nonsense(commands.Cog):
                 f"https://raw.githubusercontent.com/is-a-dev/register/main/domains/{domain}.json",
             )
             embed = nextcord.Embed(
-            color=nextcord.Color.blue(),
-            description=f"Sorry, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is taken.",
-        )
+                color=nextcord.Color.blue(),
+                description=f"Sorry, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is taken.",
+            )
             await ctx.send(embed=embed)
         except DomainNotExistError:
             embed = nextcord.Embed(
-            color=nextcord.Color.blue(),
-            description=f"Congratulations, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is available!",
-        )
+                color=nextcord.Color.blue(),
+                description=f"Congratulations, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is available!",
+            )
             await ctx.send(embed=embed)
 
 
@@ -216,13 +219,11 @@ class NonsenseSlash(commands.Cog):
         interaction: nextcord.Interaction,
         user: nextcord.Member = SlashOption(
             description="The member to ban", required=True
-),
+        ),
         reason: str = SlashOption(description="The reason to ban", required=True),
     ) -> None:
         """A fake ban command."""
-        await interaction.send(
-            f"Banned <@{user.id}> for **{reason}**"
-        )
+        await interaction.send(f"Banned <@{user.id}> for **{reason}**")
 
     @nextcord.slash_command()
     async def check(
@@ -239,15 +240,15 @@ class NonsenseSlash(commands.Cog):
                 f"https://raw.githubusercontent.com/is-a-dev/register/main/domains/{domain}.json",
             )
             embed = nextcord.Embed(
-            color=nextcord.Color.blue(),
-            description=f"Sorry, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is taken.",
-        )
+                color=nextcord.Color.blue(),
+                description=f"Sorry, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is taken.",
+            )
             await interaction.send(embed=embed)
         except DomainNotExistError:
             embed = nextcord.Embed(
-            color=nextcord.Color.blue(),
-            description=f"Congratulations, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is available!",
-        )
+                color=nextcord.Color.blue(),
+                description=f"Congratulations, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is available!",
+            )
             await interaction.send(embed=embed)
 
     @slash_command()
@@ -255,7 +256,8 @@ class NonsenseSlash(commands.Cog):
         self,
         interaction: Interaction,
         domain: SlashSubdomainNameConverter = SlashOption(
-            description="The is-a.dev domain name to lookup information for.", required=True
+            description="The is-a.dev domain name to lookup information for.",
+            required=True,
         ),
     ) -> None:
         try:

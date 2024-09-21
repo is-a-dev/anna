@@ -3,7 +3,9 @@ import nextcord
 from nextcord.ext import commands
 import extensions.help_forum.config
 import asyncio
+
 config = extensions.help_forum.config
+
 
 class NoGuildConfig(Exception):
     def __init__(self, guild_id: int):
@@ -21,6 +23,7 @@ class AlreadyClosed(Exception):
     def __init__(self, thread_id: int):
         self.thread_id = thread_id
         super().__init__(f"Thread with id {thread_id} is already closed")
+
 
 class LinkView(nextcord.ui.View):
     def __init__(self, label: str, link: str):
@@ -167,7 +170,9 @@ class Help(commands.Cog):
         )
         thread_open_message: nextcord.Message = await thread.fetch_message(thread.id)
         await thread_open_message.pin()
-        await self.bot.hdb.create_thread(thread.id, member.guild.id, forum.id, member.id)
+        await self.bot.hdb.create_thread(
+            thread.id, member.guild.id, forum.id, member.id
+        )
         return thread
 
     async def close_help_thread(self, thread_id: int) -> None:
@@ -444,10 +449,12 @@ class Help(commands.Cog):
             raise Exception("View Channel couldn't be found.")
         await channel.send("Open Thread View", view=open_thread_view)
         await channel.send("Close Thread View", view=close_thread_view)
-        
+
     @commands.command()
     async def suppress(self, ctx: commands.Context):
-        await ctx.send("Successfully suppressed the ping role notification for this help thread.")
+        await ctx.send(
+            "Successfully suppressed the ping role notification for this help thread."
+        )
 
     @commands.Cog.listener(name="on_message")
     async def first_message_mention(self, message: nextcord.Message):
@@ -476,7 +483,9 @@ class Help(commands.Cog):
             if len(message.content) < config.THREAD_MIN_CHAR:
                 await message.reply(config.THREAD_MIN_FAIL)
                 return
-            role = nextcord.utils.get(message.guild.roles, id=guild_config["ping_role_id"])
+            role = nextcord.utils.get(
+                message.guild.roles, id=guild_config["ping_role_id"]
+            )
             await message.reply(
                 role.mention,
                 delete_after=2,

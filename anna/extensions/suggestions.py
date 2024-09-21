@@ -1,4 +1,4 @@
-#Copyright (c) 2024 - present, MaskDuck
+# Copyright (c) 2024 - present, MaskDuck
 
 from __future__ import annotations
 
@@ -88,7 +88,9 @@ class Suggestion(commands.Cog):
         self,
         interaction: Interaction,
         for_: str = SlashOption(
-            name="for", description="Is your suggestion regarding the server or service for?", required=True
+            name="for",
+            description="Is your suggestion regarding the server or service for?",
+            required=True,
         ),
         suggestion: str = SlashOption(
             name="suggestion", description="Write your suggestion here.", required=True

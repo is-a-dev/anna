@@ -1,4 +1,4 @@
-#Copyright (c) 2024 - present, MaskDuck
+# Copyright (c) 2024 - present, MaskDuck
 
 from __future__ import annotations
 
@@ -32,7 +32,8 @@ class AutoMod(commands.Cog):
     async def check_nickname_on_join(self, member: nextcord.Member) -> None:
         if member.display_name[0] not in normal_characters:
             await member.edit(
-                nick="Moderated Nickname", reason="Hoisting is not allowed in our server. —Automoderation set by Anna."
+                nick="Moderated Nickname",
+                reason="Hoisting is not allowed in our server. —Automoderation set by Anna.",
             )
 
     @commands.Cog.listener("on_member_update")
@@ -41,7 +42,8 @@ class AutoMod(commands.Cog):
     ) -> None:
         if after.display_name[0] not in normal_characters:
             await after.edit(
-                nick="Moderated Nickname", reason="Hoisting is not allowed in our server. —Automoderation set by Anna."
+                nick="Moderated Nickname",
+                reason="Hoisting is not allowed in our server. —Automoderation set by Anna.",
             )
 
     @user_command(

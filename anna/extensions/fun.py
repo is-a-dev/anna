@@ -1,4 +1,4 @@
-#Copyright (c) 2024 - present, MaskDuck
+# Copyright (c) 2024 - present, MaskDuck
 
 from __future__ import annotations
 
@@ -24,6 +24,7 @@ _bonk_ans: List[str] = [
     "That *cannot* have been necessary.",
     "Ow.. could you not?!",
 ]
+
 
 class BonkView(nextcord.ui.View):
     if TYPE_CHECKING:
@@ -72,7 +73,6 @@ class Fun(commands.Cog):
         msg = await ctx.send(content="No, don't press that..", view=k)
         k.update_msg(msg)
 
-
     @commands.command()
     async def ubdict(self, ctx: commands.Context, *, word: str):
         """Query Urban Dictionary. Contributed by vaibhav."""
@@ -100,7 +100,6 @@ class Fun(commands.Cog):
         """Ping the bot."""
         latency = round(self._bot.latency * 1000)
         await ctx.send(f"Success! Anna is awake. Ping: {latency}ms")
-
 
     @commands.command()
     async def httpcat(self, ctx: commands.Context, code: int = 406):

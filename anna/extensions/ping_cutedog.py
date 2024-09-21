@@ -1,4 +1,4 @@
-#Copyright (c) 2024 - present, MaskDuck
+# Copyright (c) 2024 - present, MaskDuck
 
 from __future__ import annotations
 

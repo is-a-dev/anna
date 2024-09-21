@@ -4,19 +4,23 @@ from nextcord.ext import commands
 from datetime import datetime
 from nextcord import Interaction, SlashOption
 
+
 # Helper function for API requests
 async def request(url, *args, **kwargs):
     async with aiohttp.ClientSession() as session:
-        async with session.request('GET', url, *args, **kwargs) as response:
+        async with session.request("GET", url, *args, **kwargs) as response:
             return await response.json()
+
 
 def format_date(date_str):
     dt = datetime.fromisoformat(date_str)
     return dt.strftime("%B %d, %Y")
 
+
 def format_date_long(date_str):
     dt = datetime.fromisoformat(date_str)
     return dt.strftime("%b %d, %Y at %I:%M %p")
+
 
 class MAL_Anime(commands.Cog):
     def __init__(self, bot):
@@ -43,8 +47,10 @@ class MAL_Anime(commands.Cog):
                 cover_image = anime["images"]["jpg"]["image_url"]
                 url = anime.get("url")
                 mal_id = anime.get("mal_id")
-                genres = ", ".join([genre['name'] for genre in anime.get("genres", [])])
-                studios = ", ".join([studio['name'] for studio in anime.get("studios", [])])
+                genres = ", ".join([genre["name"] for genre in anime.get("genres", [])])
+                studios = ", ".join(
+                    [studio["name"] for studio in anime.get("studios", [])]
+                )
 
                 embed = nextcord.Embed(title=title, url=url, color=0x2E51A2)
                 embed.add_field(name="Type", value=type, inline=True)
@@ -58,7 +64,10 @@ class MAL_Anime(commands.Cog):
                 embed.set_footer(text=str(mal_id))
 
             else:
-                embed = nextcord.Embed(title="Anime not found or is NSFW; only SFW results are returned.", color=0x2E51A2)
+                embed = nextcord.Embed(
+                    title="Anime not found or is NSFW; only SFW results are returned.",
+                    color=0x2E51A2,
+                )
 
         except Exception as e:
             embed = nextcord.Embed(title="Error", description=str(e), color=0x2E51A2)
@@ -68,7 +77,7 @@ class MAL_Anime(commands.Cog):
     async def slash_anime(
         self,
         interaction: Interaction,
-        anime_name: str = SlashOption(description="Name of the anime")
+        anime_name: str = SlashOption(description="Name of the anime"),
     ):
         """Slash command for searching anime on MyAnimeList. Usage example: `/anime anime_name:Lycoris Recoil"""
         url = f"https://api.jikan.moe/v4/anime?q={anime_name}&limit=1??sfw"
@@ -89,8 +98,10 @@ class MAL_Anime(commands.Cog):
                 cover_image = anime["images"]["jpg"]["image_url"]
                 url = anime.get("url")
                 mal_id = anime.get("mal_id")
-                genres = ", ".join([genre['name'] for genre in anime.get("genres", [])])
-                studios = ", ".join([studio['name'] for studio in anime.get("studios", [])])
+                genres = ", ".join([genre["name"] for genre in anime.get("genres", [])])
+                studios = ", ".join(
+                    [studio["name"] for studio in anime.get("studios", [])]
+                )
 
                 embed = nextcord.Embed(title=title, url=url, color=0x2E51A2)
                 embed.add_field(name="Type", value=type, inline=True)
@@ -104,16 +115,20 @@ class MAL_Anime(commands.Cog):
                 embed.set_footer(text=str(mal_id))
 
             else:
-                embed = nextcord.Embed(title="Anime not found or is NSFW; only SFW results are returned.", color=0x2E51A2)
+                embed = nextcord.Embed(
+                    title="Anime not found or is NSFW; only SFW results are returned.",
+                    color=0x2E51A2,
+                )
 
         except Exception as e:
             embed = nextcord.Embed(title="Error", description=str(e), color=0x2E51A2)
         await interaction.response.send_message(embed=embed)
 
+
 class MAL_Manga(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command()
     async def manga(self, ctx: commands.Context, *, manga_name: str):
         """Command for searching manga on MyAnimeList. Usage example: `a?manga Shikanoko Nokonoko Koshitantan"""
@@ -129,7 +144,7 @@ class MAL_Manga(commands.Cog):
                 cover_image = manga["images"]["jpg"]["image_url"]
                 url = manga.get("url")
                 mal_id = manga.get("mal_id")
-                genres = ", ".join([genre['name'] for genre in manga.get("genres", [])])
+                genres = ", ".join([genre["name"] for genre in manga.get("genres", [])])
 
                 embed = nextcord.Embed(title=title, url=url, color=0x2E51A2)
                 if not status == "Publishing":
@@ -141,7 +156,10 @@ class MAL_Manga(commands.Cog):
                 embed.set_footer(text=str(mal_id))
 
             else:
-                embed = nextcord.Embed(title="Manga not found or is NSFW; only SFW results are returned.", color=0x2E51A2)
+                embed = nextcord.Embed(
+                    title="Manga not found or is NSFW; only SFW results are returned.",
+                    color=0x2E51A2,
+                )
 
         except Exception as e:
             embed = nextcord.Embed(title="Error", description=str(e), color=0x2E51A2)
@@ -151,7 +169,7 @@ class MAL_Manga(commands.Cog):
     async def slash_manga(
         self,
         interaction: Interaction,
-        manga_name: str = SlashOption(description="Name of the manga")
+        manga_name: str = SlashOption(description="Name of the manga"),
     ):
         """Slash command for searching manga on MyAnimeList. Usage example: `/manga manga_name:Shikanoko Nokonoko Koshitantan"""
         url = f"https://api.jikan.moe/v4/manga?q={manga_name}&limit=1?sfw"
@@ -166,7 +184,7 @@ class MAL_Manga(commands.Cog):
                 cover_image = manga["images"]["jpg"]["image_url"]
                 url = manga.get("url")
                 mal_id = manga.get("mal_id")
-                genres = ", ".join([genre['name'] for genre in manga.get("genres", [])])
+                genres = ", ".join([genre["name"] for genre in manga.get("genres", [])])
 
                 embed = nextcord.Embed(title=title, url=url, color=0x2E51A2)
                 if not status == "Publishing":
@@ -178,11 +196,15 @@ class MAL_Manga(commands.Cog):
                 embed.set_footer(text=str(mal_id))
 
             else:
-                embed = nextcord.Embed(title="Manga not found or is NSFW; only SFW results are returned.", color=0x2E51A2)
+                embed = nextcord.Embed(
+                    title="Manga not found or is NSFW; only SFW results are returned.",
+                    color=0x2E51A2,
+                )
 
         except Exception as e:
             embed = nextcord.Embed(title="Error", description=str(e), color=0x2E51A2)
         await interaction.response.send_message(embed=embed)
+
 
 class MAL_Profile(commands.Cog):
     def __init__(self, bot):
@@ -198,7 +220,7 @@ class MAL_Profile(commands.Cog):
                 embed = nextcord.Embed(title="User not found.", color=0x2E51A2)
                 await ctx.send(embed=embed)
                 return
-            
+
             user = profile_data["data"]
             profile_url = user.get("url")
             profile_pic = user.get("images", {}).get("jpg", {}).get("image_url", "")
@@ -213,17 +235,21 @@ class MAL_Profile(commands.Cog):
 
             stats_url = f"https://api.jikan.moe/v4/users/{username}/statistics"
             stats_data = await request(stats_url)
-            
-            anime_mean = stats_data.get("data", {}).get("anime", {}).get("mean_score", "N/A")
-            manga_mean = stats_data.get("data", {}).get("manga", {}).get("mean_score", "N/A")
+
+            anime_mean = (
+                stats_data.get("data", {}).get("anime", {}).get("mean_score", "N/A")
+            )
+            manga_mean = (
+                stats_data.get("data", {}).get("manga", {}).get("mean_score", "N/A")
+            )
 
             embed = nextcord.Embed(
                 title=f"{username}'s Profile",
                 url=profile_url,
                 description=f"[Anime List]({anime_list_url}) • [Manga List]({manga_list_url})",
-                color=0x2E51A2
+                color=0x2E51A2,
             )
-            
+
             if gender == "Not Specified":
                 gender_field_name = ":question: Gender"
             elif gender == "Male":
@@ -234,7 +260,7 @@ class MAL_Profile(commands.Cog):
                 gender_field_name = ":left_right_arrow: Gender"
             else:
                 gender_field_name = "Gender"
-                
+
             embed.add_field(name=gender_field_name, value=gender, inline=True)
             embed.add_field(name=":clock1: Last Online", value=last_online, inline=True)
             embed.add_field(name=":hourglass: Joined", value=joined, inline=True)
@@ -250,6 +276,7 @@ class MAL_Profile(commands.Cog):
             embed = nextcord.Embed(title="Error", description=str(e), color=0x2E51A2)
 
         await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(MAL_Anime(bot))

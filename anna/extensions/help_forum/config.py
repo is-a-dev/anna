@@ -3,10 +3,12 @@ import os
 
 load_dotenv()
 
+
 def replace_placeholders(string: str, placeholders: dict) -> str:
     for key, value in placeholders.items():
         string = string.replace(key, value)
     return string
+
 
 # Environment variables
 TOKEN = os.getenv("TOKEN")

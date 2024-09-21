@@ -2,13 +2,15 @@ from nextcord.ext import commands, application_checks
 import nextcord
 from __main__ import Bot
 
+
 class Errors(commands.Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
     @commands.Cog.listener()
-    
-    async def on_command_error(self, context: commands.Context, error: commands.CommandError) -> None:
+    async def on_command_error(
+        self, context: commands.Context, error: commands.CommandError
+    ) -> None:
         if isinstance(error, commands.NotOwner):
             embed = nextcord.Embed(
                 title="Error",

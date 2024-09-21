@@ -1,5 +1,5 @@
 {
-"reportOptionalMemberAccess": false,
-"reportAssignmentType": false,
-"reportIncompatibleMethodOverride": false
+    "reportOptionalMemberAccess": false,
+    "reportAssignmentType": false,
+    "reportIncompatibleMethodOverride": false
 }
