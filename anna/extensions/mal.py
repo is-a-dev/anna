@@ -118,7 +118,8 @@ class MAL_Manga(commands.Cog):
                 genres = ", ".join([genre['name'] for genre in manga.get("genres", [])])
 
                 embed = nextcord.Embed(title=title, url=url, color=nextcord.Color.blue())
-                embed.add_field(name="Chapters", value=chapters, inline=True)
+                if not status == "Publishing":
+                    embed.add_field(name="Chapters", value=chapters, inline=True)
                 embed.add_field(name="Score", value=score, inline=True)
                 embed.add_field(name="Status", value=status, inline=True)
                 embed.set_thumbnail(url=cover_image)
@@ -152,7 +153,8 @@ class MAL_Manga(commands.Cog):
                 genres = ", ".join([genre['name'] for genre in manga.get("genres", [])])
 
                 embed = nextcord.Embed(title=title, url=url, color=nextcord.Color.blue())
-                embed.add_field(name="Chapters", value=chapters, inline=True)
+                if not status == "Publishing":
+                    embed.add_field(name="Chapters", value=chapters, inline=True)
                 embed.add_field(name="Score", value=score, inline=True)
                 embed.add_field(name="Status", value=status, inline=True)
                 embed.set_thumbnail(url=cover_image)
