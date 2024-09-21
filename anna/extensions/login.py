@@ -14,7 +14,7 @@ class LoginButton(nextcord.ui.View):
             nextcord.ui.Button(
                 label="Login",
                 style=nextcord.ButtonStyle.link,  # Use link style for URL button
-                url=f"https://anna-oauth.p2pbe.dev/login?uuid={dynamic_uuid}"  # URL with dynamic UUID
+                url=f"https://anna-oauth.p2pb.dev/login?uuid={dynamic_uuid}"  # URL with dynamic UUID
             )
         )
 
