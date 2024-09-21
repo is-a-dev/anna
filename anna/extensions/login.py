@@ -1,15 +1,20 @@
 import nextcord
 from nextcord.ext import commands
+import uuid
 
 
 class LoginButton(nextcord.ui.View):
     def __init__(self):
         super().__init__()
+        # Generate a dynamic UUID
+        dynamic_uuid = str(uuid.uuid4())
+        
+        # Add the button as a URL button
         self.add_item(
             nextcord.ui.Button(
                 label="Login",
-                style=nextcord.ButtonStyle.primary,
-                custom_id="login_button",
+                style=nextcord.ButtonStyle.link,  # Use link style for URL button
+                url=f"https://anna-oauth.p2pbe.dev/login?uuid={dynamic_uuid}"  # URL with dynamic UUID
             )
         )
 
