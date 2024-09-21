@@ -27,10 +27,6 @@ _faq_answer: Dict[str, _QA] = {
         "How long does it take for my domain to get approved?",
         "When we get into it. We always want you to wait for as short as possible. But maintainers cannot always be online. We have school and work, this is just a side project. Just be patient and we'll get to it as soon as possible! For a chance for a quicker review, send your PR in <#1130858271620726784>. Asking when your PR will be approved may result in a mute.",
     ),
-    "service": _QA(
-        "What services do you support?",
-        "We support nearly every service except for Vercel and Netlify.",
-    ),
     "nested": _QA(
         "Can I create nested subdomains? (also known as sub-sub domains)",
         "Yes, you can! Simply create a file such as `blog.example.json` and make the file content the same as if you were registering `example.json`. Please note in order to have `blog.example.is-a.dev`, you need to own `example.is-a.dev`.",
@@ -74,9 +70,6 @@ class FAQDropdown(nextcord.ui.Select):
             nextcord.SelectOption(
                 label="How long does it take for my domain to be approved?",
                 value="waittime",
-            ),
-            nextcord.SelectOption(
-                label="What services do you support?", value="service"
             ),
             nextcord.SelectOption(
                 label="Can I create nested subdomains?", value="nested"

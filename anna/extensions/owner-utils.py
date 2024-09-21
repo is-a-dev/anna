@@ -1,33 +1,40 @@
-# Copyright (c) 2024 - present, MaskDuck
-
 import nextcord
 from nextcord.ext import commands
 import os
 from __main__ import extensions
 
-class Testings(commands.Cog):
+class OwnerUtils(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self._bot: commands.Bot = bot
 
     @commands.command()
     @commands.is_owner()
-    async def hinder(self, ctx: commands.Context, cmd: str):
+    async def disable(self, ctx: commands.Context, command: str):
         if cmd == "hinder":
             await ctx.send("You cannot hinder the hinder command.")
         else:
-            command = self._bot.get_command(cmd)
+            command = self._bot.get_command(command)
             if command is None:
                 await ctx.send("Command not found.")
                 return
             command.enabled = not command.enabled
-            await ctx.send("Successfully hindered ${cmd}.")
+            await ctx.send(f"Successfully hindered {command}.")
 
     @commands.command()
     @commands.is_owner()
-    async def test_owner_perm(self, ctx: commands.Context):
-        await ctx.send("You have owner level permissions when interacting with Anna.")
-    
-    @commands.command()
+    async def owner(self, ctx: commands.Context):
+        owner_names = []
+        for owner_id in self._bot.owner_ids:
+            owner = self._bot.get_user(owner_id) or await self._bot.fetch_user(owner_id)
+            if owner:
+                owner_names.append(owner.display_name)
+            else:
+                owner_names.append(f"Unknown User (ID: {owner_id})")
+
+        owner_names_str = ", ".join(owner_names)
+        await ctx.send(f"You have owner-level permissions when interacting with Anna. Anna's current owners are: {owner_names_str}")
+
+    @commands.command(aliases=["rx"])
     @commands.is_owner()
     async def reload_exts(self, ctx: commands.Context, *args):
         if not args:
@@ -56,10 +63,10 @@ class Testings(commands.Cog):
         else:
             try:
                 extension = args[0]
-                self._bot.reload_extension(extension)
-                await ctx.send(f"Successfully reloaded `{extension}`.")
-            except Exception as e:
-                await ctx.send(f"Failed to reload `{extension}`: {e}")
+                self._bot.reload_extension("extensions." + extension)
+                await ctx.send(f"Successfully reloaded `extensions.{extension}`.")
+            except Exception as error:
+                await ctx.send(f"Failed to reload `{extension}`: {error}")
 
     @commands.command()
     @commands.is_owner()
@@ -67,17 +74,26 @@ class Testings(commands.Cog):
         await ctx.bot.sync_application_commands()
         await ctx.send("Successfully synced bot application commands.")
 
-    @commands.command()
-    @commands.has_role(830875873027817484)
-    async def disable_oneword_cog(self, ctx: commands.Context) -> None:
+    @commands.command(aliases=["ux"])
+    @commands.is_owner()
+    async def unload(self, ctx: commands.Context, *args) -> None:
+        extension = args[0]
         try:
-            self._bot.unload_extension("extensions.oneword")
+            self._bot.unload_extension("extensions." + extension)
+            await ctx.send(f"Successfully unloaded `extensions.{extension}`.")
         except commands.ExtensionNotLoaded:
-            await ctx.send("The <#1225794824649838612> was already unloaded.")
-        await ctx.send(
-            "Successfully unloaded the <#1225794824649838612> cog."
-        )
+            await ctx.send(f"`extensions.{extension}` was already unloaded.")
+
+    @commands.command(aliases=["lx"])
+    @commands.is_owner()
+    async def load(self, ctx: commands.Context, *args) -> None:
+        extension = args[0]
+        try:
+            self._bot.load_extension("extensions." + extension)
+        except commands.ExtensionAlreadyLoaded:
+            await ctx.send(f"'extensions.{extension}' was already loaded.")
+        await ctx.send(f"Successfully loaded `extensions.{extension}`.")
 
 
 def setup(bot: commands.Bot) -> None:
-    bot.add_cog(Testings(bot))
+    bot.add_cog(OwnerUtils(bot))

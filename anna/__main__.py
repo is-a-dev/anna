@@ -14,7 +14,6 @@ from web import app
 # Load environment variables
 load_dotenv()
 
-
 def run_flask():
     app.run(host='0.0.0.0', port=5000)
 
@@ -57,24 +56,19 @@ bot = Bot(
     command_prefix="a!" if os.getenv("TEST") else "a?",
     case_insensitive=True,
     help_command=help_commands.PaginatedHelpCommand(),
-    owner_ids=[716306888492318790, 961063229168164864, 598245488977903688],  # cutedog, orangc, andrew
+    owner_ids=[961063229168164864, 716306888492318790, 598245488977903688],  # orangc, cutedog, andrew
     allowed_mentions=nextcord.AllowedMentions(everyone=False, roles=False, users=True, replied_user=True),
-    activity=nextcord.Activity(
-        type=nextcord.ActivityType.watching,
-        name="is-a.dev"
-    )
-)
+    activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="is-a.dev"))
 
-extensions = ["extensions.help_forum.help_system", "extensions.antihoist", "extensions.fun", "extensions.faq",
-              "extensions.antiphishing", "extensions.testing_functions", "extensions.nonsense", "extensions.dns",
-              "extensions.suggestions", "extensions.delete_response", "extensions.github", "extensions.oneword",
-              "extensions.utils", "extensions.ping_cutedog", "errors", "extensions.topic", "extensions.counting",
-              "extensions.starboard"]
+extensions = ["extensions.fun", "extensions.faq", "extensions.antiphishing", "extensions.owner-utils",
+              "extensions.nonsense", "extensions.dns", "extensions.suggestions", "extensions.github",
+              "extensions.oneword", "extensions.utils", "extensions.ping_cutedog",
+              "errors", "extensions.topic", "extensions.starboard", "onami"]
 
-if nextcord.version_info < (3, 0, 0):
-    extensions.append("onami")
 if os.getenv("HASDB"):
-    extensions.append("extensions.tags_reworked")
+    database_extensions = ["extensions.tags_reworked", "extensions.counting", "extensions.help_forum.help_system"]
+    for extension in database_extensions:
+        extensions.append(extension)
 for extension in extensions:
     bot.load_extension(extension)
 
@@ -83,4 +77,3 @@ if __name__ == "__main__":
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
     bot.run(environ["TOKEN"])
-
