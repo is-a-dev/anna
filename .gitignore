@@ -4,4 +4,3 @@ anna/extensions/__pycache__
 anna/extensions/help_forum/__pycache__
 database
 .env
-anna/extensions/mal_linking_system.py
