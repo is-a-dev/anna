@@ -11,6 +11,7 @@ from motor.motor_asyncio import (
 )  # Use motor for async MongoDB operations
 import asyncio
 from extensions.help_forum.database import HelpDatabase
+from aiohttp import web
 from web import app
 
 # Load environment variables
@@ -26,6 +27,10 @@ class Bot(commands.Bot):
         super().__init__(*args, **kwargs)
         self.hdb = HelpDatabase(os.getenv("MONGO"), "anna")
         self.persistent_views_added = False
+        runner = web.AppRunner(app)
+        await runner.setup()
+        site = web.TCPSite(runner, 'localhost', 8080)
+        await site.start()
 
     async def setup_database(self) -> None:
         """Setup MongoDB connection and collections"""

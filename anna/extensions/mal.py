@@ -227,8 +227,8 @@ class MAL_Profile(commands.Cog):
             gender = user.get("gender") or "Not Specified"
             last_online = format_date_long(user.get("last_online"))
             joined = format_date(user.get("joined"))
-            location = user.get("location") or "Unknown"
-            birthday = user.get("birthday") or "Unknown"
+            location = user.get("location") or "Not Specified"
+            birthday = user.get("birthday") or "Not Specified"
             mal_id = user.get("mal_id")
             anime_list_url = f"https://myanimelist.net/animelist/{username}"
             manga_list_url = f"https://myanimelist.net/mangalist/{username}"
@@ -237,10 +237,10 @@ class MAL_Profile(commands.Cog):
             stats_data = await request(stats_url)
 
             anime_mean = (
-                stats_data.get("data", {}).get("anime", {}).get("mean_score", "N/A")
+                stats_data.get("data", {}).get("anime", {}).get("mean_score")
             )
             manga_mean = (
-                stats_data.get("data", {}).get("manga", {}).get("mean_score", "N/A")
+                stats_data.get("data", {}).get("manga", {}).get("mean_score")
             )
 
             embed = nextcord.Embed(
@@ -273,7 +273,7 @@ class MAL_Profile(commands.Cog):
                 embed.set_thumbnail(url=profile_pic)
 
         except Exception as e:
-            embed = nextcord.Embed(title="Error", description=str(e), color=0x2E51A2)
+            embed = nextcord.Embed(title="Error", description=str(e), color=nextcord.Color.red())
 
         await ctx.send(embed=embed)
 
