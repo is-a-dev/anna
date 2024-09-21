@@ -1,19 +1,21 @@
+# Use the latest official Python image as a base image
 FROM python:latest
 
-# Set the working directory for the container
+# Set the working directory in the container to /app
 WORKDIR /app
 
-# Install git to clone the repository
-RUN apt-get update && apt-get install -y git
+# Copy the requirements.txt file to the working directory
+COPY requirements.txt ./
 
-# Clone the repository from GitHub
-RUN git clone https://github.com/is-a-dev/owl.git /app
+# Install pip and the Python dependencies listed in requirements.txt
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-# Navigate to the repository folder
-WORKDIR /app
+# Copy the rest of the application code to the working directory
+COPY . .
 
-# Install the dependencies from requirements.txt
-RUN pip install -r requirements.txt
+# Copy the .git directory to the working directory (if needed)
+COPY .git /app/.git
 
-# Set the default command to run the app
+# Specify the command to run the application
 CMD ["python3", "anna"]
