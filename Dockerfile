@@ -14,8 +14,5 @@ RUN pip install --upgrade pip && \
 # Copy the rest of the application code to the working directory
 COPY . .
 
-# Copy the .git directory to the working directory (if needed)
-COPY .git /app/.git
-
 # Specify the command to run the application
 CMD ["python3", "anna"]
