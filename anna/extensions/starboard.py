@@ -5,7 +5,7 @@ from nextcord import SlashOption
 class Starboard(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.db = bot.db
+        self.db = AsyncIOMotorClient(os.getenv("MONGO")).get_database("anna")
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: nextcord.RawReactionActionEvent):
