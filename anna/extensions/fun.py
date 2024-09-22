@@ -1,7 +1,7 @@
 # Copyright (c) 2024 - present, MaskDuck
 
 from __future__ import annotations
-
+import urllib.parse
 import aiohttp
 import dotenv
 import nextcord
@@ -65,6 +65,19 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self._bot = bot
         latency = bot.latency
+    
+    @commands.command(name="avatar")
+    async def avatar(self, ctx: commands.Context, member: nextcord.Member = None):
+        member = member or ctx.author
+        embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=nextcord.Color.blue())
+        embed.set_image(url=member.avatar.url)
+        await ctx.send(embed=embed)
+        
+    @commands.command(name="google")
+    async def google(self, ctx: commands.Context, *, query: str):
+        query = urllib.parse.quote_plus(query)
+        url = f"https://www.google.com/search?q={query}"
+        await ctx.send(f"Here are the Google search results for: {query}\n{url}")
 
     @commands.command()
     async def bonk(self, ctx):

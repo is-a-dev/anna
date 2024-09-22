@@ -6,16 +6,12 @@ import nextcord
 from nextcord.ext import commands, help_commands, tasks
 from nextcord.ext import application_checks as ac
 from dotenv import load_dotenv
-from motor.motor_asyncio import (
-    AsyncIOMotorClient,
-)  # Use motor for async MongoDB operations
+from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
 from extensions.help_forum.database import HelpDatabase
 from web import app
 
-# Load environment variables
 load_dotenv()
-
 
 def run_flask():
     app.run(host="0.0.0.0", port=5000)
@@ -93,6 +89,9 @@ extensions = [
     "extensions.starboard",
     "onami",
     "extensions.mal",
+    "extensions.roles",
+    "extensions.snipe",
+    "extensions.info"
 ]
 
 if os.getenv("HASDB"):
