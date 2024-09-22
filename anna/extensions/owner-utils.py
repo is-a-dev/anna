@@ -21,21 +21,26 @@ class OwnerUtils(commands.Cog):
             command.enabled = not command.enabled
             await ctx.send(f"Successfully hindered {command}.")
 
-    @commands.command()
-    @commands.is_owner()
+    @commands.command(aliases=["maintainer","perms"])
     async def owner(self, ctx: commands.Context):
         owner_names = []
         for owner_id in self._bot.owner_ids:
             owner = self._bot.get_user(owner_id) or await self._bot.fetch_user(owner_id)
             if owner:
-                owner_names.append(owner.display_name)
+                owner_names.append("**" + owner.display_name + "**")
+                is_owner = True
             else:
                 owner_names.append(f"Unknown User (ID: {owner_id})")
 
         owner_names_str = ", ".join(owner_names)
-        await ctx.send(
-            f"You have owner-level permissions when interacting with Anna. Anna's current owners are: {owner_names_str}"
-        )
+        if is_owner:
+            await ctx.send(
+                f"You have maintainer-level permissions when interacting with Anna. Current users who hold maintainer-level permissions: {owner_names_str}"
+            )
+        else:
+            await ctx.send(
+                f"You are not a maintainer of Anna. Current users who hold maintainer-level permissions: {owner_names_str}"
+            )
 
     @commands.command(aliases=["rx"])
     @commands.is_owner()
