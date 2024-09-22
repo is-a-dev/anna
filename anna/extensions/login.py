@@ -4,11 +4,14 @@ import uuid
 
 
 class LoginButton(nextcord.ui.View):
-    def __init__(self):
+    def __init__(self, bot, user_id):
         super().__init__()
-        # Generate a dynamic UUID
+        self.bot = bot
         dynamic_uuid = str(uuid.uuid4())
-        
+
+        # Store UUID, user ID, and set used to False
+        self.bot.loop.create_task(self.store_uuid(dynamic_uuid, user_id))
+
         # Add the button as a URL button
         self.add_item(
             nextcord.ui.Button(
@@ -17,6 +20,14 @@ class LoginButton(nextcord.ui.View):
                 url=f"https://anna-oauth.p2pb.dev/login?uuid={dynamic_uuid}"  # URL with dynamic UUID
             )
         )
+
+    async def store_uuid(self, dynamic_uuid, user_id):
+        # Insert UUID and user ID into MongoDB with used=False
+        await self.bot.db.login_data.insert_one({
+            "uuid": dynamic_uuid,
+            "user_id": user_id,
+            "used": False
+        })
 
 
 class Login(commands.Cog):
@@ -29,8 +40,15 @@ class Login(commands.Cog):
 
     @commands.command()
     async def login(self, ctx):
-        view = LoginButton()
+        view = LoginButton(self.bot, ctx.author.id)
         await ctx.send("Click the button to login:", view=view)
+
+    # Example of updating the `used` field to True after successful login
+    async def mark_uuid_as_used(self, uuid):
+        await self.bot.db.login_data.update_one(
+            {"uuid": uuid},
+            {"$set": {"used": True}}
+        )
 
 
 def setup(bot):
