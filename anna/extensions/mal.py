@@ -29,7 +29,7 @@ class MAL_Anime(commands.Cog):
     @commands.command()
     async def anime(self, ctx: commands.Context, *, anime_name: str):
         """Command for searching anime on MyAnimeList. Usage example: `a?anime Lycoris Recoil"""
-        url = f"https://api.jikan.moe/v4/anime?q={anime_name}&limit=1?sfw"
+        url = f"https://api.jikan.moe/v4/anime?q={anime_name}&limit=1&sfw"
         try:
             data = await request(url)
             if data and data.get("data"):
@@ -132,7 +132,7 @@ class MAL_Manga(commands.Cog):
     @commands.command()
     async def manga(self, ctx: commands.Context, *, manga_name: str):
         """Command for searching manga on MyAnimeList. Usage example: `a?manga Shikanoko Nokonoko Koshitantan"""
-        url = f"https://api.jikan.moe/v4/manga?q={manga_name}&limit=1?sfw"
+        url = f"https://api.jikan.moe/v4/manga?q={manga_name}&limit=1&sfw"
         try:
             data = await request(url)
             if data and data.get("data"):
