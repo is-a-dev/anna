@@ -62,7 +62,7 @@ class Bot(commands.Bot):
 # Define the bot
 bot = Bot(
     intents=nextcord.Intents.all(),
-    command_prefix="a!" if os.getenv("TEST") else "a?",
+    command_prefix=os.getenv("PREFIX"),
     case_insensitive=True,
     help_command=help_commands.PaginatedHelpCommand(),
     owner_ids=[
