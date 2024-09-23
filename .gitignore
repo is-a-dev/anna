@@ -3,7 +3,7 @@ anna/__pycache__
 anna/extensions/__pycache__
 anna/extensions/help_forum/__pycache__
 anna/extensions/libs/__pycache__
-anna/extensions/utils/__pycache__
+anna/extensions/util/__pycache__
 anna/extensions/fun/__pycache__
 database
 .env
