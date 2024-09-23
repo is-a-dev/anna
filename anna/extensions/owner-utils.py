@@ -48,7 +48,7 @@ class OwnerUtils(commands.Cog):
         owner_names_str = ", ".join(owner_names)
         if is_owner:
             await ctx.reply(
-                f"You have maintainer-level permissions when interacting with Anna. Current users who hold maintainer-level permissions: {owner_names_str}"
+                f"You have maintainer level permissions when interacting with Anna. Current users who hold maintainer level permissions: {owner_names_str}"
             , mention_author=False)
         else:
             await ctx.reply(

@@ -1,10 +1,8 @@
 from __future__ import annotations
 import os
 import threading
-from os import environ
 import nextcord
 from nextcord.ext import commands, help_commands, tasks
-from nextcord.ext import application_checks as ac
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
@@ -54,8 +52,6 @@ class Bot(commands.Bot):
         # Ensure the database is set up
         await self.setup_database()
 
-
-# Define the bot
 bot = Bot(
     intents=nextcord.Intents.all(),
     command_prefix=os.getenv("PREFIX"),
@@ -73,30 +69,33 @@ bot = Bot(
 )
 
 extensions = [
-    "extensions.fun",
-    "extensions.faq",
-    "extensions.antiphishing",
-    "extensions.owner-utils",
-    "extensions.nonsense",
-    "extensions.util.dns",
-    "extensions.suggestions",
-    "extensions.github",
-    "extensions.oneword",
-    "extensions.utils",
-    "extensions.ping_cutedog",
-    "errors",
-    "extensions.topic",
-    "extensions.starboard",
     "onami",
-    "extensions.mal",
-    "extensions.roles",
-    "extensions.snipe",
-    "extensions.info"
+    "extensions.faq",
+    "extensions.owner-utils",
+    "extensions.suggestions",
+    "extensions.oneword",
+    "extensions.errors",
+    "extensions.starboard",
+    "extensions.listeners.ping_cutedog",
+    "extensions.listeners.github",
+    "extensions.listeners.antiphishing",
+    "extensions.fun.fun",
+    "extensions.fun.topic",
+    "extensions.fun.anime",
+    "extensions.fun.manga",
+    "extensions.fun.ubdict",
+    "extensions.util.utils",
+    "extensions.util.roles",
+    "extensions.util.snipe",
+    "extensions.util.info",
+    "extensions.util.screenshot",
+    "extensions.util.subdomains",
+    "extensions.util.dns",
 ]
 
 if os.getenv("HASDB"):
     database_extensions = [
-        "extensions.tags_reworked",
+        "extensions.tags",
         "extensions.counting",
         "extensions.help_forum.help_system",
     ]
@@ -109,4 +108,4 @@ if __name__ == "__main__":
     # Start the Flask app in a separate thread
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
-    bot.run(environ["TOKEN"])
+    bot.run(os.getenv("TOKEN"))

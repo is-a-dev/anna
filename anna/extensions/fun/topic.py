@@ -1,6 +1,6 @@
 import random
 from nextcord.ext import commands
-from extensions.topics_list import topics
+from extensions.libs.topics_list import topics
 
 
 class Topic(commands.Cog):

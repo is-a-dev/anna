@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Dict, List
 import nextcord
 from nextcord.ext import commands
 
-
 class _QA:
     def __init__(self, question: str, answer: str) -> None:
         self.question: str = question
@@ -52,7 +51,6 @@ _faq_answer: Dict[str, _QA] = {
         "This usually happens because your host has not issued a SSL certificate for your subdomain, please wait for it to be issued, or contact your host for further information.",
     ),
 }
-
 
 class FAQDropdown(nextcord.ui.Select):
     if TYPE_CHECKING:
@@ -109,6 +107,29 @@ class FAQDropdown(nextcord.ui.Select):
         )
         await self._message.edit(embed=embed, view=self.view)
 
+class LinkView(nextcord.ui.View):
+    def __init__(self):
+        super().__init__()
+
+        self.add_item(
+            nextcord.ui.Button(label="Main Website", url="https://is-a.dev", row=1)
+        )
+        self.add_item(
+            nextcord.ui.Button(
+                label="Documentation", url="https://is-a.dev/docs", row=1
+            )
+        )
+        self.add_item(
+            nextcord.ui.Button(
+                label="Register a domain!",
+                url="https://github.com/is-a-dev/register",
+                row=1,
+            )
+        )
+        self.add_item(
+            nextcord.ui.Button(label="GitHub", url="https://github.com/is-a-dev", row=1)
+        )
+        # self.add_item(nextcord.ui.Button(label="Help Channel", url="", row=4))
 
 class FAQView(nextcord.ui.View):
     def __init__(self):
@@ -148,6 +169,30 @@ class FAQ(commands.Cog):
         m = await interaction.send(embed=embed, view=k)
         k.update_msg(m)  # type: ignore[reportArgumentType]
 
+class Links(commands.Cog):
+    def __init__(self, bot: commands.Bot):
+        self._bot: commands.Bot = bot
+
+    @commands.command()
+    async def links(self, ctx: commands.Context):
+        """Links to the is-a.dev documentation, FAQ, etc."""
+        embed = nextcord.Embed(
+            title="Links that are important to this service.",
+            description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
+            color=nextcord.Color.blue(),
+        )
+        await ctx.reply(embed=embed, view=LinkView(), mention_author=False)
+    
+    @nextcord.slash_command(name="links")
+    async def links_slash(self, interaction: nextcord.Interaction) -> None:
+        embed = nextcord.Embed(
+            title="Links that are important to this service.",
+            description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
+            color=nextcord.Color.blue(),
+        )
+        await interaction.send(embed=embed, view=LinkView())
+
 
 def setup(bot):
     bot.add_cog(FAQ(bot))
+    bot.add_cog(Links(bot))

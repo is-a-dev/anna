@@ -19,6 +19,7 @@ class Snipe(commands.Cog):
     @commands.command(name="snipe")
     @commands.has_permissions(manage_messages=True)
     async def snipe(self, ctx: commands.Context):
+        """Snipes and displays the last deleted message in an embed."""
         sniped_message = self.sniped_messages.get(ctx.channel.id)
 
         if not sniped_message:

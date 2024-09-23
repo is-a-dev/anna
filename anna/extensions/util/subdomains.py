@@ -9,54 +9,15 @@ from typing import TYPE_CHECKING, Optional, cast
 
 import aiohttp
 import nextcord
-from nextcord import (
-    HTTPException,
-    Interaction,
-    Object,
-    SlashOption,
-    TextChannel,
-    slash_command,
-)
 from nextcord.ext import application_checks as ac
 from nextcord.ext import commands
 
-from .libs.converters import (
-    EnsureHTTPConverter,
-    SlashEnsureHTTPConverter,
-    SlashSubdomainNameConverter,
-    SubdomainNameConverter,
-)
-from .libs.types import Domain
+from extensions.libs.converters import SlashSubdomainNameConverter, SubdomainNameConverter
+from extensions.libs.types import Domain
 
 
 class DomainNotExistError(commands.CommandError):
     """Error raised when domain cannot be found."""
-
-
-class LinkView(nextcord.ui.View):
-    def __init__(self):
-        super().__init__()
-
-        self.add_item(
-            nextcord.ui.Button(label="Main Website", url="https://is-a.dev", row=1)
-        )
-        self.add_item(
-            nextcord.ui.Button(
-                label="Documentation", url="https://is-a.dev/docs", row=1
-            )
-        )
-        self.add_item(
-            nextcord.ui.Button(
-                label="Register a domain!",
-                url="https://github.com/is-a-dev/register",
-                row=1,
-            )
-        )
-        self.add_item(
-            nextcord.ui.Button(label="GitHub", url="https://github.com/is-a-dev", row=1)
-        )
-        # self.add_item(nextcord.ui.Button(label="Help Channel", url="", row=4))
-
 
 async def request(requesting_domain: bool = False, *args, **kwargs):
     async with aiohttp.ClientSession() as session:
@@ -69,41 +30,11 @@ async def request(requesting_domain: bool = False, *args, **kwargs):
 request.__doc__ = aiohttp.ClientSession.request.__doc__
 
 
-class Nonsense(commands.Cog):
+class SubdomainUtils(commands.Cog):
     """Various utility commands."""
 
     def __init__(self, bot: commands.Bot) -> None:
         self._bot: commands.Bot = bot
-
-    @commands.command()
-    async def links(self, ctx: commands.Context):
-        """Links to the is-a.dev documentation, FAQ, etc."""
-        embed = nextcord.Embed(
-            title="Links that are important to this service.",
-            description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
-            color=nextcord.Color.blue(),
-        )
-        await ctx.reply(embed=embed, view=LinkView(), mention_author=False)
-
-    @commands.command()
-    async def regex(self, ctx: commands.Context, pattern: str, string: str):
-        r: Optional[re.Match] = re.fullmatch(pattern, string)
-        if r:
-            await ctx.message.add_reaction("✅")
-        else:
-            await ctx.message.add_reaction("❌")
-
-    @commands.command()
-    async def screenshot(self, ctx: commands.Context, url: EnsureHTTPConverter):
-        """Screenshots a webpage. Usage: `a?screenshot https://example.com`."""
-        await ctx.reply(
-            embed=nextcord.Embed(
-                title="Screenshot",
-                description=f"[Open in browser for fast rendering](http://image.thum.io/get/{url})",
-                color=nextcord.Color.blue(),
-            )
-        , mention_author=False)
-
     @classmethod
     def fetch_description_about_a_domain(cls, data: Domain):
         parsed_contact = {}
@@ -144,7 +75,6 @@ class Nonsense(commands.Cog):
         else:
             repo_desc = None
 
-        # do not ask about the description of this thing
         my_description = f"""
         {contact_desc}
 
@@ -160,7 +90,7 @@ class Nonsense(commands.Cog):
     async def whois(
         self, ctx: commands.Context, domain: SubdomainNameConverter
     ) -> None:
-        """Lookup information about an is-a.dev domain."""
+        """Lookup information about an is-a.dev domain. Usage: `a?whois domain.is-a.dev`."""
         k = nextcord.ui.View()
         k.add_item(
             nextcord.ui.Button(
@@ -189,7 +119,7 @@ class Nonsense(commands.Cog):
     async def check(
         self, ctx: commands.Context, domain: SubdomainNameConverter
     ) -> None:
-        """Checks if an is-a.dev domain is available."""
+        """Checks if an is-a.dev domain is available. Usage: `a?check domain.is-a.dev`."""
         try:
             await request(
                 True,
@@ -209,27 +139,15 @@ class Nonsense(commands.Cog):
             await ctx.reply(embed=embed, mention_author=False)
 
 
-class NonsenseSlash(commands.Cog):
+class SubdomainUtilsSlash(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self._bot: commands.Bot = bot
-
-    @nextcord.slash_command()
-    async def ban(
-        self,
-        interaction: nextcord.Interaction,
-        user: nextcord.Member = SlashOption(
-            description="The member to ban", required=True
-        ),
-        reason: str = SlashOption(description="The reason to ban", required=True),
-    ) -> None:
-        """A fake ban command."""
-        await interaction.send(f"Banned <@{user.id}> for **{reason}**")
 
     @nextcord.slash_command()
     async def check(
         self,
         interaction: nextcord.Interaction,
-        domain: SlashSubdomainNameConverter = SlashOption(
+        domain: SlashSubdomainNameConverter = nextcord.SlashOption(
             description="The domain name to check for.", required=True
         ),
     ) -> None:
@@ -251,11 +169,11 @@ class NonsenseSlash(commands.Cog):
             )
             await interaction.send(embed=embed)
 
-    @slash_command()
+    @nextcord.slash_command()
     async def whois(
         self,
-        interaction: Interaction,
-        domain: SlashSubdomainNameConverter = SlashOption(
+        interaction: nextcord.Interaction,
+        domain: SlashSubdomainNameConverter = nextcord.SlashOption(
             description="The is-a.dev domain name to lookup information for.",
             required=True,
         ),
@@ -286,37 +204,6 @@ class NonsenseSlash(commands.Cog):
         except DomainNotExistError:
             await interaction.send("Domain requested cannot be found. Aborting.")
 
-    @slash_command()
-    async def links(self, interaction: Interaction) -> None:
-        embed = nextcord.Embed(
-            title="Links that are important to this service.",
-            description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
-            color=nextcord.Color.blue(),
-        )
-        await interaction.send(embed=embed, view=LinkView())
-
-    @slash_command()
-    async def screenshot(self, interaction: Interaction) -> None:
-        pass
-
-    @screenshot.subcommand()
-    async def from_url(
-        self,
-        interaction: Interaction,
-        url: SlashEnsureHTTPConverter = SlashOption(
-            description="The URL to screenshot", required=True
-        ),
-    ) -> None:
-        """Screenshot an URL."""
-        await interaction.send(
-            embed=nextcord.Embed(
-                title="Screenshot",
-                description=f"[Open in browser for fast rendering](https://image.thum.io/get/{url})",
-                color=nextcord.Color.blue(),
-            )
-        )
-
-
 def setup(bot: commands.Bot):
-    bot.add_cog(Nonsense(bot))
-    bot.add_cog(NonsenseSlash(bot))
+    bot.add_cog(SubdomainUtils(bot))
+    bot.add_cog(SubdomainUtilsSlash(bot))

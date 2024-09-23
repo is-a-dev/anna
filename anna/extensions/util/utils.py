@@ -29,7 +29,7 @@ class Utils(commands.Cog):
         *,
         message: str,
     ):
-        """Send a message as Takina."""
+        """Send a message as Takina. Usage: `a?send channel message`."""
         if channel and message:
             await channel.send(message)
         elif message:
@@ -40,7 +40,7 @@ class Utils(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx: commands.Context, amount: int):
-        """Purges a specified number of messages."""
+        """Purges a specified number of messages. Usage: `a?purge number`, where number is the number of messages you would like to purge."""
 
         # Ensure the number is a positive integer
         if amount <= 0:
@@ -53,6 +53,7 @@ class Utils(commands.Cog):
     @commands.command(aliases=["setnick"])
     @commands.has_permissions(manage_nicknames=True)
     async def nick(self, ctx: commands.Context, member: str = None, *, nickname: str = None):
+        """Change a members nickname. Usage: `a?setnick member new_nickname`."""
         if member is None:
             member = ctx.author
         else:

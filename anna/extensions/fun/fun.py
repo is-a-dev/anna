@@ -87,28 +87,6 @@ class Fun(commands.Cog):
         k.update_msg(msg)
 
     @commands.command()
-    async def ubdict(self, ctx: commands.Context, *, word: str):
-        """Query Urban Dictionary. Contributed by vaibhav."""
-        params = {"term": word}
-        async with aiohttp.ClientSession() as session:
-            async with session.get(
-                "https://api.urbandictionary.com/v0/define", params=params
-            ) as response:
-                data = await response.json()
-        if not data["list"]:
-            return await ctx.reply("No results found.", mention_author=False)
-        embed = nextcord.Embed(
-            title=data["list"][0]["word"],
-            description=data["list"][0]["definition"],
-            url=data["list"][0]["permalink"],
-            color=nextcord.Color.green(),
-        )
-        embed.set_footer(
-            text=f"👍 {data['list'][0]['thumbs_up']} | 👎 {data['list'][0]['thumbs_down']} | Powered by: Urban Dictionary"
-        )
-        await ctx.reply(embed=embed, mention_author=False)
-
-    @commands.command()
     async def httpcat(self, ctx: commands.Context, code: int = 406):
         """Fetch an HTTP Cat image from the http.cat API."""
         await ctx.reply(f"https://http.cat/{code}", mention_author=False)
@@ -157,33 +135,6 @@ class FunSlash(commands.Cog):
     ) -> None:
         r = await request("GET", "https://yesno.wtf/api")
         await interaction.send(f"answer: [{r['answer']}]({r['image']})")
-
-    @nextcord.slash_command()
-    async def ubdict(
-        self,
-        interaction: nextcord.Interaction,
-        word: str = SlashOption(description="The word to search for", required=True),
-    ) -> None:
-        params = {"term": word}
-        async with aiohttp.ClientSession() as session:
-            async with session.get(
-                "https://api.urbandictionary.com/v0/define", params=params
-            ) as response:
-                data = await response.json()
-        if not data["list"]:
-            await interaction.send("No results found.")
-            return
-        embed = nextcord.Embed(
-            title=data["list"][0]["word"],
-            description=data["list"][0]["definition"],
-            url=data["list"][0]["permalink"],
-            color=nextcord.Color.green(),
-        )
-        embed.set_footer(
-            text=f"👍 {data['list'][0]['thumbs_up']} | 👎 {data['list'][0]['thumbs_down']} | Powered by: Urban Dictionary"
-        )
-        await interaction.send(embed=embed)
-
 
 def setup(bot):
     bot.add_cog(Fun(bot))
