@@ -109,12 +109,6 @@ class Fun(commands.Cog):
         await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command()
-    async def ping(self, ctx: commands.Context):
-        """Ping the bot."""
-        latency = round(self._bot.latency * 1000)
-        await ctx.reply(f"Success! Anna is awake. Ping: {latency}ms", mention_author=False)
-
-    @commands.command()
     async def httpcat(self, ctx: commands.Context, code: int = 406):
         """Fetch an HTTP Cat image from the http.cat API."""
         await ctx.reply(f"https://http.cat/{code}", mention_author=False)
