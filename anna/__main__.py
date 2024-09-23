@@ -68,42 +68,45 @@ bot = Bot(
     activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="is-a.dev"),
 )
 
-extensions = [
-    "onami",
-    "extensions.faq",
-    "extensions.owner-utils",
-    "extensions.suggestions",
-    "extensions.oneword",
-    "extensions.errors",
-    "extensions.starboard",
-    "extensions.listeners.ping_cutedog",
-    "extensions.listeners.github",
-    "extensions.listeners.antiphishing",
-    "extensions.fun.fun",
-    "extensions.fun.topic",
-    "extensions.fun.anime",
-    "extensions.fun.manga",
-    "extensions.fun.ubdict",
-    "extensions.util.utils",
-    "extensions.util.roles",
-    "extensions.util.snipe",
-    "extensions.util.info",
-    "extensions.util.screenshot",
-    "extensions.util.subdomains",
-    "extensions.util.dns",
-]
+def load_exts(directory):
+    blacklist_subfolders = ["libs", "help_forum"]
+        
+    extensions = []
+    for root, dirs, files in os.walk(directory):
+        if any(blacklisted in root for blacklisted in blacklist_subfolders):
+            continue
+        
+        for file in files:
+            if file.endswith('.py'):
+                relative_path = os.path.relpath(os.path.join(root, file), directory)
+                extension_name = relative_path[:-3].replace(os.sep, '.')
+                extensions.append(extension_name)
+    return extensions
+
+extensions_blacklist = ["listeners.antihoist"]
+extensions = load_exts('/home/orangc/code/anna/anna/extensions')
 
 if os.getenv("HASDB"):
     database_extensions = [
-        "extensions.tags",
-        "extensions.counting",
-        "extensions.login",
-        "extensions.help_forum.help_system",
+        "tags",
+        "counting",
+        "login",
+        "help_forum.help_system",
     ]
     for extension in database_extensions:
         extensions.append(extension)
+
 for extension in extensions:
-    bot.load_extension(extension)
+    if extension not in extensions_blacklist:
+        if extension in bot.extensions:
+            print(f"Extension {extension} is already loaded.")
+            continue
+        try:
+            bot.load_extension("extensions." + extension)
+            # print(f"Loaded {extension}")
+        except Exception as e:
+            print(f"Failed to load {extension}: {e}")
+
 
 if __name__ == "__main__":
     # Start the Flask app in a separate thread
