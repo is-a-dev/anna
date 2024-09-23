@@ -62,11 +62,6 @@ class OwnerUtils(commands.Cog):
             reloaded_extensions = []
             failed_extensions = []
 
-            if nextcord.version_info < (3, 0, 0):
-                extensions.append("onami")
-            if os.getenv("HASDB"):
-                extensions.append("extensions.tags_reworked")
-
             for ext in extensions:
                 try:
                     self._bot.reload_extension(ext)

@@ -45,6 +45,14 @@ class UserInfo(commands.Cog):
             embed.set_footer(text="This user is a bot account.")
 
         await ctx.reply(embed=embed, mention_author=False)
+    
+    # TODO: add the underneath code to every command in anna (i will literally never do this)
+    # to anyone reading this: watch lycoris recoil, it's peak fiction
+    # @userinfo.error
+    # async def userinfo_error(self, ctx: commands.Context, error):
+    #     if isinstance(error, commands.BadArgument) or isinstance(error, commands.UserInputError):
+    #         await ctx.send("Invalid argument. Use: `a?userinfo` or `a?userinfo member`.")
+
 
 class RoleInfo(commands.Cog):
     def __init__(self, bot: commands.Bot):
