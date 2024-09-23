@@ -133,7 +133,7 @@ class FAQ(commands.Cog):
             description="Click the dropdown below to toggle the questions.",
             color=nextcord.Color.blurple(),
         )
-        m = await ctx.send(embed=embed, view=k)
+        m = await ctx.reply(embed=embed, view=k, mention_author=False)
         k.update_msg(m)
 
     @nextcord.slash_command(name="faq")

@@ -24,7 +24,7 @@ class UserInfo(commands.Cog):
                 member = nextcord.utils.get(ctx.guild.members, name=member) or nextcord.utils.get(ctx.guild.members, display_name=member)
 
         if member is None:
-            await ctx.send("Member not found. Please provide a valid username or display name.")
+            await ctx.reply("Member not found. Please provide a valid username or display name.", mention_author=False)
             return
         
         roles = [role for role in member.roles if role != ctx.guild.default_role]
@@ -43,7 +43,7 @@ class UserInfo(commands.Cog):
         if member.bot:
             embed.set_footer(text="This user is a bot account.")
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed, mention_author=False)
 
 class RoleInfo(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -59,7 +59,7 @@ class RoleInfo(commands.Cog):
         embed.add_field(name="Mentionable", value=role.mentionable)
         embed.add_field(name="Permissions", value=", ".join([perm[0] for perm in role.permissions if perm[1]]))
         embed.set_thumbnail(url=ctx.guild.icon.url)
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed, mention_author=False)
 
 class ServerInfo(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -78,7 +78,7 @@ class ServerInfo(commands.Cog):
         embed.add_field(name="Channels", value=len(guild.channels), inline=True)
         embed.set_thumbnail(url=guild.icon.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed, mention_author=False)
 
 
 def setup(bot):

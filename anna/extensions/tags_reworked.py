@@ -211,20 +211,20 @@ class TagsNew(commands.Cog):
                 color=nextcord.Color.blue(),
             )
             embed.set_footer(text=f"ID: {tag['_id']}, Author: {tag['author_id']}")
-            await ctx.send(embed=embed)
+            await ctx.reply(embed=embed, mention_author=False)
         else:
-            await ctx.send("Tag not found")
+            await ctx.reply("Tag not found", mention_author=False)
 
     @tag.command()
     async def list(self, ctx: commands.Context):
         tags = await self._db.tags.find().to_list(length=100)
         tag_names = [tag["name"] for tag in tags]
-        await ctx.send(", ".join(tag_names))
+        await ctx.reply(", ".join(tag_names), mention_author=False)
 
     @tag.command()
     @commands.check(lambda ctx: ctx.author.id == 716134528409665586)
     async def create(self, ctx: commands.Context):
-        await ctx.send(view=TagCreationView(ctx, self._db))
+        await ctx.reply(view=TagCreationView(ctx, self._db), mention_author=False)
 
     @tag.command()
     @commands.check(lambda ctx: ctx.author.id == 716134528409665586)
@@ -232,20 +232,20 @@ class TagsNew(commands.Cog):
         tag = await self._db.tags.find_one({"name": tag_name})
         if tag:
             await self._db.tags.delete_one({"name": tag_name})
-            await ctx.send("Tag deleted")
+            await ctx.reply("Tag deleted", mention_author=False)
         else:
-            await ctx.send("Tag not found")
+            await ctx.reply("Tag not found", mention_author=False)
 
     @tag.command()
     @commands.check(lambda ctx: ctx.author.id == 716134528409665586)
     async def edit(self, ctx: commands.Context, tag_name: str):
         tag = await self._db.tags.find_one({"name": tag_name})
         if tag:
-            await ctx.send(
+            await ctx.reply(
                 f"Editing tag {tag_name}", view=TagEditView(ctx, self._db, tag)
-            )
+            , mention_author=False)
         else:
-            await ctx.send("Tag not found")
+            await ctx.reply("Tag not found", mention_author=False)
 
 
 def setup(bot):

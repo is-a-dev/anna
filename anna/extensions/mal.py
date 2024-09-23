@@ -71,7 +71,7 @@ class MAL_Anime(commands.Cog):
 
         except Exception as e:
             embed = nextcord.Embed(title="Error", description=str(e), color=0x2E51A2)
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed, mention_author=False)
 
     @nextcord.slash_command(name="anime", description="Get information about an anime")
     async def slash_anime(
@@ -163,7 +163,7 @@ class MAL_Manga(commands.Cog):
 
         except Exception as e:
             embed = nextcord.Embed(title="Error", description=str(e), color=0x2E51A2)
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed, mention_author=False)
 
     @nextcord.slash_command(name="manga", description="Get information about a manga")
     async def slash_manga(
@@ -218,7 +218,7 @@ class MAL_Profile(commands.Cog):
 
             if not profile_data or not profile_data.get("data"):
                 embed = nextcord.Embed(title="User not found.", color=0x2E51A2)
-                await ctx.send(embed=embed)
+                await ctx.reply(embed=embed, mention_author=False)
                 return
 
             user = profile_data["data"]
@@ -275,7 +275,7 @@ class MAL_Profile(commands.Cog):
         except Exception as e:
             embed = nextcord.Embed(title="Error", description=str(e), color=nextcord.Color.red())
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed, mention_author=False)
 
 
 def setup(bot):

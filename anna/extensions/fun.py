@@ -71,19 +71,19 @@ class Fun(commands.Cog):
         member = member or ctx.author
         embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=nextcord.Color.blue())
         embed.set_image(url=member.avatar.url)
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed, mention_author=False)
         
     @commands.command(name="google")
     async def google(self, ctx: commands.Context, *, query: str):
         query = urllib.parse.quote_plus(query)
         url = f"https://www.google.com/search?q={query}"
-        await ctx.send(f"Here are the Google search results for: {query}\n{url}")
+        await ctx.reply(f"Here are the Google search results for: {query}\n{url}", mention_author=False)
 
     @commands.command()
     async def bonk(self, ctx):
         """Bonk Anna. Please don't, she doesn't like it."""
         k = BonkView(ctx)
-        msg = await ctx.send(content="No, don't press that..", view=k)
+        msg = await ctx.reply(content="No, don't press that..", view=k, mention_author=False)
         k.update_msg(msg)
 
     @commands.command()
@@ -96,7 +96,7 @@ class Fun(commands.Cog):
             ) as response:
                 data = await response.json()
         if not data["list"]:
-            return await ctx.send("No results found.")
+            return await ctx.reply("No results found.", mention_author=False)
         embed = nextcord.Embed(
             title=data["list"][0]["word"],
             description=data["list"][0]["definition"],
@@ -106,30 +106,24 @@ class Fun(commands.Cog):
         embed.set_footer(
             text=f"👍 {data['list'][0]['thumbs_up']} | 👎 {data['list'][0]['thumbs_down']} | Powered by: Urban Dictionary"
         )
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command()
     async def ping(self, ctx: commands.Context):
         """Ping the bot."""
         latency = round(self._bot.latency * 1000)
-        await ctx.send(f"Success! Anna is awake. Ping: {latency}ms")
+        await ctx.reply(f"Success! Anna is awake. Ping: {latency}ms", mention_author=False)
 
     @commands.command()
     async def httpcat(self, ctx: commands.Context, code: int = 406):
         """Fetch an HTTP Cat image from the http.cat API."""
-        await ctx.send(f"https://http.cat/{code}")
-
-    @commands.command(aliases=["you"])
-    async def dog(self, ctx: commands.Context):
-        """Fetch a Dog image from dog.ceo API."""
-        k = await request("GET", "https://dog.ceo/api/breeds/image/random")
-        await ctx.send(k["message"])
+        await ctx.reply(f"https://http.cat/{code}", mention_author=False)
 
     @commands.command()
     async def shouldi(self, ctx: commands.Context, question: Optional[str] = None):
         """Answer a question using the yesno.wtf API."""
         r = await request("GET", "https://yesno.wtf/api")
-        await ctx.send(f"answer: [{r['answer']}]({r['image']})")
+        await ctx.reply(f"answer: [{r['answer']}]({r['image']})", mention_author=False)
 
 
 class FunSlash(commands.Cog):
@@ -137,9 +131,17 @@ class FunSlash(commands.Cog):
         self._bot = bot
 
     @nextcord.slash_command()
-    async def dog(self, interaction: Interaction):
-        k = await request("GET", "https://dog.ceo/api/breeds/image/random")
-        await interaction.send(k["message"])
+    async def avatar(self, interaction: nextcord.Interaction, member: nextcord.Member = None):
+        member = member or ctx.author
+        embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=nextcord.Color.blue())
+        embed.set_image(url=member.avatar.url)
+        await interaction.reply(embed=embed, mention_author=False)
+        
+    @nextcord.slash_command()
+    async def google(self, interaction: nextcord.Interaction, *, query: str):
+        query = urllib.parse.quote_plus(query)
+        url = f"https://www.google.com/search?q={query}"
+        await interaction.send(f"Here are the Google search results for: {query}\n{url}", mention_author=False)
 
     @nextcord.slash_command()
     async def httpcat(

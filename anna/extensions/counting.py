@@ -66,7 +66,7 @@ class Counting(commands.Cog):
         count = current_count["count"]
 
         # Send the current count as a response
-        await ctx.send(f"The current count is: {count}")
+        await ctx.reply(f"The current count is: {count}", mention_author=False)
 
     @commands.command()
     @commands.is_owner()
@@ -77,7 +77,7 @@ class Counting(commands.Cog):
         await self.db.counting.update_one(
             {"channel_id": counting_channel_id}, {"$set": {"count": count}}
         )
-        await ctx.send(f"The count has been set to {count}.")
+        await ctx.reply(f"The count has been set to {count}.", mention_author=False)
 
     @commands.command()
     @commands.is_owner()
@@ -88,7 +88,7 @@ class Counting(commands.Cog):
         await self.db.leaderboard.update_one(
             {"user_id": member.id}, {"$set": {"count": score}}
         )
-        await ctx.send(f"{member.display_name}'s score has been set to {score}.")
+        await ctx.reply(f"{member.display_name}'s score has been set to {score}.", mention_author=False)
 
     @nextcord.slash_command(
         name="leaderboard", description="Displays the leaderboard of top counters."

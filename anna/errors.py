@@ -115,8 +115,8 @@ class Errors(commands.Cog):
             detailed_description += "An unexpected error occurred. Please report this issue to a maintainer if it persists."
             embed.add_field(name="Error Type:", value="Unknown Error", inline=False)
 
-        embed.description += detailed_description
-        await context.send(embed=embed)
+        embed.description = detailed_description
+        await context.reply(embed=embed, mention_author=False)
 
     @commands.Cog.listener()
     async def on_application_command_error(
@@ -143,7 +143,7 @@ class Errors(commands.Cog):
                 f"An error occurred while processing an application command: {error}"
             )
 
-        embed.description += detailed_description
+        embed.description = detailed_description
         await interaction.send(embed=embed, ephemeral=True)
 
 

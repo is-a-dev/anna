@@ -11,7 +11,7 @@ class Topic(commands.Cog):
     async def topic(self, ctx: commands.Context):
         """Sends a random topic from the predefined list."""
         random_topic = random.choice(topics)
-        await ctx.send(random_topic)
+        await ctx.reply(random_topic, mention_author=False)
 
 
 def setup(bot: commands.Bot):

@@ -17,11 +17,12 @@ class Snipe(commands.Cog):
         }
 
     @commands.command(name="snipe")
+    @commands.has_permissions(manage_messages=True)
     async def snipe(self, ctx: commands.Context):
         sniped_message = self.sniped_messages.get(ctx.channel.id)
 
         if not sniped_message:
-            await ctx.send("There's nothing to snipe!")
+            await ctx.reply("There's nothing to snipe!", mention_author=False)
             return
 
         embed = discord.Embed(
@@ -32,11 +33,7 @@ class Snipe(commands.Cog):
         embed.set_author(name=f"{sniped_message['author'].display_name}", icon_url=sniped_message['author'].avatar.url)
         embed.set_footer(text=f"Deleted in #{ctx.channel.name}")
 
-        await ctx.send(embed=embed)
-
-    @snipe.error
-    async def snipe_error(self, ctx: commands.Context, error):
-        await ctx.send("An unknown error occurred.")
+        await ctx.reply(embed=embed, mention_author=False)
 
 def setup(bot):
     bot.add_cog(Snipe(bot))

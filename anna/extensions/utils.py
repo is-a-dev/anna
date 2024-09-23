@@ -28,9 +28,9 @@ class Utils(commands.Cog):
         if channel and message:
             await channel.send(message)
         elif message:
-            await ctx.send(message)
+            await ctx.reply(message, mention_author=False)
         else:
-            await ctx.send("Please provide a message and channel to use this command.")
+            await ctx.reply("Please provide a message and channel to use this command.", mention_author=False)
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -39,12 +39,12 @@ class Utils(commands.Cog):
 
         # Ensure the number is a positive integer
         if amount <= 0:
-            await ctx.send("Please specify a positive number of messages to purge.")
+            await ctx.reply("Please specify a positive number of messages to purge.", mention_author=False)
             return
 
         # Perform the purge
         deleted = await ctx.channel.purge(limit=amount)
-        await ctx.send(f"Successfully purged {len(deleted)} messages.", delete_after=3)
+        await ctx.reply(f"Successfully purged {len(deleted)} messages.", delete_after=3, mention_author=False)
 
     @commands.command(aliases=["setnick"])
     @commands.has_permissions(manage_nicknames=True)
@@ -59,26 +59,26 @@ class Utils(commands.Cog):
                 member = nextcord.utils.get(ctx.guild.members, name=member) or nextcord.utils.get(ctx.guild.members, display_name=member)
 
         if member is None:
-            await ctx.send("Member not found. Please provide a valid username or display name.")
+            await ctx.reply("Member not found. Please provide a valid username or display name.", mention_author=False)
             return
         if not member:
-            await ctx.send("Please mention a member to change their nickname. Usage: `nick @member [nickname]`")
+            await ctx.reply("Please mention a member to change their nickname. Usage: `nick @member [nickname]`", mention_author=False)
             return
 
         if member == ctx.author:
-            await ctx.send("You can't change your own nickname using this command.")
+            await ctx.reply("You can't change your own nickname using this command.", mention_author=False)
             return
 
         if member == ctx.guild.owner:
-            await ctx.send("You can't change the server owner's nickname.")
+            await ctx.reply("You can't change the server owner's nickname.", mention_author=False)
             return
 
         if member.top_role >= ctx.author.top_role:
-            await ctx.send("You can't change the nickname of someone with a higher or equal role than yours.")
+            await ctx.reply("You can't change the nickname of someone with a higher or equal role than yours.", mention_author=False)
             return
 
         if member.top_role >= ctx.guild.me.top_role:
-            await ctx.send("I can't change the nickname of someone with a higher or equal role than mine.")
+            await ctx.reply("I can't change the nickname of someone with a higher or equal role than mine.", mention_author=False)
             return
 
         if not nickname:
@@ -86,11 +86,11 @@ class Utils(commands.Cog):
 
         try:
             await member.edit(nick=nickname)
-            await ctx.send(f"**{member.name}**'s nickname has been changed to **{nickname}**.")
+            await ctx.reply(f"**{member.name}**'s nickname has been changed to **{nickname}**.", mention_author=False)
         except nextcord.Forbidden:
-            await ctx.send("I don't have permission to change this member's nickname.")
+            await ctx.reply("I don't have permission to change this member's nickname.", mention_author=False)
         except nextcord.HTTPException:
-            await ctx.send("An error occurred while trying to change the nickname.")
+            await ctx.reply("An error occurred while trying to change the nickname.", mention_author=False)
 
 def setup(bot: commands.Bot):
     bot.add_cog(Utils(bot))

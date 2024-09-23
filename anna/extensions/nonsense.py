@@ -83,7 +83,7 @@ class Nonsense(commands.Cog):
             description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
             color=nextcord.Color.blue(),
         )
-        await ctx.send(embed=embed, view=LinkView())
+        await ctx.reply(embed=embed, view=LinkView(), mention_author=False)
 
     @commands.command()
     async def regex(self, ctx: commands.Context, pattern: str, string: str):
@@ -96,13 +96,13 @@ class Nonsense(commands.Cog):
     @commands.command()
     async def screenshot(self, ctx: commands.Context, url: EnsureHTTPConverter):
         """Screenshots a webpage. Usage: `a?screenshot https://example.com`."""
-        await ctx.send(
+        await ctx.reply(
             embed=nextcord.Embed(
                 title="Screenshot",
                 description=f"[Open in browser for fast rendering](http://image.thum.io/get/{url})",
                 color=nextcord.Color.blue(),
             )
-        )
+        , mention_author=False)
 
     @classmethod
     def fetch_description_about_a_domain(cls, data: Domain):
@@ -176,14 +176,14 @@ class Nonsense(commands.Cog):
                 f"https://raw.githubusercontent.com/is-a-dev/register/main/domains/{domain}.json",
             )
         except DomainNotExistError:
-            await ctx.send("The domain queried cannot be found. Aborting.")
+            await ctx.reply("The domain queried cannot be found. Aborting.", mention_author=False)
             return
         embed = nextcord.Embed(
             color=nextcord.Color.blue(),
             title=f"Info about {domain}.is-a.dev",
             description=self.fetch_description_about_a_domain(data),
         )
-        await ctx.send(embed=embed, view=k)
+        await ctx.reply(embed=embed, view=k, mention_author=False)
 
     @commands.command()
     async def check(
@@ -200,13 +200,13 @@ class Nonsense(commands.Cog):
                 color=nextcord.Color.blue(),
                 description=f"Sorry, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is taken.",
             )
-            await ctx.send(embed=embed)
+            await ctx.reply(embed=embed, mention_author=False)
         except DomainNotExistError:
             embed = nextcord.Embed(
                 color=nextcord.Color.blue(),
                 description=f"Congratulations, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is available!",
             )
-            await ctx.send(embed=embed)
+            await ctx.reply(embed=embed, mention_author=False)
 
 
 class NonsenseSlash(commands.Cog):

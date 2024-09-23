@@ -34,13 +34,13 @@ class DNS(commands.Cog):
             except _dnsresolver.NoAnswer:
                 continue
             except _dnsresolver.NXDOMAIN:
-                await ctx.send(f"Domain '{url}' does not exist.")
+                await ctx.reply(f"Domain '{url}' does not exist.", mention_author=False)
                 return
 
         if full_answer:
-            await ctx.send(embed=construct_embed(url, full_answer))
+            await ctx.reply(embed=construct_embed(url, full_answer), mention_author=False)
         else:
-            await ctx.send(f"No records found for {url}.")
+            await ctx.reply(f"No records found for {url}.", mention_author=False)
 
     @nextcord.slash_command(name="dig")
     async def dig_(

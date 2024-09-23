@@ -41,7 +41,7 @@ class Login(commands.Cog):
     @commands.command()
     async def login(self, ctx):
         view = LoginButton(self.bot, ctx.author.id)
-        await ctx.send("Click the button to login:", view=view)
+        await ctx.reply("Click the button to login:", view=view, mention_author=False)
 
     # Example of updating the `used` field to True after successful login
     async def mark_uuid_as_used(self, uuid):
