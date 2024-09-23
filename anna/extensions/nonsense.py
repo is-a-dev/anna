@@ -1,6 +1,6 @@
 # Copyright (c) 2024 - present, MaskDuck
 
-## code has been modified and is not the original code from MaskDuck
+# code has been modified and is not the original code from MaskDuck
 
 from __future__ import annotations
 
@@ -20,13 +20,13 @@ from nextcord import (
 from nextcord.ext import application_checks as ac
 from nextcord.ext import commands
 
-from .converters import (
+from extensions.libs.converters import (
     EnsureHTTPConverter,
     SlashEnsureHTTPConverter,
     SlashSubdomainNameConverter,
     SubdomainNameConverter,
 )
-from .types import Domain
+from extensions.libs.types import Domain
 
 
 class DomainNotExistError(commands.CommandError):

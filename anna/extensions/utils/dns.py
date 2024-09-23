@@ -1,5 +1,7 @@
 # Copyright (c) 2024 - present, MaskDuck
 
+# code has been modified and is not the original code from MaskDuck
+
 from __future__ import annotations
 
 import nextcord

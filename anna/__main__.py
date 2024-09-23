@@ -78,7 +78,7 @@ extensions = [
     "extensions.antiphishing",
     "extensions.owner-utils",
     "extensions.nonsense",
-    "extensions.dns",
+    "extensions.utils.dns",
     "extensions.suggestions",
     "extensions.github",
     "extensions.oneword",

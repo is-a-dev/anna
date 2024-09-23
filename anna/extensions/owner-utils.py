@@ -92,7 +92,7 @@ class OwnerUtils(commands.Cog):
             except Exception as error:
                 await ctx.reply(f"Failed to reload `{extension}`: {error}", mention_author=False)
 
-    @commands.command(aliases="rsc")
+    @commands.command(aliases=["rsc"])
     @commands.is_owner()
     async def reload_slash_command(self, ctx: commands.Context) -> None:
         await ctx.bot.sync_application_commands()
