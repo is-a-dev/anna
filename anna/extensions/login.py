@@ -1,6 +1,7 @@
 import nextcord
 from nextcord.ext import commands
 import uuid
+import os
 
 
 class LoginButton(nextcord.ui.View):
@@ -8,6 +9,8 @@ class LoginButton(nextcord.ui.View):
         super().__init__()
         self.bot = bot
         dynamic_uuid = str(uuid.uuid4())
+        # get domain from environment variable
+        domain = os.getenv("DOMAIN")
 
         # Store UUID, user ID, and set used to False
         self.bot.loop.create_task(self.store_uuid(dynamic_uuid, user_id))
@@ -17,7 +20,7 @@ class LoginButton(nextcord.ui.View):
             nextcord.ui.Button(
                 label="Login",
                 style=nextcord.ButtonStyle.link,  # Use link style for URL button
-                url=f"https://anna-oauth.p2pb.dev/login?uuid={dynamic_uuid}"  # URL with dynamic UUID
+                url=f"https://{domain}/authenticate?code={dynamic_uuid}"  # URL with dynamic UUID
             )
         )
 

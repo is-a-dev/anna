@@ -97,6 +97,7 @@ if os.getenv("HASDB"):
     database_extensions = [
         "extensions.tags",
         "extensions.counting",
+        "extensions.login",
         "extensions.help_forum.help_system",
     ]
     for extension in database_extensions:
