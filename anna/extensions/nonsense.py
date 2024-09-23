@@ -20,13 +20,13 @@ from nextcord import (
 from nextcord.ext import application_checks as ac
 from nextcord.ext import commands
 
-from extensions.libs.converters import (
+from .libs.converters import (
     EnsureHTTPConverter,
     SlashEnsureHTTPConverter,
     SlashSubdomainNameConverter,
     SubdomainNameConverter,
 )
-from extensions.libs.types import Domain
+from .libs.types import Domain
 
 
 class DomainNotExistError(commands.CommandError):
