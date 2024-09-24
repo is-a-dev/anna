@@ -196,7 +196,7 @@ class SubdomainUtilsSlash(commands.Cog):
             await interaction.send(
                 embed=nextcord.Embed(
                     title=f"Domain info for {domain}.is-a.dev",
-                    description=Nonsense.fetch_description_about_a_domain(data),
+                    description=SubdomainUtils.fetch_description_about_a_domain(data),
                     color=nextcord.Color.blue(),
                 ),
                 view=view,

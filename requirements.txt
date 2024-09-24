@@ -3,17 +3,12 @@ nextcord
 python-dotenv
 onami
 aiohttp
-psycopg2-binary
 nextcord-ext-help-commands
 nextcord-ext-menus
 python-whois
 forex-python
 setuptools
 aiohttp
-aiosignal
-aiosqlite
-attrs
-cfgv
 distlib
 filelock
 frozenlist
@@ -23,7 +18,6 @@ multidict
 nodeenv
 platformdirs
 pre-commit
-pyyaml
 typing-extensions
 virtualenv
 pymongo
