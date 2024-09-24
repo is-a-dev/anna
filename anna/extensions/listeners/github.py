@@ -39,27 +39,29 @@ class GitHub(commands.Cog):
 
     async def fetch_pr_status(self, pr: _PRRawObject) -> nextcord.Embed:
         try:
-            # Fetch PR/issue information from GitHub
             i = await request(
                 "GET",
                 f"https://api.github.com/repos/{pr.repo_owner}/{pr.repo_name}/issues/{pr.pr_id}",
             )
 
+            title = i.get("title", "No title available")
+            html_url = i.get("html_url", "#")
+
+            # Determine status and color
             if i.get("pull_request", {}).get("merged_at"):
                 color = nextcord.Color.purple()
-                # merger = i.get('closed_by', {}).get('login')
                 status = "Merged"
             elif i.get("state") == "closed":
                 color = nextcord.Color.red()
-                # closer = i.get('closed_by', {}).get('login')
                 status = "Closed"
             else:
                 color = nextcord.Color.green()
                 status = "Open"
 
+            # Build embed
             embed = nextcord.Embed(
                 title=f"PR/Issue: {pr.repo_owner}/{pr.repo_name}",
-                description=f"[(#{pr.pr_id}) {i['title']}]({i['html_url']})",
+                description=f"[(#{pr.pr_id}) {title}]({html_url})",
                 color=color,
             )
             embed.add_field(name="Status", value=status, inline=True)
@@ -72,6 +74,7 @@ class GitHub(commands.Cog):
                 color=nextcord.Color.red(),
             )
             return embed
+
 
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
