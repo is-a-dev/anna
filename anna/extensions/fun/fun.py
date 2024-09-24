@@ -105,7 +105,7 @@ class FunSlash(commands.Cog):
         member = member or ctx.author
         embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=nextcord.Color.blue())
         embed.set_image(url=member.avatar.url)
-        await interaction.reply(embed=embed, mention_author=False)
+        await interaction.send(embed=embed, mention_author=False)
         
     @nextcord.slash_command(name="google")
     async def slash_google(self, interaction: nextcord.Interaction, *, query: str):
