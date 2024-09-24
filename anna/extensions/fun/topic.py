@@ -1,4 +1,5 @@
 import random
+import nextcord
 from nextcord.ext import commands
 from extensions.libs.topics_list import topics
 
