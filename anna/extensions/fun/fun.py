@@ -102,31 +102,31 @@ class FunSlash(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self._bot = bot
 
-    @nextcord.slash_command()
-    async def avatar(self, interaction: nextcord.Interaction, member: nextcord.Member = None):
+    @nextcord.slash_command(name="avatar")
+    async def slash_avatar(self, interaction: nextcord.Interaction, member: nextcord.Member = None):
         member = member or ctx.author
         embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=nextcord.Color.blue())
         embed.set_image(url=member.avatar.url)
         await interaction.reply(embed=embed, mention_author=False)
         
-    @nextcord.slash_command()
-    async def google(self, interaction: nextcord.Interaction, *, query: str):
+    @nextcord.slash_command(name="google")
+    async def slash_google(self, interaction: nextcord.Interaction, *, query: str):
         query = urllib.parse.quote_plus(query)
         url = f"https://www.google.com/search?q={query}"
-        await interaction.send(f"Here are the Google search results for: {query}\n{url}", mention_author=False)
+        await interaction.response.send_message(f"Here are the Google search results for: {query}\n{url}")
 
-    @nextcord.slash_command()
-    async def httpcat(
+    @nextcord.slash_command(name="httpcat")
+    async def slash_httpcat(
         self,
         interaction: nextcord.Interaction,
         code: int = SlashOption(
             description="The HTTP code to fetch for", required=True
         ),
     ) -> None:
-        await interaction.send(f"https://http.cat/{code}")
+        await interaction.response.send_message(f"https://http.cat/{code}")
 
-    @nextcord.slash_command()
-    async def shouldi(
+    @nextcord.slash_command(name="shouldi")
+    async def slash_shouldi(
         self,
         interaction: nextcord.Interaction,
         question: str = SlashOption(
@@ -134,7 +134,7 @@ class FunSlash(commands.Cog):
         ),
     ) -> None:
         r = await request("GET", "https://yesno.wtf/api")
-        await interaction.send(f"answer: [{r['answer']}]({r['image']})")
+        await interaction.response.send_message(f"answer: [{r['answer']}]({r['image']})")
 
 def setup(bot):
     bot.add_cog(Fun(bot))

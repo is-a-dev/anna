@@ -38,7 +38,7 @@ class UrbanDictionary(commands.Cog):
         )
         await ctx.reply(embed=embed, mention_author=False)
 
-    @nextcord.slash_command()
+    @nextcord.slash_command(name="ubdict")
     async def ubdict_slash(
         self,
         interaction: nextcord.Interaction,

@@ -12,6 +12,12 @@ class Topic(commands.Cog):
         """Sends a random topic from the predefined list."""
         random_topic = random.choice(topics)
         await ctx.reply(random_topic, mention_author=False)
+        
+    @nextcord.slash_command(name="topic")
+    async def topic_slash(self, ctx: nextcord.Interaction):
+        """Sends a random topic from the predefined list."""
+        random_topic = random.choice(topics)
+        await ctx.response.send_message(random_topic)
 
 
 def setup(bot: commands.Bot):

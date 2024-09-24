@@ -45,7 +45,7 @@ class DNS(commands.Cog):
             await ctx.reply(f"No records found for {url}.", mention_author=False)
 
     @nextcord.slash_command(name="dig")
-    async def dig_(
+    async def dig_slash(
         self,
         interaction: nextcord.Interaction,
         url: str = nextcord.SlashOption(

@@ -143,7 +143,7 @@ class SubdomainUtilsSlash(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self._bot: commands.Bot = bot
 
-    @nextcord.slash_command()
+    @nextcord.slash_command(name="slash")
     async def check(
         self,
         interaction: nextcord.Interaction,
@@ -169,8 +169,8 @@ class SubdomainUtilsSlash(commands.Cog):
             )
             await interaction.send(embed=embed)
 
-    @nextcord.slash_command()
-    async def whois(
+    @nextcord.slash_command(name="whois")
+    async def whois_slash(
         self,
         interaction: nextcord.Interaction,
         domain: SlashSubdomainNameConverter = nextcord.SlashOption(

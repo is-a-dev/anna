@@ -22,7 +22,7 @@ class Screenshot(commands.Cog):
         , mention_author=False)
 
     @nextcord.slash_command(name=screenshot)
-    async def screenshot(
+    async def screenshot_slash(
         self,
         interaction: nextcord.Interaction,
         url: SlashEnsureHTTPConverter = nextcord.SlashOption(
