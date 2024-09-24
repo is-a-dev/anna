@@ -88,18 +88,17 @@ extensions = load_exts('anna/extensions')
 
 if os.getenv("HASDB"):
     database_extensions = [
-        "tags",
-        "counting",
-        "login",
-        "help_forum.help_system",
+        "extensions.tags",
+        "extensions.counting",
+        "extensions.login",
+        "extensions.help_forum.help_system",
     ]
     for extension in database_extensions:
-        extensions.append(extension)
+        bot.load_extension(extension)
 
 for extension in extensions:
     if extension not in extensions_blacklist:
         if extension in bot.extensions:
-            print(f"Extension {extension} is already loaded.")
             continue
         try:
             bot.load_extension("extensions." + extension)

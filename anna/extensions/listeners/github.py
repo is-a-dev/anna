@@ -44,9 +44,6 @@ class GitHub(commands.Cog):
                 f"https://api.github.com/repos/{pr.repo_owner}/{pr.repo_name}/issues/{pr.pr_id}",
             )
 
-            title = i.get("title", "No title available")
-            html_url = i.get("html_url", "#")
-
             # Determine status and color
             if i.get("pull_request", {}).get("merged_at"):
                 color = nextcord.Color.purple()
@@ -58,10 +55,9 @@ class GitHub(commands.Cog):
                 color = nextcord.Color.green()
                 status = "Open"
 
-            # Build embed
             embed = nextcord.Embed(
                 title=f"PR/Issue: {pr.repo_owner}/{pr.repo_name}",
-                description=f"[(#{pr.pr_id}) {title}]({html_url})",
+                description=f"[(#{pr.pr_id}) {i['title']}]({i['html_url']})",
                 color=color,
             )
             embed.add_field(name="Status", value=status, inline=True)
