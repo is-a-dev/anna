@@ -35,6 +35,7 @@ class Screenshot(commands.Cog):
                 title="Screenshot",
                 description=f"[Open in browser for fast rendering](https://image.thum.io/get/{url})",
                 color=nextcord.Color.blue(),
+                ephemeral=True
             )
         )
 

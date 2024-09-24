@@ -42,12 +42,10 @@ class BonkView(nextcord.ui.View):
     async def _bonk(
         self, button: nextcord.ui.Button, interaction: nextcord.Interaction
     ):
-        # print(interaction.user.id)
-        # print(self._ctx.author.id)
         if interaction.user.id == self._ctx.author.id:  # type: ignore[reportOptionalMemberAccess]
             await self.message.edit(content=choice(_bonk_ans))  # type: ignore[reportOptionalMemberAccess]
         else:
-            await interaction.response.send_message("Fool", ephemeral=True)
+            await interaction.send("Only those who invoke the bonk command may bonk me. Actually, hey, stop bonking me at all!", ephemeral=True)
 
     async def on_timeout(self):
         for child in self.children:
@@ -113,7 +111,7 @@ class FunSlash(commands.Cog):
     async def slash_google(self, interaction: nextcord.Interaction, *, query: str):
         query = urllib.parse.quote_plus(query)
         url = f"https://www.google.com/search?q={query}"
-        await interaction.response.send_message(f"Here are the Google search results for: {query}\n{url}")
+        await interaction.send(f"Here are the Google search results for: {query}\n{url}")
 
     @nextcord.slash_command(name="httpcat")
     async def slash_httpcat(
@@ -123,7 +121,7 @@ class FunSlash(commands.Cog):
             description="The HTTP code to fetch for", required=True
         ),
     ) -> None:
-        await interaction.response.send_message(f"https://http.cat/{code}")
+        await interaction.send(f"https://http.cat/{code}")
 
     @nextcord.slash_command(name="shouldi")
     async def slash_shouldi(
@@ -134,7 +132,7 @@ class FunSlash(commands.Cog):
         ),
     ) -> None:
         r = await request("GET", "https://yesno.wtf/api")
-        await interaction.response.send_message(f"answer: [{r['answer']}]({r['image']})")
+        await interaction.send(f"answer: [{r['answer']}]({r['image']})")
 
 def setup(bot):
     bot.add_cog(Fun(bot))

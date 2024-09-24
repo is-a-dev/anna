@@ -19,8 +19,6 @@ from nextcord import (
 from nextcord.errors import InteractionResponded
 from nextcord.ext import application_checks, commands
 
-# from models.basecog import BaseCog
-
 if TYPE_CHECKING:
     pass
 
@@ -63,7 +61,7 @@ class Suggestion(commands.Cog):
         self, interaction: Interaction, message: Message
     ) -> None:
         if interaction.channel.id != self.suggestion_channel:
-            await interaction.send("You fucked up life. Good job!")
+            await interaction.send("You must be in the suggestions channel to use this command.", ephemeral=True)
             return
         await interaction.response.send_modal(ApproveOrDeny(True, message))
 
@@ -73,7 +71,7 @@ class Suggestion(commands.Cog):
         self, interaction: Interaction, message: Message
     ) -> None:
         if interaction.channel.id != self.suggestion_channel:
-            await interaction.send("You fucked up life. Good job!")
+            await interaction.send("You must be in the suggestions channel to use this command.", ephemeral=True)
             return
         await interaction.response.send_modal(ApproveOrDeny(False, message))
 
@@ -168,7 +166,7 @@ class Suggestion(commands.Cog):
             name=f"Denied by {str(interaction.user)}", value=why
         )
         await message.edit(embed=new_embed)
-        await interaction.send("Done.")
+        await interaction.send(f"Denied suggestion https://discord.com/channels/{self.suggestion_channel}/{messageId}.", ephemeral=True)
 
     @_suggestion.subcommand(
         name="approve", description="[MAINTAINER ONLY] approve suggestion"
@@ -195,7 +193,7 @@ class Suggestion(commands.Cog):
         )
         await message.edit(embed=new_embed)
 
-        await interaction.send("Done.")
+        await interaction.send(f"Approved suggestion https://discord.com/channels/{self.suggestion_channel}/{messageId}.", ephemeral=True)
 
 
 def setup(bot):

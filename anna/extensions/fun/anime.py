@@ -125,7 +125,7 @@ class AnimeSearch(commands.Cog):
 
         except Exception as e:
             embed = nextcord.Embed(title="Error", description=str(e), color=0x2E51A2)
-        await interaction.response.send_message(embed=embed)
+        await interaction.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(AnimeSearch(bot))

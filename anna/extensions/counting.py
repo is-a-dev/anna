@@ -99,7 +99,7 @@ class Counting(commands.Cog):
         leaderboard_list = await leaderboard_data.to_list(length=10)
 
         if not leaderboard_list:
-            await interaction.response.send_message(
+            await interaction.send(
                 "No one is on the leaderboard yet!", ephemeral=True
             )
             return
@@ -116,7 +116,7 @@ class Counting(commands.Cog):
                 inline=False,
             )
 
-        await interaction.response.send_message(embed=embed)
+        await interaction.send(embed=embed)
 
 
 def setup(bot: commands.Bot):

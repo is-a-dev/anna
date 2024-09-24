@@ -105,7 +105,7 @@ class UtilsSlash(commands.Cog):
     async def ping(self, interaction: nextcord.Interaction):
         """Ping the bot."""
         latency = round(self._bot.latency * 1000)
-        await interaction.response.send_message(f"Success! Takina is awake. Ping: {latency}ms")
+        await interaction.send(f"Success! Takina is awake. Ping: {latency}ms", ephemeral=True)
 
     @nextcord.slash_command(name="send", description="Send a message as Takina.")
     @commands.has_permissions(moderate_members=True,manage_messages=True)
@@ -118,22 +118,22 @@ class UtilsSlash(commands.Cog):
         """Send a message as Takina."""
         if channel and message:
             await channel.send(message)
-            await interaction.response.send_message("Message sent!", ephemeral=True)
+            await interaction.send("Message sent!", ephemeral=True)
         elif message:
-            await interaction.response.send_message(message, ephemeral=True)
+            await interaction.send(message, ephemeral=True)
         else:
-            await interaction.response.send_message("Please provide a message and channel to use this command.", ephemeral=True)
+            await interaction.send("Please provide a message and channel to use this command.", ephemeral=True)
 
     @nextcord.slash_command(name="purge", description="Purges a specified number of messages.")
     @commands.has_permissions(manage_messages=True)
     async def purge(self, interaction: nextcord.Interaction, amount: int = SlashOption(description="Number of messages to purge", required=True)):
         """Purges a specified number of messages."""
         if amount <= 0:
-            await interaction.response.send_message("Please specify a positive number of messages to purge.", ephemeral=True)
+            await interaction.send("Please specify a positive number of messages to purge.", ephemeral=True)
             return
 
         deleted = await interaction.channel.purge(limit=amount)
-        await interaction.response.send_message(f"Successfully purged {len(deleted)} messages.", ephemeral=True)
+        await interaction.send(f"Successfully purged {len(deleted)} messages.", ephemeral=True)
 
     @nextcord.slash_command(name="nick", description="Change a member's nickname.")
     @commands.has_permissions(manage_nicknames=True)
@@ -154,23 +154,23 @@ class UtilsSlash(commands.Cog):
                 member = nextcord.utils.get(interaction.guild.members, name=member) or nextcord.utils.get(interaction.guild.members, display_name=member)
 
         if member is None:
-            await interaction.response.send_message("Member not found. Please provide a valid username or display name.", ephemeral=True)
+            await interaction.send("Member not found. Please provide a valid username or display name.", ephemeral=True)
             return
 
         if member == interaction.user:
-            await interaction.response.send_message("You can't change your own nickname using this command.", ephemeral=True)
+            await interaction.send("You can't change your own nickname using this command.", ephemeral=True)
             return
 
         if member == interaction.guild.owner:
-            await interaction.response.send_message("You can't change the server owner's nickname.", ephemeral=True)
+            await interaction.send("You can't change the server owner's nickname.", ephemeral=True)
             return
 
         if member.top_role >= interaction.user.top_role:
-            await interaction.response.send_message("You can't change the nickname of someone with a higher or equal role than yours.", ephemeral=True)
+            await interaction.send("You can't change the nickname of someone with a higher or equal role than yours.", ephemeral=True)
             return
 
         if member.top_role >= interaction.guild.me.top_role:
-            await interaction.response.send_message("I can't change the nickname of someone with a higher or equal role than mine.", ephemeral=True)
+            await interaction.send("I can't change the nickname of someone with a higher or equal role than mine.", ephemeral=True)
             return
 
         if not nickname:
@@ -178,11 +178,11 @@ class UtilsSlash(commands.Cog):
 
         try:
             await member.edit(nick=nickname)
-            await interaction.response.send_message(f"**{member.name}**'s nickname has been changed to **{nickname}**.", ephemeral=True)
+            await interaction.send(f"**{member.name}**'s nickname has been changed to **{nickname}**.", ephemeral=True)
         except nextcord.Forbidden:
-            await interaction.response.send_message("I don't have permission to change this member's nickname.", ephemeral=True)
+            await interaction.send("I don't have permission to change this member's nickname.", ephemeral=True)
         except nextcord.HTTPException:
-            await interaction.response.send_message("An error occurred while trying to change the nickname.", ephemeral=True)
+            await interaction.send("An error occurred while trying to change the nickname.", ephemeral=True)
 
 def setup(bot: commands.Bot):
     bot.add_cog(Utils(bot))

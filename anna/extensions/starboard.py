@@ -97,12 +97,12 @@ class Starboard(commands.Cog):
             await self.db.starboard_settings.update_one(
                 {"guild_id": guild_id}, {"$set": guild_data}, upsert=True
             )
-            await interaction.response.send_message(
+            await interaction.send(
                 f"Channel {channel.mention} has been whitelisted for starboard tracking.",
                 ephemeral=True,
             )
         else:
-            await interaction.response.send_message(
+            await interaction.send(
                 f"Channel {channel.mention} is already whitelisted.", ephemeral=True
             )
 
@@ -126,7 +126,7 @@ class Starboard(commands.Cog):
         await self.db.starboard_settings.update_one(
             {"guild_id": guild_id}, {"$set": guild_data}, upsert=True
         )
-        await interaction.response.send_message(
+        await interaction.send(
             f"Starboard channel has been set to {channel.mention}.", ephemeral=True
         )
 

@@ -66,13 +66,13 @@ class DNS(commands.Cog):
             except _dnsresolver.NoAnswer:
                 continue
             except _dnsresolver.NXDOMAIN:
-                await interaction.send(f"Domain '{url}' does not exist.")
+                await interaction.send(f"Domain '{url}' does not exist.", ephemeral=True)
                 return
 
         if full_answer:
             await interaction.send(embed=construct_embed(url, full_answer))
         else:
-            await interaction.send(f"No records found for {url}.")
+            await interaction.send(f"No records found for {url}.", ephemeral=True)
 
 
 def setup(bot: commands.Bot) -> None:

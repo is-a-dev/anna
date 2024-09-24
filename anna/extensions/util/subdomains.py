@@ -198,11 +198,12 @@ class SubdomainUtilsSlash(commands.Cog):
                     title=f"Domain info for {domain}.is-a.dev",
                     description=SubdomainUtils.fetch_description_about_a_domain(data),
                     color=nextcord.Color.blue(),
+                    ephemeral=True
                 ),
                 view=view,
             )
         except DomainNotExistError:
-            await interaction.send("Domain requested cannot be found. Aborting.")
+            await interaction.send("Domain requested cannot be found. Aborting.", ephemeral=True)
 
 def setup(bot: commands.Bot):
     bot.add_cog(SubdomainUtils(bot))

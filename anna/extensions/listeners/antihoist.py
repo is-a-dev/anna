@@ -57,7 +57,8 @@ class AutoMod(commands.Cog):
             reason=f"nickname cleansing requested by {interaction.user.display_name}",
         )
         await interaction.send(
-            f"Nickname of {previous_display_name} has been cleansed to `Moderated Nickname`."
+            f"Nickname of {previous_display_name} has been cleansed to `Moderated Nickname`.",
+            ephemeral=True
         )
 
 

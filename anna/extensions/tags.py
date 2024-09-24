@@ -41,7 +41,7 @@ class TagEditModal(nextcord.ui.Modal):
             {"_id": self._tag["_id"]},
             {"$set": {"title": self.my_title.value, "content": self.my_content.value}},
         )
-        await interaction.response.send_message("Done", ephemeral=True)
+        await interaction.send("Done", ephemeral=True)
 
 
 class TagEditView(nextcord.ui.View):
@@ -59,7 +59,7 @@ class TagEditView(nextcord.ui.View):
             modal = TagEditModal(self._db, self._tag)
             await interaction.response.send_modal(modal)
         else:
-            await interaction.response.send_message(
+            await interaction.send(
                 "You cannot edit this tag", ephemeral=True
             )
 
@@ -106,11 +106,11 @@ class TagCreationModal(nextcord.ui.Modal):
                     "author_id": str(interaction.user.id),
                 }
             )
-            await interaction.response.send_message(
+            await interaction.send(
                 "Tag created successfully", ephemeral=True
             )
         else:
-            await interaction.response.send_message(
+            await interaction.send(
                 "Tag already exists", ephemeral=True
             )
 
@@ -129,7 +129,7 @@ class TagCreationView(nextcord.ui.View):
             modal = TagCreationModal(self._db)
             await interaction.response.send_modal(modal)
         else:
-            await interaction.response.send_message(
+            await interaction.send(
                 "You cannot create this tag", ephemeral=True
             )
 
@@ -156,7 +156,7 @@ class TagsNewSlash(commands.Cog):
         if tag:
             await interaction.response.send_modal(TagEditModal(self._db, tag))
         else:
-            await interaction.response.send_message("Tag not found", ephemeral=True)
+            await interaction.send("Tag not found", ephemeral=True)
 
     @tag.subcommand()
     async def find(self, interaction: nextcord.Interaction, tag_name: str) -> None:
@@ -177,9 +177,9 @@ class TagsNewSlash(commands.Cog):
         tag = await self._db.tags.find_one({"name": tag_name})
         if tag:
             await self._db.tags.delete_one({"name": tag_name})
-            await interaction.send("Tag deleted successfully")
+            await interaction.send("Tag deleted successfully", ephemeral=True)
         else:
-            await interaction.send("Tag not found")
+            await interaction.send("Tag not found", ephemeral=True)
 
 
 class TagsNew(commands.Cog):
