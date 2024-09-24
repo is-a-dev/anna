@@ -15,7 +15,7 @@ async def request(*args, **kwargs):
 
 
 # Regex patterns
-FULL_MATCH_ANY_REPO = r"(https:\/\/github.com\/)?([A-Za-z1-9-]+)\/([A-Za-z1-9-]+)(\/pull)?(#|\/)(?P<pr_id>\d+)"
+FULL_MATCH_ANY_REPO = r"(https:\/\/github.com\/)([A-Za-z0-9-]+)\/([A-Za-z0-9-]+)(\/pull)?(#|\/)(?P<pr_id>\d+)"
 VERY_SHORT_MESSAGE = r"##(\d+)"
 PR_CHANNEL_ID = 1130858271620726784
 STAFF_ROLE_ID = 1197475623745110109
