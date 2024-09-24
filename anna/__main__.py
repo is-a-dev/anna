@@ -84,7 +84,7 @@ def load_exts(directory):
     return extensions
 
 extensions_blacklist = ["listeners.antihoist"]
-extensions = load_exts('/home/orangc/code/anna/anna/extensions')
+extensions = load_exts('anna/extensions')
 
 if os.getenv("HASDB"):
     database_extensions = [
