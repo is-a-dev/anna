@@ -106,7 +106,7 @@ for extension in extensions:
             # print(f"Loaded {extension}")
         except Exception as e:
             print(f"Failed to load {extension}: {e}")
-
+bot.load_extension("onami")
 
 if __name__ == "__main__":
     # Start the Flask app in a separate thread
