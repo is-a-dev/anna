@@ -101,14 +101,18 @@ class FunSlash(commands.Cog):
         self._bot = bot
 
     @nextcord.slash_command(name="avatar")
-    async def slash_avatar(self, interaction: nextcord.Interaction, member: nextcord.Member = None):
+    async def slash_avatar(self, interaction: nextcord.Interaction, member: nextcord.Member = SlashOption(
+            description="The user whose avatar you would like to fetch", required=False
+        )):
         member = member or ctx.author
         embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=nextcord.Color.blue())
         embed.set_image(url=member.avatar.url)
         await interaction.send(embed=embed, mention_author=False)
         
     @nextcord.slash_command(name="google")
-    async def slash_google(self, interaction: nextcord.Interaction, *, query: str):
+    async def slash_google(self, interaction: nextcord.Interaction, *, query: str = SlashOption(
+            description="Your search query", required=True
+        )):
         query = urllib.parse.quote_plus(query)
         url = f"https://www.google.com/search?q={query}"
         await interaction.send(f"Here are the Google search results for: {query}\n{url}")
