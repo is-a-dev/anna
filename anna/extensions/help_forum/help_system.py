@@ -122,7 +122,7 @@ class CloseHelpView(nextcord.ui.View):
         # check if it is a help thread author, or a staff member.
         if (
             not await self.is_thread_author(interaction.channel.id, interaction.user.id)
-        ) and (not interaction.user.get_role(970789483836485763)):
+        ) and (not interaction.user.get_role(1197475623745110109)):
             await interaction.send(
                 "You are not the author of this thread.", ephemeral=True
             )
