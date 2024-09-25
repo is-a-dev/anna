@@ -166,7 +166,7 @@ class Suggestion(commands.Cog):
             name=f"Denied by {str(interaction.user)}", value=why
         )
         await message.edit(embed=new_embed)
-        await interaction.send(f"Denied suggestion https://discord.com/channels/{self.suggestion_channel}/{messageId}.", ephemeral=True)
+        await interaction.send(f"Denied suggestion https://discord.com/channels/830872854677422150/{self.suggestion_channel}/{messageId}.", ephemeral=True)
 
     @_suggestion.subcommand(
         name="approve", description="[MAINTAINER ONLY] approve suggestion"
@@ -193,7 +193,7 @@ class Suggestion(commands.Cog):
         )
         await message.edit(embed=new_embed)
 
-        await interaction.send(f"Approved suggestion https://discord.com/channels/{self.suggestion_channel}/{messageId}.", ephemeral=True)
+        await interaction.send(f"Approved suggestion https://discord.com/channels/830872854677422150/{self.suggestion_channel}/{messageId}.", ephemeral=True)
 
 
 def setup(bot):
