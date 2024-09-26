@@ -54,18 +54,16 @@ class Counting(commands.Cog):
         """Fetches and displays the current count from the database."""
         counting_channel_id = 1006903455916507187
 
-        # Fetch the current count from the database
         current_count = await self.db.counting.find_one(
             {"channel_id": counting_channel_id}
         )
 
         if not current_count:
-            await ctx.send("The count has not started yet!", ephemeral=True)
+            await ctx.reply("The count has not started yet!", mention_author=False)
             return
 
         count = current_count["count"]
 
-        # Send the current count as a response
         await ctx.reply(f"The current count is: {count}", mention_author=False)
 
     @commands.command()

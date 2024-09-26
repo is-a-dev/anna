@@ -86,7 +86,7 @@ def load_exts(directory):
 extensions_blacklist = ["listeners.antihoist"]
 extensions = load_exts('anna/extensions')
 
-if os.getenv("HASDB"):
+if not os.getenv("HASDB"):
     database_extensions = [
         "extensions.tags",
         "extensions.counting",
@@ -94,7 +94,7 @@ if os.getenv("HASDB"):
         "extensions.help_forum.help_system",
     ]
     for extension in database_extensions:
-        bot.load_extension(extension)
+        extensions_blacklist.append(extension)
 
 for extension in extensions:
     if extension not in extensions_blacklist:
