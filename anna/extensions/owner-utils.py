@@ -44,16 +44,8 @@ class OwnerUtils(commands.Cog):
             else:
                 owner_names.append(f"Unknown User (ID: {owner_id})")
         
-        is_owner = await self._bot.is_owner(ctx.author)
         owner_names_str = ", ".join(owner_names)
-        if is_owner:
-            await ctx.reply(
-                f"You have maintainer level permissions when interacting with Anna. Current users who hold maintainer level permissions: {owner_names_str}"
-            , mention_author=False)
-        else:
-            await ctx.reply(
-                f"You are not a maintainer of Anna. Current users who hold maintainer-level permissions: {owner_names_str}"
-            , mention_author=False)
+        await ctx.reply(f"Current users who hold maintainer level permissions: {owner_names_str}", mention_author=False)
 
     @commands.command(aliases=["rx"])
     @commands.is_owner()
