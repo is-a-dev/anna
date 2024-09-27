@@ -44,7 +44,7 @@ class OwnerUtils(commands.Cog):
             else:
                 owner_names.append(f"Unknown User (ID: {owner_id})")
         
-        is_owner = await self.bot.is_owner(ctx.author)
+        is_owner = await self._bot.is_owner(ctx.author)
         owner_names_str = ", ".join(owner_names)
         if is_owner:
             await ctx.reply(
