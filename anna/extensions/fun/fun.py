@@ -15,6 +15,7 @@ dotenv.load_dotenv()
 import random
 from random import choice
 from typing import TYPE_CHECKING, List, Literal, Optional
+from random import randint
 
 _bonk_ans: List[str] = [
     "Ouch!",
@@ -70,6 +71,16 @@ class Fun(commands.Cog):
         embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=nextcord.Color.blue())
         embed.set_image(url=member.avatar.url)
         await ctx.reply(embed=embed, mention_author=False)
+
+    @commands.command(name="roll")
+    async def roll(self, ctx: commands.Context):
+        number = random.randint(1, 100)
+        embed = nextcord.Embed(
+            title="What number did you role?",
+            description=f"You rolled a {number}!",
+            color=nextcord.Color.blue()
+        )
+        await ctx.reply(embed=embed, mention_author=False)
         
     @commands.command(name="google")
     async def google(self, ctx: commands.Context, *, query: str):
@@ -108,6 +119,16 @@ class FunSlash(commands.Cog):
         embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=nextcord.Color.blue())
         embed.set_image(url=member.avatar.url)
         await interaction.send(embed=embed, mention_author=False)
+
+    @nextcord.slash_command(name="roll", description="Roll a number!")
+    async def slash_roll(self, interaction: nextcord.Interaction):
+        number = random.randint(1, 100)
+        embed = nextcord.Embed(
+            title="What number did you role?",
+            description=f"You rolled a {number}!",
+            color=nextcord.Color.blue()
+        )
+        await interaction.send(embed=embed)
         
     @nextcord.slash_command(name="google")
     async def slash_google(self, interaction: nextcord.Interaction, *, query: str = SlashOption(
