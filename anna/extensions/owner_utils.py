@@ -59,37 +59,37 @@ class OwnerUtils(commands.Cog):
     @commands.is_owner()
     async def reload_exts(self, ctx: commands.Context, *args):
         if not args:
-            reloaded_cogs = []
-            failed_cogs = []
+            reloaded_extensions = []
+            failed_extensions = []
 
             for ext in extensions:
                 if ext in self._bot.extensions:
                     try:
-                        self._bot.reload_extension("extensions." + ext)
-                        reloaded_cogs.append(ext)
+                        bot.reload_extension("extensions." + ext)
+                        reloaded_extensions.append(ext)
                     except Exception as e:
-                        failed_cogs.append(f"{ext}: {e}")
+                        failed_extensions.append(f"{ext}: {e}")
 
             success_message = f"Successfully reloaded all extensions."
-            if failed_cogs:
+            if failed_extensions:
                 error_message = (
                     f"\nFailed to reload the following extensions:\n"
-                    + "\n".join(failed_cogs)
+                    + "\n".join(failed_extensions)
                 )
                 await ctx.reply(f"{success_message}{error_message}", mention_author=False)
             else:
                 await ctx.reply(success_message, mention_author=False)
 
         else:
-            cog = args[0]
-            if "extensions." + cog in self._bot.extensions:
+            extension = args[0]
+            if "extensions." + extension in self._bot.extensions:
                 try:
-                    self._bot.reload_extension("extensions." + cog)
-                    await ctx.reply(f"Successfully reloaded `extensions.{cog}`.", mention_author=False)
+                    self._bot.reload_extension("extensions." + extension)
+                    await ctx.reply(f"Successfully reloaded `extensions.{extension}`.", mention_author=False)
                 except Exception as error:
-                    await ctx.reply(f"Failed to reload `{cog}`: {error}", mention_author=False)
+                    await ctx.reply(f"Failed to reload `{extension}`: {error}", mention_author=False)
             else:
-                await ctx.reply(f"cog `extensions.{cog}` is not loaded.", mention_author=False)
+                await ctx.reply(f"Extension `extensions.{extension}` is not loaded.", mention_author=False)
 
     @commands.command(aliases=["rsc"])
     @commands.is_owner()
