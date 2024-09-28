@@ -6,5 +6,12 @@ anna/extensions/libs/__pycache__
 anna/extensions/util/__pycache__
 anna/extensions/fun/__pycache__
 anna/extensions/listeners/__pycache__
-database
+anna/extensions/takina/__pycache__
+anna/extensions/takina/cogs/__pycache__
+anna/extensions/takina/cogs/fun/__pycache__
+anna/extensions/takina/cogs/libs/__pycache__
+anna/extensions/takina/cogs/listeners/__pycache__
+anna/extensions/takina/cogs/mod/__pycache__
+anna/extensions/takina/cogs/util/__pycache__
+anna/extensions/takina/cogs/weebism/__pycache__
 .env

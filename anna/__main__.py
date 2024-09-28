@@ -11,6 +11,9 @@ from web import app
 
 load_dotenv()
 
+BOT_NAME = os.getenv("BOT_NAME")
+DB_NAME = os.getenv("DB_NAME").lower()
+
 def run_flask():
     app.run(host="0.0.0.0", port=5000)
 
@@ -83,7 +86,7 @@ def load_exts(directory):
                 extensions.append(extension_name)
     return extensions
 
-extensions_blacklist = ["listeners.antihoist"]
+extensions_blacklist = ["listeners.antihoist", "takina.takina.__main__", "takina.takina.cogs.owner-utils"]
 extensions = load_exts('anna/extensions')
 
 if not os.getenv("HASDB"):
