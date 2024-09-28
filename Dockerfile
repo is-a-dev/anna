@@ -23,7 +23,8 @@ RUN mkdir test && \
     rm -rf test
 
 # import takina
-RUN cd anna/extensions && \
+RUN mkdir -p anna/extensions && \
+    cd anna/extensions && \
     git clone https://github.com/orxngc/takina && \
     cd ../..
 
