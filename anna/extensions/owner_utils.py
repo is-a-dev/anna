@@ -1,6 +1,7 @@
 import nextcord
 from nextcord.ext import commands
 import os
+import subprocess
 from __main__ import extensions, extensions_blacklist, BOT_NAME
 
 class OwnerUtils(commands.Cog):
@@ -116,6 +117,30 @@ class OwnerUtils(commands.Cog):
             await ctx.reply(f"'extensions.{cog}' was already loaded.", mention_author=False)
         await ctx.reply(f"Successfully loaded `extensions.{cog}`.", mention_author=False)
 
+    @commands.command()
+    async def pull(self, ctx: commands.Context):
+        current_dir = os.getcwd()
+        takina_dir = os.path.join(current_dir, 'anna', 'extensions', 'takina')
 
+        def run_git_pull(directory):
+            try:
+                result = subprocess.run(
+                    ["git", "pull"],
+                    cwd=directory,
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                return result.stdout
+            except subprocess.CalledProcessError as e:
+                return e.stderr
+
+        current_dir_result = run_git_pull(current_dir)
+        takina_dir_result = run_git_pull(takina_dir)
+
+        message = f"**Git Pull Results:**\n\n**Current Directory:**\n{current_dir_result}\n\n**anna/extensions/takina Directory:**\n{takina_dir_result}"
+
+        await ctx.reply(message, mention_author=False)
+        
 def setup(bot: commands.Bot) -> None:
     bot.add_cog(OwnerUtils(bot))
