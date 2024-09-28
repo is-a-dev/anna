@@ -23,9 +23,9 @@ RUN mkdir test && \
     rm -rf test
 
 # import takina
-RUN cd anna/extensions && \
-    git clone https://github.com/orxngc/takina && \
-    cd ../..
+# RUN cd anna/extensions && \
+#     git clone https://github.com/orxngc/takina && \
+#     cd ../..
 
 # Specify the command to run the application
 CMD ["python3", "anna"]
