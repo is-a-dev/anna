@@ -104,7 +104,7 @@ class OwnerUtils(commands.Cog):
         try:
             self.bot.unload_extension("extensions." + cog)
             await ctx.reply(f"Successfully unloaded `extensions.{cog}`.", mention_author=False)
-        except commands.cogNotLoaded:
+        except commands.ExtensionNotLoaded:
             await ctx.reply(f"`extensions.{cog}` was already unloaded.", mention_author=False)
 
     @commands.command(aliases=["lx"])
@@ -113,7 +113,7 @@ class OwnerUtils(commands.Cog):
         cog = args[0]
         try:
             self.bot.load_extension("extensions." + cog)
-        except commands.cogAlreadyLoaded:
+        except commands.ExtensionAlreadyLoaded:
             await ctx.reply(f"'extensions.{cog}' was already loaded.", mention_author=False)
         await ctx.reply(f"Successfully loaded `extensions.{cog}`.", mention_author=False)
 
