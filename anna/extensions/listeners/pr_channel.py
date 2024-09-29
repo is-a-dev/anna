@@ -19,7 +19,8 @@ class PRChannelMessageCleaner(commands.Cog):
         if message.channel.id != self.target_channel_id:
             return
 
-        if any(role.id == self.exempt_role_id for role in message.author.roles):
+        user_roles = [role.id for role in message.author.roles]
+        if self.exempt_role_id in user_roles:
             return
 
         if re.search(GITHUB_URL_PATTERN, message.content) or re.search(SHORT_PR_PATTERN, message.content):
