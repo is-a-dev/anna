@@ -9,7 +9,7 @@ class PRChannelMessageCleaner(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.target_channel_id = 1130858271620726784
-        self.exempt_role_id = 1130858271620726784
+        self.exempt_role_id = 1197475623745110109
 
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
@@ -19,8 +19,7 @@ class PRChannelMessageCleaner(commands.Cog):
         if message.channel.id != self.target_channel_id:
             return
 
-        user_roles = [role.id for role in message.author.roles]
-        if self.exempt_role_id in user_roles:
+        if any(role.id == self.exempt_role_id for role in message.author.roles):
             return
 
         if re.search(GITHUB_URL_PATTERN, message.content) or re.search(SHORT_PR_PATTERN, message.content):
