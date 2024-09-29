@@ -2,7 +2,7 @@ import nextcord
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 from nextcord.ext import commands
-
+from __main__ import EMBED_COLOR
 
 class Counting(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -103,7 +103,7 @@ class Counting(commands.Cog):
             return
 
         embed = nextcord.Embed(
-            title="Counting Leaderboard", color=nextcord.Color.blue()
+            title="Counting Leaderboard", color=EMBED_COLOR
         )
         for idx, entry in enumerate(leaderboard_list, start=1):
             user = self.bot.get_user(entry["user_id"])

@@ -11,7 +11,7 @@ import aiohttp
 import nextcord
 from nextcord.ext import application_checks as ac
 from nextcord.ext import commands
-
+from __main__ import EMBED_COLOR
 from extensions.libs.converters import SlashSubdomainNameConverter, SubdomainNameConverter
 from extensions.libs.types import Domain
 
@@ -109,7 +109,7 @@ class SubdomainUtils(commands.Cog):
             await ctx.reply("The domain queried cannot be found. Aborting.", mention_author=False)
             return
         embed = nextcord.Embed(
-            color=nextcord.Color.blue(),
+            color=EMBED_COLOR,
             title=f"Info about {domain}.is-a.dev",
             description=self.fetch_description_about_a_domain(data),
         )
@@ -127,13 +127,13 @@ class SubdomainUtils(commands.Cog):
                 f"https://raw.githubusercontent.com/is-a-dev/register/main/domains/{domain}.json",
             )
             embed = nextcord.Embed(
-                color=nextcord.Color.blue(),
+                color=EMBED_COLOR,
                 description=f"Sorry, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is taken.",
             )
             await ctx.reply(embed=embed, mention_author=False)
         except DomainNotExistError:
             embed = nextcord.Embed(
-                color=nextcord.Color.blue(),
+                color=EMBED_COLOR,
                 description=f"Congratulations, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is available!",
             )
             await ctx.reply(embed=embed, mention_author=False)
@@ -158,13 +158,13 @@ class SubdomainUtilsSlash(commands.Cog):
                 f"https://raw.githubusercontent.com/is-a-dev/register/main/domains/{domain}.json",
             )
             embed = nextcord.Embed(
-                color=nextcord.Color.blue(),
+                color=EMBED_COLOR,
                 description=f"Sorry, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is taken.",
             )
             await interaction.send(embed=embed)
         except DomainNotExistError:
             embed = nextcord.Embed(
-                color=nextcord.Color.blue(),
+                color=EMBED_COLOR,
                 description=f"Congratulations, [{domain}.is-a.dev](<https://{domain}.is-a.dev>) is available!",
             )
             await interaction.send(embed=embed)
@@ -197,7 +197,7 @@ class SubdomainUtilsSlash(commands.Cog):
                 embed=nextcord.Embed(
                     title=f"Domain info for {domain}.is-a.dev",
                     description=SubdomainUtils.fetch_description_about_a_domain(data),
-                    color=nextcord.Color.blue(),
+                    color=EMBED_COLOR,
                     ephemeral=True
                 ),
                 view=view,

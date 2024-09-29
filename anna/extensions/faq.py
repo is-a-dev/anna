@@ -1,7 +1,7 @@
 # Copyright (c) 2024 - present, MaskDuck
 
 from __future__ import annotations
-
+frrom __main__ import EMBED_COLOR
 from typing import TYPE_CHECKING, Dict, List
 
 import nextcord
@@ -103,7 +103,7 @@ class FAQDropdown(nextcord.ui.Select):
         embed: nextcord.Embed = nextcord.Embed(
             title=qa_pair.question,
             description=qa_pair.answer,
-            color=nextcord.Color.blue(),
+            color=EMBED_COLOR,
         )
         await self._message.edit(embed=embed, view=self.view)
 
@@ -152,7 +152,7 @@ class FAQ(commands.Cog):
         embed = nextcord.Embed(
             title="Welcome to the FAQ.",
             description="Click the dropdown below to toggle the questions.",
-            color=nextcord.Color.blue(),
+            color=EMBED_COLOR,
         )
         m = await ctx.reply(embed=embed, view=k, mention_author=False)
         k.update_msg(m)
@@ -164,7 +164,7 @@ class FAQ(commands.Cog):
         embed = nextcord.Embed(
             title="Welcome to FAQ.",
             description="Click the dropdown below to toggle the questions.",
-            color=nextcord.Color.blue(),
+            color=EMBED_COLOR,
         )
         m = await interaction.send(embed=embed, view=k)
         k.update_msg(m)  # type: ignore[reportArgumentType]
@@ -179,7 +179,7 @@ class Links(commands.Cog):
         embed = nextcord.Embed(
             title="Links that are important to this service.",
             description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
-            color=nextcord.Color.blue(),
+            color=EMBED_COLOR,
         )
         await ctx.reply(embed=embed, view=LinkView(), mention_author=False)
     
@@ -188,7 +188,7 @@ class Links(commands.Cog):
         embed = nextcord.Embed(
             title="Links that are important to this service.",
             description="Please also check those channels:\n- <#991779321758896258> (for an interactive experience type `a?faq`)\n- <#1228996111390343229>",
-            color=nextcord.Color.blue(),
+            color=EMBED_COLOR,
         )
         await interaction.send(embed=embed, view=LinkView())
 

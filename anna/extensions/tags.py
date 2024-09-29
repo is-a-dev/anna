@@ -6,6 +6,7 @@ import nextcord
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 from nextcord.ext import application_checks, commands
+from __main__ import EMBED_COLOR
 
 load_dotenv()
 import os
@@ -165,7 +166,7 @@ class TagsNewSlash(commands.Cog):
             embed = nextcord.Embed(
                 title=tag["title"],
                 description=tag["content"],
-                color=nextcord.Color.blue(),
+                color=EMBED_COLOR,
             )
             embed.set_footer(text=f"ID: {tag['_id']}, Author: {tag['author_id']}")
             await interaction.send(embed=embed)
@@ -196,7 +197,7 @@ class TagsNew(commands.Cog):
                 embed = nextcord.Embed(
                     title=tag["title"],
                     description=tag["content"],
-                    color=nextcord.Color.blue(),
+                    color=EMBED_COLOR,
                 )
                 embed.set_footer(text=f"ID: {tag['_id']}, Author: {tag['author_id']}")
                 await message.channel.send(embed=embed)
@@ -208,7 +209,7 @@ class TagsNew(commands.Cog):
             embed = nextcord.Embed(
                 title=tag["title"],
                 description=tag["content"],
-                color=nextcord.Color.blue(),
+                color=EMBED_COLOR,
             )
             embed.set_footer(text=f"ID: {tag['_id']}, Author: {tag['author_id']}")
             await ctx.reply(embed=embed, mention_author=False)
