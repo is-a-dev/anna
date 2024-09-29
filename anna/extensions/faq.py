@@ -1,7 +1,7 @@
 # Copyright (c) 2024 - present, MaskDuck
 
 from __future__ import annotations
-frrom __main__ import EMBED_COLOR
+from __main__ import EMBED_COLOR
 from typing import TYPE_CHECKING, Dict, List
 
 import nextcord
