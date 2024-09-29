@@ -6,7 +6,7 @@ from __main__ import extensions, extensions_blacklist, BOT_NAME
 
 class OwnerUtils(commands.Cog):
     def __init__(self, bot: commands.Bot):
-        self._bot: commands.Bot = bot
+        self.bot = bot
 
     @commands.command()
     @commands.is_owner()
@@ -14,7 +14,7 @@ class OwnerUtils(commands.Cog):
         if cmd == "disable":
             await ctx.reply("You cannot disable the disable command.", mention_author=False)
         else:
-            command = self._bot.get_command(cmd)
+            command = self.bot.get_command(cmd)
             if command is None:
                 await ctx.reply("Command not found.", mention_author=False)
                 return
@@ -27,7 +27,7 @@ class OwnerUtils(commands.Cog):
         if cmd == "disable":
             await ctx.reply("You cannot enable the enable command.", mention_author=False)
         else:
-            command = self._bot.get_command(cmd)
+            command = self.bot.get_command(cmd)
             if command is None:
                 await ctx.reply("Command not found.", mention_author=False)
                 return
@@ -37,14 +37,14 @@ class OwnerUtils(commands.Cog):
     @commands.command(aliases=["maintainer","perms"])
     async def owner(self, ctx: commands.Context):
         owner_names = []
-        for owner_id in self._bot.owner_ids:
-            owner = self._bot.get_user(owner_id) or await self._bot.fetch_user(owner_id)
+        for owner_id in self.bot.owner_ids:
+            owner = self.bot.get_user(owner_id) or await self.bot.fetch_user(owner_id)
             if owner:
                 owner_names.append("**" + owner.display_name + "**")
             else:
                 owner_names.append(f"Unknown User (ID: {owner_id})")
 
-        is_owner = await self._bot.is_owner(ctx.author)
+        is_owner = await self.bot.is_owner(ctx.author)
         owner_names_str = ", ".join(owner_names)
         if is_owner:
             await ctx.reply(
@@ -59,32 +59,32 @@ class OwnerUtils(commands.Cog):
     @commands.is_owner()
     async def reload_exts(self, ctx: commands.Context, *args):
         if not args:
-            reloaded_extensions = []
             failed_extensions = []
 
-            for ext in extensions:
-                if ext in self._bot.extensions:
+            for extension in extensions:
+                if extension not in extensions_blacklist:
+                    if extension in self.bot.extensions:
+                        continue
                     try:
-                        bot.reload_extension("extensions." + ext)
-                        reloaded_extensions.append(ext)
+                        self.bot.reload_extension("extensions." + extension)
                     except Exception as e:
-                        failed_extensions.append(f"{ext}: {e}")
+                        failed_extensions.append(f"{extension}: {e}")
 
             success_message = f"Successfully reloaded all extensions."
             if failed_extensions:
                 error_message = (
-                    f"\nFailed to reload the following extensions:\n"
+                    f"\nReloaded all except the following extensions:\n"
                     + "\n".join(failed_extensions)
                 )
-                await ctx.reply(f"{success_message}{error_message}", mention_author=False)
+                await ctx.reply(error_message, mention_author=False)
             else:
-                await ctx.reply(success_message, mention_author=False)
+                await ctx.reply("Successfully reloaded all extensions.", mention_author=False)
 
         else:
             extension = args[0]
-            if "extensions." + extension in self._bot.extensions:
+            if "extensions." + extension in self.bot.extensions:
                 try:
-                    self._bot.reload_extension("extensions." + extension)
+                    self.bot.reload_extension("extensions." + extension)
                     await ctx.reply(f"Successfully reloaded `extensions.{extension}`.", mention_author=False)
                 except Exception as error:
                     await ctx.reply(f"Failed to reload `{extension}`: {error}", mention_author=False)
@@ -102,7 +102,7 @@ class OwnerUtils(commands.Cog):
     async def unload(self, ctx: commands.Context, *args) -> None:
         cog = args[0]
         try:
-            self._bot.unload_extension("extensions." + cog)
+            self.bot.unload_extension("extensions." + cog)
             await ctx.reply(f"Successfully unloaded `extensions.{cog}`.", mention_author=False)
         except commands.cogNotLoaded:
             await ctx.reply(f"`extensions.{cog}` was already unloaded.", mention_author=False)
@@ -112,7 +112,7 @@ class OwnerUtils(commands.Cog):
     async def load(self, ctx: commands.Context, *args) -> None:
         cog = args[0]
         try:
-            self._bot.load_extension("extensions." + cog)
+            self.bot.load_extension("extensions." + cog)
         except commands.cogAlreadyLoaded:
             await ctx.reply(f"'extensions.{cog}' was already loaded.", mention_author=False)
         await ctx.reply(f"Successfully loaded `extensions.{cog}`.", mention_author=False)

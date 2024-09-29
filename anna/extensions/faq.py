@@ -150,9 +150,9 @@ class FAQ(commands.Cog):
         """Show FAQ."""
         k = FAQView()
         embed = nextcord.Embed(
-            title="Welcome to FAQ.",
+            title="Welcome to the FAQ.",
             description="Click the dropdown below to toggle the questions.",
-            color=nextcord.Color.blurple(),
+            color=nextcord.Color.blue(),
         )
         m = await ctx.reply(embed=embed, view=k, mention_author=False)
         k.update_msg(m)
@@ -164,7 +164,7 @@ class FAQ(commands.Cog):
         embed = nextcord.Embed(
             title="Welcome to FAQ.",
             description="Click the dropdown below to toggle the questions.",
-            color=nextcord.Color.blurple(),
+            color=nextcord.Color.blue(),
         )
         m = await interaction.send(embed=embed, view=k)
         k.update_msg(m)  # type: ignore[reportArgumentType]
