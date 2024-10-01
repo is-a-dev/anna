@@ -118,6 +118,7 @@ class OwnerUtils(commands.Cog):
         await ctx.reply(f"Successfully loaded `extensions.{cog}`.", mention_author=False)
 
     @commands.command()
+    @commands.is_owner()
     async def pull(self, ctx: commands.Context):
         current_dir = os.getcwd()
         takina_dir = os.path.join(current_dir, 'anna', 'extensions', 'takina')
