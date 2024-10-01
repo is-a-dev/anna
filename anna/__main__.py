@@ -105,7 +105,7 @@ if not os.getenv("HASDB"):
         "extensions.help_forum.help_system",
     ]
     for extension in database_extensions:
-        extensions_blacklist.append(extension)
+        bot.load_extension(extension)
 
 for extension in extensions:
     if extension not in extensions_blacklist:
