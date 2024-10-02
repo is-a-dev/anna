@@ -11,4 +11,4 @@ On Ubuntu/Debian: Clone this repository and run `bash start.sh` inside it.You wi
 
 Maintainers: @orxngc, @cutedog5695
 
-Note: I was unable to find the name of the original artist of the banner image. If you know who it is, please ping orangc on Discord with a link to the artist.
+Note: the banner source is https://www.pixiv.net/en/artworks/121820544
