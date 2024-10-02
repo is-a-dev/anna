@@ -142,6 +142,44 @@ class OwnerUtils(commands.Cog):
         message = f"**Git Pull Results:**\n\n**Current Directory:**\n{current_dir_result}\n\n**anna/extensions/takina Directory:**\n{takina_dir_result}"
 
         await ctx.reply(message, mention_author=False)
-        
+
+class tOwnerUtils(commands.Cog):
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+
+    @commands.command(aliases=["trx"])
+    @commands.is_owner()
+    async def treload_exts(self, ctx: commands.Context, *args):
+        extension = args[0]
+        if "extensions.takina.takina.cogs." + extension in self.bot.extensions:
+            try:
+                self.bot.reload_extension("extensions.takina.takina.cogs." + extension)
+                await ctx.reply(f"Successfully reloaded `extensions.takina.takina.cogs.{extension}`.", mention_author=False)
+            except Exception as error:
+                await ctx.reply(f"Failed to reload `{extension}`: {error}", mention_author=False)
+        else:
+            await ctx.reply(f"Extension `extensions.takina.takina.cogs.{extension}` is not loaded.", mention_author=False)
+
+    @commands.command(aliases=["tux"])
+    @commands.is_owner()
+    async def tunload(self, ctx: commands.Context, *args) -> None:
+        cog = args[0]
+        try:
+            self.bot.unload_extension("extensions.takina.takina.cogs." + cog)
+            await ctx.reply(f"Successfully unloaded `extensions.takina.takina.cogs.{cog}`.", mention_author=False)
+        except commands.ExtensionNotLoaded:
+            await ctx.reply(f"`extensions.takina.takina.cogs.{cog}` was already unloaded.", mention_author=False)
+
+    @commands.command(aliases=["tlx"])
+    @commands.is_owner()
+    async def tload(self, ctx: commands.Context, *args) -> None:
+        cog = args[0]
+        try:
+            self.bot.load_extension("extensions.takina.takina.cogs." + cog)
+        except commands.ExtensionAlreadyLoaded:
+            await ctx.reply(f"'extensions.{cog}' was already loaded.", mention_author=False)
+        await ctx.reply(f"Successfully loaded `extensions.takina.takina.cogs.{cog}`.", mention_author=False)
+               
 def setup(bot: commands.Bot) -> None:
     bot.add_cog(OwnerUtils(bot))
+    bot.add_cog(tOwnerUtils(bot))
