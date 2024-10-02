@@ -198,9 +198,9 @@ class SubdomainUtilsSlash(commands.Cog):
                     title=f"Domain info for {domain}.is-a.dev",
                     description=SubdomainUtils.fetch_description_about_a_domain(data),
                     color=EMBED_COLOR,
-                    ephemeral=True
                 ),
                 view=view,
+                ephemeral=True,
             )
         except DomainNotExistError:
             await interaction.send("Domain requested cannot be found. Aborting.", ephemeral=True)
