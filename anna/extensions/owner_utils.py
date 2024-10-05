@@ -25,7 +25,7 @@ class OwnerUtils(commands.Cog):
     @commands.is_owner()
     async def enable(self, ctx: commands.Context, cmd: str):
         if cmd == "disable":
-            await ctx.reply("You cannot enable the enable command.", mention_author=False)
+            await ctx.reply("You cannot disable the enable command.", mention_author=False)
         else:
             command = self.bot.get_command(cmd)
             if command is None:
