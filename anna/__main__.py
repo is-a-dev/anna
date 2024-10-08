@@ -100,7 +100,6 @@ extensions = load_exts('anna/extensions')
 if os.getenv("HASDB"):
     database_extensions = [
         "extensions.tags",
-        "extensions.counting",
         "extensions.login",
         "extensions.help_forum.help_system",
     ]
