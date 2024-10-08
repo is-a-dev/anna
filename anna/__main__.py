@@ -97,7 +97,7 @@ def load_exts(directory):
 extensions_blacklist = ["listeners.antihoist", "takina.takina.__main__", "takina.takina.cogs.owner-utils"]
 extensions = load_exts('anna/extensions')
 
-if not os.getenv("HASDB"):
+if os.getenv("HASDB"):
     database_extensions = [
         "extensions.tags",
         "extensions.counting",
