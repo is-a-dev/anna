@@ -20,6 +20,7 @@ platformdirs
 pre-commit
 typing-extensions
 virtualenv
+audioop-lts
 pymongo
 motor
 flask
