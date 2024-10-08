@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Dict, List
 import nextcord
 from nextcord.ext import commands
 
+
 class _QA:
     def __init__(self, question: str, answer: str) -> None:
         self.question: str = question
@@ -51,6 +52,7 @@ _faq_answer: Dict[str, _QA] = {
         "This usually happens because your host has not issued a SSL certificate for your subdomain, please wait for it to be issued, or contact your host for further information.",
     ),
 }
+
 
 class FAQDropdown(nextcord.ui.Select):
     if TYPE_CHECKING:
@@ -107,6 +109,7 @@ class FAQDropdown(nextcord.ui.Select):
         )
         await self._message.edit(embed=embed, view=self.view)
 
+
 class LinkView(nextcord.ui.View):
     def __init__(self):
         super().__init__()
@@ -130,6 +133,7 @@ class LinkView(nextcord.ui.View):
             nextcord.ui.Button(label="GitHub", url="https://github.com/is-a-dev", row=1)
         )
         # self.add_item(nextcord.ui.Button(label="Help Channel", url="", row=4))
+
 
 class FAQView(nextcord.ui.View):
     def __init__(self):
@@ -169,6 +173,7 @@ class FAQ(commands.Cog):
         m = await interaction.send(embed=embed, view=k)
         k.update_msg(m)  # type: ignore[reportArgumentType]
 
+
 class Links(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self._bot: commands.Bot = bot
@@ -182,7 +187,7 @@ class Links(commands.Cog):
             color=EMBED_COLOR,
         )
         await ctx.reply(embed=embed, view=LinkView(), mention_author=False)
-    
+
     @nextcord.slash_command(name="links")
     async def links_slash(self, interaction: nextcord.Interaction) -> None:
         embed = nextcord.Embed(

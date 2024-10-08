@@ -5,6 +5,7 @@ from nextcord.ext import commands
 GITHUB_URL_PATTERN = r"https:\/\/github.com\/([A-Za-z0-9-]+)\/([A-Za-z0-9-]+)(\/pull|\/issues)?(#|\/)(?P<pr_id>\d+)"
 SHORT_PR_PATTERN = r"##(\d+)"
 
+
 class PRChannelMessageCleaner(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -22,9 +23,11 @@ class PRChannelMessageCleaner(commands.Cog):
         if any(role.id == self.exempt_role_id for role in message.author.roles):
             return
 
-        if re.search(GITHUB_URL_PATTERN, message.content) or re.search(SHORT_PR_PATTERN, message.content):
-            return 
-        
+        if re.search(GITHUB_URL_PATTERN, message.content) or re.search(
+            SHORT_PR_PATTERN, message.content
+        ):
+            return
+
         await message.delete()
 
 

@@ -216,7 +216,7 @@ class Help(commands.Cog):
     @nextcord.slash_command(
         default_member_permissions=nextcord.Permissions(manage_guild=True)
     )
-    async def setup(
+    async def help_setup(
         self,
         interaction: nextcord.Interaction,
         help_channel: nextcord.ForumChannel = nextcord.SlashOption(
@@ -236,7 +236,7 @@ class Help(commands.Cog):
         await interaction.send(config.SETUP_HELP_SUCCESS)
 
     @nextcord.slash_command()
-    async def show(self, interaction: nextcord.Interaction):
+    async def show_help_config(self, interaction: nextcord.Interaction):
         """Shows the current help system configuration."""
         await interaction.response.defer()
         guild_config = await self.bot.hdb.get_config(interaction.guild.id)
@@ -248,17 +248,16 @@ class Help(commands.Cog):
         help_ping_role = nextcord.utils.get(
             interaction.guild.roles, id=guild_config["ping_role_id"]
         )
-        embed = nextcord.Embed(
-            title="Help System Configuration", color=EMBED_COLOR
-        )
+        embed = nextcord.Embed(title="Help System Configuration", color=EMBED_COLOR)
         embed.add_field(name="Help Channel", value=help_channel.mention)
         embed.add_field(name="Ping Role", value=help_ping_role.mention)
         await interaction.send(embed=embed)
 
     @nextcord.slash_command(
-        default_member_permissions=nextcord.Permissions(manage_guild=True)
+        default_member_permissions=nextcord.Permissions(manage_guild=True),
+        name="set_channel",
     )
-    async def channel(
+    async def set_help_channel(
         self,
         interaction: nextcord.Interaction,
         help_channel: nextcord.ForumChannel = nextcord.SlashOption(
@@ -276,9 +275,9 @@ class Help(commands.Cog):
         await interaction.send(f"Set help channel to {help_channel.mention}.")
 
     @nextcord.slash_command(
-        default_member_permissions=nextcord.Permissions(manage_guild=True)
+        default_member_permissions=nextcord.Permissions(manage_guild=True), name="set_role"
     )
-    async def role(
+    async def help_role(
         self,
         interaction: nextcord.Interaction,
         role: nextcord.Role = nextcord.SlashOption(
@@ -309,9 +308,7 @@ class Help(commands.Cog):
         guild_config = await self.bot.hdb.get_config(interaction.guild.id)
         if not guild_config:
             raise NoGuildConfig(interaction.guild.id)
-        embed = nextcord.Embed(
-            title=title, description=description, color=EMBED_COLOR
-        )
+        embed = nextcord.Embed(title=title, description=description, color=EMBED_COLOR)
         view = OpenHelpView(self.bot, self.create_help_thread)
         await interaction.send("As you say, master.", delete_after=3)
         await interaction.channel.send(embed=embed, view=view)

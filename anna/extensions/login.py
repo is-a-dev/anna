@@ -20,17 +20,15 @@ class LoginButton(nextcord.ui.View):
             nextcord.ui.Button(
                 label="Login",
                 style=nextcord.ButtonStyle.link,  # Use link style for URL button
-                url=f"https://{domain}/authenticate?code={dynamic_uuid}"  # URL with dynamic UUID
+                url=f"https://{domain}/authenticate?code={dynamic_uuid}",  # URL with dynamic UUID
             )
         )
 
     async def store_uuid(self, dynamic_uuid, user_id):
         # Insert UUID and user ID into MongoDB with used=False
-        await self.bot.db.login_data.insert_one({
-            "uuid": dynamic_uuid,
-            "user_id": user_id,
-            "used": False
-        })
+        await self.bot.db.login_data.insert_one(
+            {"uuid": dynamic_uuid, "user_id": user_id, "used": False}
+        )
 
 
 class Login(commands.Cog):
@@ -49,8 +47,7 @@ class Login(commands.Cog):
     # Example of updating the `used` field to True after successful login
     async def mark_uuid_as_used(self, uuid):
         await self.bot.db.login_data.update_one(
-            {"uuid": uuid},
-            {"$set": {"used": True}}
+            {"uuid": uuid}, {"$set": {"used": True}}
         )
 
 

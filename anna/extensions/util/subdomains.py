@@ -12,12 +12,16 @@ import nextcord
 from nextcord.ext import application_checks as ac
 from nextcord.ext import commands
 from __main__ import EMBED_COLOR
-from extensions.libs.converters import SlashSubdomainNameConverter, SubdomainNameConverter
+from extensions.libs.converters import (
+    SlashSubdomainNameConverter,
+    SubdomainNameConverter,
+)
 from extensions.libs.types import Domain
 
 
 class DomainNotExistError(commands.CommandError):
     """Error raised when domain cannot be found."""
+
 
 async def request(requesting_domain: bool = False, *args, **kwargs):
     async with aiohttp.ClientSession() as session:
@@ -35,6 +39,7 @@ class SubdomainUtils(commands.Cog):
 
     def __init__(self, bot: commands.Bot) -> None:
         self._bot: commands.Bot = bot
+
     @classmethod
     def fetch_description_about_a_domain(cls, data: Domain):
         parsed_contact = {}
@@ -106,7 +111,9 @@ class SubdomainUtils(commands.Cog):
                 f"https://raw.githubusercontent.com/is-a-dev/register/main/domains/{domain}.json",
             )
         except DomainNotExistError:
-            await ctx.reply("The domain queried cannot be found. Aborting.", mention_author=False)
+            await ctx.reply(
+                "The domain queried cannot be found. Aborting.", mention_author=False
+            )
             return
         embed = nextcord.Embed(
             color=EMBED_COLOR,
@@ -203,7 +210,10 @@ class SubdomainUtilsSlash(commands.Cog):
                 ephemeral=True,
             )
         except DomainNotExistError:
-            await interaction.send("Domain requested cannot be found. Aborting.", ephemeral=True)
+            await interaction.send(
+                "Domain requested cannot be found. Aborting.", ephemeral=True
+            )
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(SubdomainUtils(bot))

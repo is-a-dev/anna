@@ -60,9 +60,7 @@ class TagEditView(nextcord.ui.View):
             modal = TagEditModal(self._db, self._tag)
             await interaction.response.send_modal(modal)
         else:
-            await interaction.send(
-                "You cannot edit this tag", ephemeral=True
-            )
+            await interaction.send("You cannot edit this tag", ephemeral=True)
 
 
 class TagCreationModal(nextcord.ui.Modal):
@@ -107,13 +105,9 @@ class TagCreationModal(nextcord.ui.Modal):
                     "author_id": str(interaction.user.id),
                 }
             )
-            await interaction.send(
-                "Tag created successfully", ephemeral=True
-            )
+            await interaction.send("Tag created successfully", ephemeral=True)
         else:
-            await interaction.send(
-                "Tag already exists", ephemeral=True
-            )
+            await interaction.send("Tag already exists", ephemeral=True)
 
 
 class TagCreationView(nextcord.ui.View):
@@ -130,9 +124,7 @@ class TagCreationView(nextcord.ui.View):
             modal = TagCreationModal(self._db)
             await interaction.response.send_modal(modal)
         else:
-            await interaction.send(
-                "You cannot create this tag", ephemeral=True
-            )
+            await interaction.send("You cannot create this tag", ephemeral=True)
 
 
 class TagsNewSlash(commands.Cog):
@@ -243,8 +235,10 @@ class TagsNew(commands.Cog):
         tag = await self._db.tags.find_one({"name": tag_name})
         if tag:
             await ctx.reply(
-                f"Editing tag {tag_name}", view=TagEditView(ctx, self._db, tag)
-            , mention_author=False)
+                f"Editing tag {tag_name}",
+                view=TagEditView(ctx, self._db, tag),
+                mention_author=False,
+            )
         else:
             await ctx.reply("Tag not found", mention_author=False)
 

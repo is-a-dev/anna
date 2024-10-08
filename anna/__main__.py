@@ -21,7 +21,8 @@ elif EMBED_COLOR_STR.startswith("0x"):
     EMBED_COLOR = int(EMBED_COLOR_STR, 16)  # Directly convert hex to int
 else:
     EMBED_COLOR = int(EMBED_COLOR_STR)  # Handle cases where it might be directly an int
-    
+
+
 def run_flask():
     app.run(host="0.0.0.0", port=5000)
 
@@ -63,6 +64,7 @@ class Bot(commands.Bot):
         # Ensure the database is set up
         await self.setup_database()
 
+
 bot = Bot(
     intents=nextcord.Intents.all(),
     command_prefix=os.getenv("PREFIX"),
@@ -79,23 +81,29 @@ bot = Bot(
     activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="is-a.dev"),
 )
 
+
 def load_exts(directory):
     blacklist_subfolders = ["libs", "help_forum"]
-        
+
     extensions = []
     for root, dirs, files in os.walk(directory):
         if any(blacklisted in root for blacklisted in blacklist_subfolders):
             continue
-        
+
         for file in files:
-            if file.endswith('.py'):
+            if file.endswith(".py"):
                 relative_path = os.path.relpath(os.path.join(root, file), directory)
-                extension_name = relative_path[:-3].replace(os.sep, '.')
+                extension_name = relative_path[:-3].replace(os.sep, ".")
                 extensions.append(extension_name)
     return extensions
 
-extensions_blacklist = ["listeners.antihoist", "takina.takina.__main__", "takina.takina.cogs.owner-utils"]
-extensions = load_exts('anna/extensions')
+
+extensions_blacklist = [
+    "listeners.antihoist",
+    "takina.takina.__main__",
+    "takina.takina.cogs.owner-utils",
+]
+extensions = load_exts("anna/extensions")
 
 if os.getenv("HASDB"):
     database_extensions = [
