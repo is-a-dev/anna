@@ -50,7 +50,7 @@ class ConfirmView(nextcord.ui.View):
     async def cancel(
         self, button: nextcord.ui.Button, interaction: nextcord.Interaction
     ):
-        await interaction.send("Cancelling...", ephemeral=True)
+        await interaction.send("Cancelled.", ephemeral=True)
         self.value = False
         self.stop()
 
@@ -206,7 +206,7 @@ class Help(commands.Cog):
         except Exception:
             pass
         await asyncio.sleep(
-            3
+            1
         )  # To prevent message being sent after thread being closed on rare occasions
         if config.THREAD_CLOSE_LOCK:
             await thread.edit(locked=True)
