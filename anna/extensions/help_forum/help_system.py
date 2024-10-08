@@ -230,10 +230,14 @@ class Help(commands.Cog):
         await interaction.response.defer()
         guild_config = await self.bot.hdb.get_config(interaction.guild.id)
         if guild_config:
-            await interaction.send(config.SETUP_HELP_ALREADY)
+            embed = nextcord.Embed(
+                description=config.SETUP_HELP_ALREADY, color=EMBED_COLOR
+            )
+            await interaction.send(embed=embed)
             return
         await self.bot.hdb.set_config(interaction.guild.id, help_channel.id, role.id)
-        await interaction.send(config.SETUP_HELP_SUCCESS)
+        embed = nextcord.Embed(description=config.SETUP_HELP_SUCCESS, color=EMBED_COLOR)
+        await interaction.send(embed=embed)
 
     @nextcord.slash_command()
     async def show_help_config(self, interaction: nextcord.Interaction):
@@ -275,7 +279,8 @@ class Help(commands.Cog):
         await interaction.send(f"Set help channel to {help_channel.mention}.")
 
     @nextcord.slash_command(
-        default_member_permissions=nextcord.Permissions(manage_guild=True), name="set_role"
+        default_member_permissions=nextcord.Permissions(manage_guild=True),
+        name="set_role",
     )
     async def help_role(
         self,
@@ -450,9 +455,11 @@ class Help(commands.Cog):
 
     @commands.command()
     async def suppress(self, ctx: commands.Context):
-        await ctx.send(
-            "Successfully suppressed the ping role notification for this help thread."
+        embed = nextcord.Embed(
+            description="Successfully suppressed the ping role notification for this help thread.",
+            color=EMBED_COLOR,
         )
+        await ctx.send(embed=embed, mention_author=False)
 
     @commands.Cog.listener(name="on_message")
     async def first_message_mention(self, message: nextcord.Message):
@@ -479,7 +486,10 @@ class Help(commands.Cog):
             return
         if not message.content.startswith(config.THREAD_MIN_SUPPRESS_PREFIX):
             if len(message.content) < config.THREAD_MIN_CHAR:
-                await message.reply(config.THREAD_MIN_FAIL)
+                embed = nextcord.Embed(
+                    description=config.THREAD_MIN_FAIL, color=EMBED_COLOR
+                )
+                await message.reply(embed=embed)
                 return
             role = nextcord.utils.get(
                 message.guild.roles, id=guild_config["ping_role_id"]
