@@ -23,31 +23,42 @@ class PR_Channel(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
-        # Always resend the sticky message on any message
-        if message.channel.id == self.target_channel_id:
-            await self.send_sticky_message(message.channel)
-
-        # If the author is the bot, no further checks needed
         if message.author.bot:
             return
 
-        # Only process messages in the target channel
         if message.channel.id != self.target_channel_id:
             return
+        
+        if self.sticky_message_id:
+            try:
+                previous_sticky = await message.channel.fetch_message(self.sticky_message_id)
+                await previous_sticky.delete()
+            except nextcord.NotFound:
+                pass
+        # Send the new sticky message
+        embed = nextcord.Embed(
+            description="This is the sticky message. It will be re-sent with every new message.",
+            color=EMBED_COLOR,
+        )
+        sticky_message = await message.channel.send(embed=embed)
 
-        # Check if the user has the exempt role
+        # Store the ID of the new sticky message
+        self.sticky_message_id = sticky_message.id
+
         if any(role.id == self.exempt_role_id for role in message.author.roles):
             return
 
         # Suppress embeds in the message
         await self.suppress_embeds(message)
 
-        # If the message contains a valid GitHub link or PR pattern, do nothing
         if re.search(GITHUB_URL_PATTERN, message.content) or re.search(SHORT_PR_PATTERN, message.content):
             return
 
         # If the message doesn't match the pattern, delete it
         await message.delete()
+
+        # Re-send sticky message after deleting the invalid message
+        await self.send_sticky_message(message.channel)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message: nextcord.Message):
@@ -70,7 +81,7 @@ class PR_Channel(commands.Cog):
             except nextcord.NotFound:
                 pass  # Sticky message was already deleted
         
-        embed = nextcord.Embed(
+        embed= nextcord.Embed(
             description="Please only send PR links in this channel, all other messages are automatically deleted. <:salute:1287332162189922366>",
             color=EMBED_COLOR,
         )
