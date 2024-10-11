@@ -353,7 +353,7 @@ class Help(commands.Cog):
         await interaction.send(embed=embed)
 
     @nextcord.slash_command(
-        default_member_permissions=nextcord.Permissions(manage_guild=True)
+        default_member_permissions=nextcord.Permissions(manage_messages=True)
     )
     async def close(self, interaction: nextcord.Interaction):
         """Closes the help thread. (MOD ONLY)"""
