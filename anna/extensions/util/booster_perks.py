@@ -2,11 +2,12 @@ import nextcord
 from nextcord.ext import commands
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
+from __main__ import EMBED_COLOR
 
 class CustomRoleManager(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.booster_role_id = 1197475623745110109  # Booster role ID
+        self.booster_role_id = 1271118272497975430  # Booster role ID
         self.position_role_id = 1111968864390107191  # Role ID to place new roles under
         self.db = AsyncIOMotorClient(os.getenv("MONGO")).get_database(os.getenv("DB_NAME"))
 
@@ -35,13 +36,16 @@ class CustomRoleManager(commands.Cog):
 
     async def create_custom_role(self, guild: nextcord.Guild, user: nextcord.Member):
         """Create a custom role for the user."""
-        # Find the position of the desired role to place the new role under
-        position_role = guild.get_role(self.position_role_id)
-        position = position_role.position - 1 if position_role else len(guild.roles) - 1
-
-        new_role = await guild.create_role(name=f"{user.name}'s Custom Role", position=position)
+        # Create the new role first without specifying position
+        new_role = await guild.create_role(name=f"{user.name}'s boostrole")
         await user.add_roles(new_role)
 
+        # Adjust the role position after creation
+        position_role = guild.get_role(self.position_role_id)
+        if position_role:
+            await new_role.edit(position=position_role.position - 1)
+
+        # Save the role in the database
         await self.db.custom_roles.update_one(
             {"guild_id": guild.id, "user_id": user.id},
             {"$set": {"role_id": new_role.id}},
@@ -67,69 +71,92 @@ class CustomRoleManager(commands.Cog):
             if not await self.user_has_bypass(after.guild.id, after.id):
                 await self.delete_custom_role(after.guild, after)
 
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def bypass_boost(self, ctx: commands.Context, user: nextcord.Member, bypass: bool):
-        """Grant or remove a boost bypass for a user."""
-        await self.set_bypass(ctx.guild.id, user.id, bypass)
-        status = "granted" if bypass else "revoked"
-        await ctx.send(f"Boost bypass {status} for {user.mention}.")
-
     @commands.group(invoke_without_command=True)
     async def boostrole(self, ctx: commands.Context):
         """Group of commands to manage your custom role."""
-        await ctx.send("Available subcommands: `create`, `name`, `colour`, `icon`.")
+        embed = nextcord.Embed(color=EMBED_COLOR)
+        embed.description = "Available subcommands: `create`, `name`, `colour`, `icon`."
+        await ctx.reply(embed=embed, mention_author=False)
+    
+    @boostrole.command()
+    @commands.has_permissions(administrator=True)
+    async def bypass(self, ctx: commands.Context, user: nextcord.Member, bypass: bool):
+        """Grant or remove a boost bypass for a user. Usage: `boostrole bypass @member true/false`."""
+        await self.set_bypass(ctx.guild.id, user.id, bypass)
+        status = "granted" if bypass else "revoked"
+        embed = nextcord.Embed(color=EMBED_COLOR)
+        embed.description= f"Booster role requirement bypass {status} for {user.mention}."
+        await ctx.reply(embed=embed, mention_author=False)
 
     @boostrole.command(name="create")
     async def create_custom_role(self, ctx: commands.Context):
-        """Create a custom role for the user."""
+        """Create a custom role for the user. Usage: `boostrole create`. Use `boostrole name`, `boostrole colour #ffffff`, and `boostrole icon icon_url` to set the name, colour, and icon respectively."""
         # Check if the user already has a custom role
         if await self.get_custom_role(ctx.guild, ctx.author):
-            await ctx.send(":x: You already have a custom role.")
+            embed = nextcord.Embed(color=0xFF0037)
+            embed.description = ":x: You already have a custom role."
+            await ctx.reply(embed=embed, mention_author=False)
             return
 
         # Check if the user is a booster or has bypass
         booster_role = nextcord.utils.get(ctx.guild.roles, id=self.booster_role_id)
         if booster_role not in ctx.author.roles and not await self.user_has_bypass(ctx.guild.id, ctx.author.id):
-            await ctx.send(":x: You must be boosting the server to create a custom role.")
+            embed = nextcord.Embed(color=0xFF0037)
+            embed.description = ":x: You must be boosting the server to create a custom role."
+            await ctx.reply(embed=embed, mention_author=False)
             return
 
-        # Create the role
         new_role = await self.create_custom_role(ctx.guild, ctx.author)
-        await ctx.send(f"Your custom role `{new_role.name}` has been created!")
+        embed = nextcord.Embed(color=EMBED_COLOR)
+        embed.description = f":white_check_mark: Your custom role {new_role.mention} has been created!"
+        await ctx.reply(embed=embed, mention_author=False)
 
     @boostrole.command(name="name")
     async def set_custom_role_name(self, ctx: commands.Context, *, name: str):
-        """Set the name of the user's custom role."""
+        """Set the name of the user's custom role. Usage: `boostrole name nerd`."""
         custom_role = await self.get_custom_role(ctx.guild, ctx.author)
         if custom_role is None:
-            await ctx.send(":x: You don't have a custom role.")
+            embed = nextcord.Embed(color=0xFF0037)
+            embed.description = ":x: You don't have a custom role. Please create one first by running `boostrole create`."
+            await ctx.reply(embed=embed, mention_author=False)
             return
 
         await custom_role.edit(name=name)
-        await ctx.send(f"Your custom role name has been changed to `{name}`.")
+        embed = nextcord.Embed(color=EMBED_COLOR)
+        embed.description = f"Your custom role {custom_role.mention} has been renamed to **{name}**."
+        await ctx.reply(embed=embed, mention_author=False)
 
     @boostrole.command(name="colour")
     async def set_custom_role_colour(self, ctx: commands.Context, colour: nextcord.Colour):
-        """Set the colour of the user's custom role."""
+        """Set the colour of the user's custom role. Usage: `boostrole colour #ffaa00`."""
         custom_role = await self.get_custom_role(ctx.guild, ctx.author)
         if custom_role is None:
-            await ctx.send(":x: You don't have a custom role.")
+            embed = nextcord.Embed(color=0xFF0037)
+            embed.description = ":x: You don't have a custom role."
+            await ctx.reply(embed=embed, mention_author=False)
             return
 
         await custom_role.edit(colour=colour)
-        await ctx.send(f"Your custom role colour has been changed to `{colour}`.")
+        embed = nextcord.Embed(color=EMBED_COLOR)
+        embed.description = f"Your custom role colour has been changed to **{colour}."
+        await ctx.reply(embed=embed, mention_author=False)
 
     @boostrole.command(name="icon")
-    async def set_custom_role_icon(self, ctx: commands.Context, icon: nextcord.Asset):
-        """Set the icon of the user's custom role."""
+    async def set_custom_role_icon(self, ctx: commands.Context, icon: nextcord.Asset | str):
+        """Set the icon of the user's custom role. Usage: `boostrole icon` with the icon attached or `boostrole icon icon_url`."""
         custom_role = await self.get_custom_role(ctx.guild, ctx.author)
         if custom_role is None:
-            await ctx.send(":x: You don't have a custom role.")
+            embed = nextcord.Embed(color=0xFF0037)
+            embed.description = ":x: You don't have a custom role."
+            await ctx.reply(embed=embed, mention_author=False)
             return
-
-        await custom_role.edit(display_icon=icon)
-        await ctx.send("Your custom role icon has been updated.")
+        try:
+            await custom_role.edit(display_icon=icon)
+        except:
+            raise commands.UserInputError
+        embed = nextcord.Embed(color=EMBED_COLOR)
+        embed.description = "Your custom role icon has been updated."
+        await ctx.reply(embed=embed, mention_author=False)
 
 def setup(bot: commands.Bot):
     bot.add_cog(CustomRoleManager(bot))
