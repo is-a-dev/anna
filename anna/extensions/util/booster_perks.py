@@ -7,7 +7,7 @@ from __main__ import EMBED_COLOR
 class CustomRoleManager(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.booster_role_id = 1271118272497975430  # Booster role ID
+        self.booster_role_id = 834807222676619325  # Booster role ID
         self.position_role_id = 1111968864390107191  # Role ID to place new roles under
         self.db = AsyncIOMotorClient(os.getenv("MONGO")).get_database(os.getenv("DB_NAME"))
 
