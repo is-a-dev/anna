@@ -89,7 +89,7 @@ class CustomRoleManager(commands.Cog):
         await ctx.reply(embed=embed, mention_author=False)
 
     @boostrole.command(name="create")
-    async def create_custom_role(self, ctx: commands.Context):
+    async def create_custom_role_command(self, ctx: commands.Context):
         """Create a custom role for the user. Usage: `boostrole create`. Use `boostrole name`, `boostrole colour #ffffff`, and `boostrole icon icon_url` to set the name, colour, and icon respectively."""
         # Check if the user already has a custom role
         if await self.get_custom_role(ctx.guild, ctx.author):
@@ -138,7 +138,7 @@ class CustomRoleManager(commands.Cog):
 
         await custom_role.edit(colour=colour)
         embed = nextcord.Embed(color=EMBED_COLOR)
-        embed.description = f"Your custom role colour has been changed to **{colour}."
+        embed.description = f"Your custom role colour has been changed to **{colour}**."
         await ctx.reply(embed=embed, mention_author=False)
 
     @boostrole.command(name="icon")
