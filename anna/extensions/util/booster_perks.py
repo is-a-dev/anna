@@ -143,7 +143,7 @@ class CustomRoleManager(commands.Cog):
 
     @boostrole.command(name="icon")
     async def set_custom_role_icon(self, ctx: commands.Context, icon: str = None):
-        """Set the icon of the user's custom role. Usage: `boostrole icon icon_url` or `boostrole icon` with an attached image."""
+        """Set the icon of the user's custom role. Usage: `boostrole icon` with an attached image."""
         custom_role = await self.get_custom_role(ctx.guild, ctx.author)
         
         if custom_role is None:
@@ -151,6 +151,11 @@ class CustomRoleManager(commands.Cog):
             embed.description = ":x: You don't have a custom role."
             await ctx.reply(embed=embed, mention_author=False)
             return
+
+        if icon and not ctx.message.attachments:
+            embed = nextcord.Embed(color=0xFF0037)
+            embed.description = ":x: You must attach the icon file to your command in order for the command to work."
+            await ctx.reply(embed=embed, mention_author=False)
 
         if ctx.message.attachments:
             icon = ctx.message.attachments[0]
