@@ -151,7 +151,7 @@ class CustomRoleManager(commands.Cog):
             await ctx.reply(embed=embed, mention_author=False)
             return
         try:
-            await custom_role.edit(display_icon=icon)
+            await custom_role.edit(icon=icon)
         except:
             raise commands.UserInputError
         embed = nextcord.Embed(color=EMBED_COLOR)
