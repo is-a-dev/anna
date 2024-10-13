@@ -142,21 +142,35 @@ class CustomRoleManager(commands.Cog):
         await ctx.reply(embed=embed, mention_author=False)
 
     @boostrole.command(name="icon")
-    async def set_custom_role_icon(self, ctx: commands.Context, icon: str):
-        """Set the icon of the user's custom role. Usage: `boostrole icon` with the icon attached or `boostrole icon icon_url`."""
+    async def set_custom_role_icon(self, ctx: commands.Context, icon: str = None):
+        """Set the icon of the user's custom role. Usage: `boostrole icon icon_url` or `boostrole icon` with an attached image."""
         custom_role = await self.get_custom_role(ctx.guild, ctx.author)
+        
         if custom_role is None:
             embed = nextcord.Embed(color=0xFF0037)
             embed.description = ":x: You don't have a custom role."
             await ctx.reply(embed=embed, mention_author=False)
             return
+
+        if ctx.message.attachments:
+            icon = ctx.message.attachments[0]
+        
+        if not icon:
+            embed = nextcord.Embed(color=0xFF0037)
+            embed.description = ":x: You need to provide a valid URL or an image attachment."
+            await ctx.reply(embed=embed, mention_author=False)
+            return
+
         try:
             await custom_role.edit(icon=icon)
-        except:
-            raise commands.UserInputError
-        embed = nextcord.Embed(color=EMBED_COLOR)
-        embed.description = "Your custom role icon has been updated."
-        await ctx.reply(embed=embed, mention_author=False)
+            embed = nextcord.Embed(color=EMBED_COLOR)
+            embed.description = "Your custom role icon has been updated."
+            await ctx.reply(embed=embed, mention_author=False)
+        except nextcord.HTTPException as e:
+            embed = nextcord.Embed(color=0xFF0037)
+            embed.description = f":x: Failed to update the role icon: {str(e)}"
+            await ctx.reply(embed=embed, mention_author=False)
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(CustomRoleManager(bot))
