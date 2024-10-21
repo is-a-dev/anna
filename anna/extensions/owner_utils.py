@@ -3,7 +3,8 @@ from nextcord.ext import commands, menus
 import os
 import subprocess
 from __main__ import extensions, extensions_blacklist, BOT_NAME, EMBED_COLOR
-
+import importlib
+from .takina.takina.cogs.libs import oclib
 
 class GuildListMenu(menus.ListPageSource):
     def __init__(self, guilds):
@@ -116,6 +117,7 @@ class OwnerUtils(commands.Cog):
     @commands.command(aliases=["rx"])
     @commands.is_owner()
     async def reload_exts(self, ctx: commands.Context, *args):
+        importlib.reload(oclib)
         if not args:
             failed_extensions = []
 
