@@ -25,7 +25,7 @@ RUN mkdir test && \
 # import takina
 RUN mkdir -p anna/extensions && \
     cd anna/extensions && \
-    git clone https://github.com/orxngc/takina && \
+    git clone https://github.com/orangci/takina && \
     cd ../..
 
 # Specify the command to run the application
