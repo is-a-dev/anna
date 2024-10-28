@@ -15,7 +15,7 @@ pkgs.mkShell {
       source venv/bin/activate
     cd anna/extensions
     if [ ! -d "takina" ]; then
-      git clone https://github.com/orxngc/takina
+      git clone https://github.com/orangci/takina
     fi
     cd ../..
     python3 anna

@@ -9,6 +9,6 @@ On NixOS and on other operating systems that have the Nix package manager instal
 
 On Ubuntu/Debian: Clone this repository and run `bash start.sh` inside it.You will need to run it twice the first time.
 
-Maintainers: @orxngc, @cutedog5695
+Maintainers: @orangci, @cutedog5695
 
 Note: the banner source is https://www.pixiv.net/en/artworks/121820544

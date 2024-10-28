@@ -12,7 +12,7 @@ fi
 cd anna/extensions
 
 if [ ! -d "takina" ]; then
-    git clone https://github.com/orxngc/takina
+    git clone https://github.com/orangci/takina
 fi
 
 cd ../..
