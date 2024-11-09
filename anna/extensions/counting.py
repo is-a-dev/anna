@@ -4,6 +4,7 @@ import os
 from nextcord.ext import commands
 from __main__ import EMBED_COLOR
 
+
 class Counting(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -86,7 +87,10 @@ class Counting(commands.Cog):
         await self.db.leaderboard.update_one(
             {"user_id": member.id}, {"$set": {"count": score}}
         )
-        await ctx.reply(f"{member.display_name}'s score has been set to {score}.", mention_author=False)
+        await ctx.reply(
+            f"{member.display_name}'s score has been set to {score}.",
+            mention_author=False,
+        )
 
     @nextcord.slash_command(
         name="leaderboard", description="Displays the leaderboard of top counters."
@@ -97,14 +101,10 @@ class Counting(commands.Cog):
         leaderboard_list = await leaderboard_data.to_list(length=10)
 
         if not leaderboard_list:
-            await interaction.send(
-                "No one is on the leaderboard yet!", ephemeral=True
-            )
+            await interaction.send("No one is on the leaderboard yet!", ephemeral=True)
             return
 
-        embed = nextcord.Embed(
-            title="Counting Leaderboard", color=EMBED_COLOR
-        )
+        embed = nextcord.Embed(title="Counting Leaderboard", color=EMBED_COLOR)
         for idx, entry in enumerate(leaderboard_list, start=1):
             user = self.bot.get_user(entry["user_id"])
             username = user.display_name if user else "Unknown User"

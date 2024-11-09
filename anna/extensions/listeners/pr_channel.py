@@ -33,6 +33,7 @@ class PRChannelMessageCleaner(commands.Cog):
 
         await message.delete()
 
+
 # GitHub API Base URL
 GITHUB_API_BASE_URL = "https://api.github.com/repos"
 
@@ -42,6 +43,7 @@ REPO = "register"
 
 # Pattern for ##<number> (e.g., ##123 or ##1234)
 ISSUE_PR_PATTERN = r"##(\d+)"
+
 
 # Utility to fetch GitHub data
 async def fetch_github_data(url: str) -> Optional[dict]:
@@ -54,6 +56,7 @@ async def fetch_github_data(url: str) -> Optional[dict]:
     except aiohttp.ClientError:
         pass
     return None
+
 
 class GitHubEmbedBuilder:
     """Helper class to build embeds for GitHub PRs, Issues."""
@@ -78,6 +81,7 @@ class GitHubEmbedBuilder:
         embed.add_field(name="Status", value=state, inline=True)
         return embed
 
+
 class GitHub(commands.Cog):
     """Cog to interact with GitHub PRs and Issues, fetching information for is-a-dev/register repo."""
 
@@ -100,15 +104,19 @@ class GitHub(commands.Cog):
             return
 
         embed = GitHubEmbedBuilder.create_pr_issue_embed(data, OWNER, REPO)
-        
+
         # Add a refresh button to update the PR/issue status
         view = View(timeout=None)
-        refresh_button = Button(label="Refresh Status", style=nextcord.ButtonStyle.primary)
+        refresh_button = Button(
+            label="Refresh Status", style=nextcord.ButtonStyle.primary
+        )
 
         async def refresh_callback(interaction: nextcord.Interaction):
             updated_data = await fetch_github_data(api_url)
             if updated_data:
-                new_embed = GitHubEmbedBuilder.create_pr_issue_embed(updated_data, OWNER, REPO)
+                new_embed = GitHubEmbedBuilder.create_pr_issue_embed(
+                    updated_data, OWNER, REPO
+                )
                 await interaction.response.edit_message(embed=new_embed)
 
         refresh_button.callback = refresh_callback
@@ -127,6 +135,7 @@ class GitHub(commands.Cog):
             issue_id = match.group(1)
             await message.edit(suppress=True)
             await self.handle_pr_issue_embed(message, int(issue_id))
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(GitHub(bot))
