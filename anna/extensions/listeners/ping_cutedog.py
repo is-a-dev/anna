@@ -47,7 +47,7 @@ class PingCutedog(commands.Cog):
     async def ping_cutedog(self, message: Message) -> None:
         if CUTEDOG_ALT_ID in [x.id for x in message.mentions]:
             await message.channel.send(
-                "<@716306888492318790>",
+                "<@716306888492318790>, you were pinged on your alt account.",
                 allowed_mentions=AllowedMentions(users=[Object(id=716306888492318790)]),
             )
 
