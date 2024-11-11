@@ -82,7 +82,7 @@ class GitHubEmbedBuilder:
         return embed
 
 
-class GitHub(commands.Cog):
+class GitHubTwo(commands.Cog):
     """Cog to interact with GitHub PRs and Issues, fetching information for is-a-dev/register repo."""
 
     def __init__(self, bot: commands.Bot):
@@ -138,5 +138,5 @@ class GitHub(commands.Cog):
 
 
 def setup(bot: commands.Bot):
-    bot.add_cog(GitHub(bot))
+    bot.add_cog(GitHubTwo(bot))
     bot.add_cog(PRChannelMessageCleaner(bot))
