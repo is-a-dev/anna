@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
 import os
