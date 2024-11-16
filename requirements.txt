@@ -23,4 +23,4 @@ virtualenv
 audioop-lts
 pymongo
 motor
-flask
+Flask[async]
