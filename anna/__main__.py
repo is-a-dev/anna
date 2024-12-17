@@ -67,7 +67,7 @@ class Bot(commands.Bot):
 
 bot = Bot(
     intents=nextcord.Intents.all(),
-    command_prefix=os.getenv("PREFIX"),
+    command_prefix=[os.getenv("PREFIX"), "anna ", "Anna "],
     case_insensitive=True,
     help_command=help_commands.PaginatedHelpCommand(),
     owner_ids=[
