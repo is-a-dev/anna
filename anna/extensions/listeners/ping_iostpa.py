@@ -3,9 +3,11 @@ import nextcord
 
 SERVER_ID = 830872854677422150
 
+
 def is_in_guild():
     def predicate(ctx: commands.Context):
         return ctx.guild and ctx.guild.id == SERVER_ID
+
     return commands.check(predicate)
 
 
@@ -15,7 +17,10 @@ class PingIostpa(commands.Cog):
         if message.guild.id != SERVER_ID:
             return
         if 740117772566265876 in [pong.id for pong in message.mentions]:
-            await message.channel.send("<@716306888492318790>, you were pinged on your alt account.")
+            await message.channel.send(
+                "<@716306888492318790>, you were pinged on your alt account."
+            )
+
 
 def setup(bot):
     bot.add_cog(PingIostpa())
