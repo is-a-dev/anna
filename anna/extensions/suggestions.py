@@ -109,13 +109,13 @@ class Suggestion(commands.Cog):
         embed.set_footer(text=f"By {str(interaction.user)} (ID {interaction.user.id})")
 
         channel = interaction.guild.get_channel(self.suggestion_channel)
-        channel = nextcord.utils.cast(nextcord.TextChannel, channel)
+        channel = cast(nextcord.TextChannel, channel)
         message = await channel.send(embed=embed)
         await message.add_reaction("✅")
         await message.add_reaction("❌")
 
         log_channel = self.bot.get_channel(955105139461607444)
-        log_channel = nextcord.utils.cast(nextcord.TextChannel, log_channel)
+        log_channel = cast(nextcord.TextChannel, log_channel)
         await log_channel.send(embed=nextcord.Embed(
             description=f"{str(interaction.user)} has suggested: {suggestion}.",
             color=EMBED_COLOR,
@@ -140,7 +140,7 @@ class Suggestion(commands.Cog):
         ),
     ):
         channel = interaction.guild.get_channel(self.suggestion_channel)
-        channel = nextcord.utils.cast(nextcord.TextChannel, channel)
+        channel = cast(nextcord.TextChannel, channel)
         message = await channel.fetch_message(int(messageId))
         embed = message.embeds[0]
         embed.add_field(name=f"Denied by {str(interaction.user)}", value=why)
@@ -166,7 +166,7 @@ class Suggestion(commands.Cog):
     ):
         why = why or "No reason provided"
         channel = self.bot.get_channel(self.suggestion_channel)
-        channel = nextcord.utils.cast(nextcord.TextChannel, channel)
+        channel = cast(nextcord.TextChannel, channel)
         message = await channel.fetch_message(int(messageId))
         embed = message.embeds[0]
         embed.add_field(name=f"Approved by {str(interaction.user)}", value=why)
