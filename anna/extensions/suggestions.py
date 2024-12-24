@@ -29,7 +29,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-# code is heavily modified and is not the original code from maskduck 
+# code is heavily modified and is not the original code from maskduck
 
 from contextlib import suppress
 from typing import Literal, cast
@@ -40,6 +40,7 @@ from config import *
 SUGGESTION_CHANNEL_ID = 1236200920317169695
 MAINTAINER_ROLE_ID = 830875873027817484
 
+
 class ApproveOrDeny(nextcord.ui.Modal):
     def __init__(self, mode: bool, message: nextcord.Message) -> None:
         self._suggestion_msg: nextcord.Message = message
@@ -47,7 +48,9 @@ class ApproveOrDeny(nextcord.ui.Modal):
         title = "Approve the suggestion" if mode else "Deny the suggestion"
         super().__init__(title=title, timeout=180)
         self.reas = nextcord.ui.TextInput(
-            label="Provide a reason.", style=nextcord.TextInputStyle.paragraph, required=True
+            label="Provide a reason.",
+            style=nextcord.TextInputStyle.paragraph,
+            required=True,
         )
         self.add_item(self.reas)
 
@@ -97,7 +100,9 @@ class Suggestion(commands.Cog):
     async def _suggestion(self, interaction: nextcord.Interaction):
         pass
 
-    @_suggestion.subcommand(name="suggest", description="We'd love to hear your suggestions!")
+    @_suggestion.subcommand(
+        name="suggest", description="We'd love to hear your suggestions!"
+    )
     async def _suggest(
         self,
         interaction: nextcord.Interaction,
@@ -105,7 +110,9 @@ class Suggestion(commands.Cog):
             name="suggestion", description="Write your suggestion here.", required=True
         ),
     ):
-        embed = nextcord.Embed(title="Suggestion",description=suggestion, color=EMBED_COLOR)
+        embed = nextcord.Embed(
+            title="Suggestion", description=suggestion, color=EMBED_COLOR
+        )
         embed.set_footer(text=f"By {interaction.user.mention}")
 
         channel = interaction.guild.get_channel(self.suggestion_channel)
@@ -116,10 +123,12 @@ class Suggestion(commands.Cog):
 
         log_channel = self.bot.get_channel(955105139461607444)
         log_channel = cast(nextcord.TextChannel, log_channel)
-        await log_channel.send(embed=nextcord.Embed(
-            description=f"{str(interaction.user)} has suggested: {suggestion}.",
-            color=EMBED_COLOR,
-        ))
+        await log_channel.send(
+            embed=nextcord.Embed(
+                description=f"{str(interaction.user)} has suggested: {suggestion}.",
+                color=EMBED_COLOR,
+            )
+        )
 
         embed = nextcord.Embed(
             description=f"You can now see your suggestion in {channel.mention}.",
