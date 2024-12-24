@@ -105,7 +105,7 @@ class Suggestion(commands.Cog):
             name="suggestion", description="Write your suggestion here.", required=True
         ),
     ):
-        embed = nextcord.Embed(description=suggestion, color=EMBED_COLOR)
+        embed = nextcord.Embed(title="Suggestion",description=suggestion, color=EMBED_COLOR)
         embed.set_footer(text=f"By {interaction.user.mention}")
 
         channel = interaction.guild.get_channel(self.suggestion_channel)
