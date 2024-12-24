@@ -106,7 +106,7 @@ class Suggestion(commands.Cog):
         ),
     ):
         embed = nextcord.Embed(description=suggestion, color=EMBED_COLOR)
-        embed.set_footer(text=f"By {str(interaction.user)} (ID {interaction.user.id})")
+        embed.set_footer(text=f"By {interaction.user.mention}")
 
         channel = interaction.guild.get_channel(self.suggestion_channel)
         channel = cast(nextcord.TextChannel, channel)
