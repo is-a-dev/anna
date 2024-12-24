@@ -1,7 +1,7 @@
 from nextcord.ext import commands
 import nextcord
 
-SERVER_ID = 1281898369236602903 # real one → 830872854677422150
+SERVER_ID = 830872854677422150
 
 def is_in_guild():
     def predicate(ctx: commands.Context):
