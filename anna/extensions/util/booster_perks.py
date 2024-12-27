@@ -9,7 +9,7 @@ class CustomRoleManager(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.booster_role_id = 834807222676619325  # Booster role ID
-        self.position_role_id = 1111968864390107191  # Role ID to place new roles under
+        self.position_role_id = 1295386316464328806  # Role ID to place new roles under
         self.db = AsyncIOMotorClient(MONGO_URI).get_database(DB_NAME)
 
     async def user_has_bypass(self, guild_id: int, user_id: int):
