@@ -8,6 +8,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
 from extensions.help_forum.database import HelpDatabase
 from web import app
+import datetime
 
 load_dotenv()
 start_time = datetime.datetime.utcnow()
