@@ -10,7 +10,7 @@ from extensions.help_forum.database import HelpDatabase
 from web import app
 
 load_dotenv()
-
+start_time = datetime.datetime.utcnow()
 BOT_NAME = os.getenv("BOT_NAME")
 DB_NAME = os.getenv("DB_NAME").lower()
 EMBED_COLOR_STR = os.getenv("EMBED_COLOR", "#000000")
