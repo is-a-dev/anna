@@ -19,6 +19,7 @@ nodeenv
 platformdirs
 pre-commit
 typing-extensions
+wynn-api
 virtualenv
 audioop-lts
 pymongo
