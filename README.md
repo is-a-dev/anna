@@ -1,4 +1,9 @@
-![banner](https://embed.pixiv.net/spotlight.php?id=10119&lang=en)
+# Discontinuation Notice
+> [!NOTE]
+> As of January 6th, 2024, Anna has been discontinued.
+> Please use [Takina](https://github.com/orangci/takina) instead.
+> Why? Because Anna's underlying code was always Takina's anyway; you can tell this by taking a glance at the dockerfile.
+> The code in this repository are a few cogs specific to the is-a.dev Discord server, which have now been moved to the cogs/sesp folder under Takina.
 
 # Anna
 Anna is named after Anna Yanami from Makeine: Too Many Losing Heroines.
